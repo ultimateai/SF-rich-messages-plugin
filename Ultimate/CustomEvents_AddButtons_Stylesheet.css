@@ -136,7 +136,7 @@ p {
 }
 
 .chatContent .chasitor span {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -154,7 +154,7 @@ p {
 }
 
 .chatContent .agent span {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -197,7 +197,7 @@ p {
 .info {
   color: #15142d;
   text-align: start;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 13px;
   line-height: 20px;
@@ -219,7 +219,7 @@ p {
   padding: 8px 0;
   text-align: center;
   cursor: pointer;
-  font-family: "Inter" !important;
+  font-family: "Inter", sans-serif !important;
   font-style: normal;
   font-weight: 530 !important;
   font-size: 13px;
@@ -308,7 +308,7 @@ p {
 }
 .info-v2 span {
   margin-top: 8px;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 11.5px;
@@ -345,7 +345,7 @@ p {
 }
 
 .button-link {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-weight: 530;
   font-size: 13px;
   line-height: 16px;
@@ -382,7 +382,7 @@ p {
 }
 
 .button-note-text {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -488,7 +488,7 @@ p {
 .btn-rating {
   border: 0;
   background: none;
-  font-family: "Inter" !important;
+  font-family: "Inter", sans-serif !important;
   font-weight: 530 !important;
   font-size: 13px;
   line-height: 16px;
@@ -651,7 +651,7 @@ p {
 }
 
 .ultimate-card-title {
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-weight: 530;
   font-size: 13px;
   line-height: 16px;
@@ -676,7 +676,7 @@ p {
   flex-grow: 1;
   text-align: start;
   margin: 0 16px 12px;
-  font-family: "Inter";
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -695,7 +695,7 @@ p {
   border-radius: 6px;
   text-align: center;
   padding: 8px 0;
-  font-family: "Inter" !important;
+  font-family: "Inter", sans-serif !important;
   font-weight: 530 !important;
   font-size: 13px;
   line-height: 16px;
@@ -750,6 +750,7 @@ p {
   border: none;
   backdrop-filter: blur(0px);
   -webkit-filter: blur(0px);
+  width: 320px;
 }
 
 .ultimate-card-info-block-v2 {
@@ -793,4 +794,89 @@ p {
   background: none !important;
   color: #ffffff !important;
   cursor: default;
+}
+
+/* Carousel version 3 */
+
+.ultimate-card-v3 {
+  width: 206px;
+}
+
+.ultimate-card-info-block-v3 .ultimate-card-title {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+  color: #6c6f85;
+  margin: 0;
+}
+
+.ultimate-card-info-block-v3 {
+  width: 100%;
+  padding: 12px 16px 16px;
+  box-sizing: border-box;
+}
+
+.ultimate-card-info-block-v3 .ultimate-custom-card-container {
+  margin: 0;
+}
+
+.ultimate-card-info-block-v3 h2 {
+  font-family: "Inter", sans-serif;
+  font-weight: 530;
+  font-size: 20px;
+  line-height: 28px;
+  color: #15142d;
+  margin-bottom: 8px;
+}
+
+.ultimate-card-info-block-v3 h5 {
+  padding: 2px 4px;
+  background: #e7f7f0;
+  border-radius: 2px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #0b3427;
+  margin-bottom: 8px;
+}
+
+.ultimate-card-info-block-v3 p {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 11.5px;
+  line-height: 16px;
+  color: #6c6f85;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e2e5eb;
+}
+
+.ultimate-card-info-block-v3 .ultimate-custom-card-buttons {
+  margin-top: 10px;
+  padding: 0;
+}
+
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper {
+  background: none !important;
+  justify-content: start;
+  width: fit-content;
+}
+
+.ultimate-card-info-block-v3 .button-link {
+  color: #5d5adc !important;
+}
+
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover .button-link,
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:active .button-link {
+  color: #4441bd !important;
+}
+
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper path {
+  fill: #5d5adc;
+}
+
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover path,
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:active path {
+  fill: #4441bd !important;
 }

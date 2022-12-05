@@ -11,7 +11,7 @@
   link.setAttribute("type", "text/css");
   link.setAttribute(
     "href",
-    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono&display=swap"
   );
   document.head.appendChild(link);
 
@@ -46,7 +46,7 @@
   var VERSION_2_KEY = "&&version2&&";
   var VERSION_3_KEY = "&&version3&&";
 
-  //VERSIONS
+  //PENDINGS
   var PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
   var PENDING_CAROUSELS_KEY = "ultimate_pending_carousels";
   var PENDING_CAROUSEL_TITLE = "ultimate_pending_title";
@@ -66,7 +66,10 @@
   var DEBOUNCE_TIME_STAMP = 0;
   var TAB_ID = String(Date.now());
 
-  var slideWidth = 260 + 8; // slider cards (width + margin)
+  // SLIDER
+  var SLIDE_WIDTH_CAROUSEL_V1 = 260 + 8; // slider cards v1 (width + margin)
+  var SLIDE_WIDTH_CAROUSEL_V2 = 320 + 8; // slider cards v2 (width + margin)
+  var SLIDE_WIDTH_CAROUSEL_V3 = 206 + 8; // slider cards v3 (width + margin)
 
   // set timer and check if message list rendered and find loader in last element and hide
 
@@ -637,7 +640,7 @@
       }
     }
 
-    function dragMove(event) {
+    function dragMove(event, slideWidth) {
       var e = event || window.event;
       var carousel = e.target.closest(".ultimate-carousel");
       var busy = parseInt(carousel.dataset.busy);
@@ -681,7 +684,7 @@
       }
     }
 
-    function dragEnd(event) {
+    function dragEnd(event, slideWidth) {
       var e = event || window.event;
       var carousel = e.target.closest(".ultimate-carousel");
       var busy = parseInt(carousel.dataset.busy);
@@ -699,16 +702,22 @@
         if (Math.abs(x1 - x2) > slideWidth / 3) {
           if (x1 < x2) {
             if (currentIndex - 1 >= 0) {
-              prevSlider({
-                target: carousel.querySelector(".ultimate-carousel-list"),
-              });
+              prevSlider(
+                {
+                  target: carousel.querySelector(".ultimate-carousel-list"),
+                },
+                slideWidth
+              );
               keepCurrentIndex = false;
             }
           } else {
             if (currentIndex + 1 < itemsLength) {
-              nextSlider({
-                target: carousel.querySelector(".ultimate-carousel-list"),
-              });
+              nextSlider(
+                {
+                  target: carousel.querySelector(".ultimate-carousel-list"),
+                },
+                slideWidth
+              );
               keepCurrentIndex = false;
             }
           }
@@ -733,7 +742,7 @@
       });
     }
 
-    function moveSlider(buttonEl, isPrev, noAnimate, targetIndex) {
+    function moveSlider(buttonEl, isPrev, noAnimate, targetIndex, slideWidth) {
       var carousel = buttonEl.parentNode;
 
       var slideCicles = carousel.querySelector(".dotsContainer");
@@ -803,12 +812,12 @@
       }
     }
 
-    function prevSlider(event) {
-      moveSlider(event.target, true, undefined, undefined);
+    function prevSlider(event, slideWidth) {
+      moveSlider(event.target, true, undefined, undefined, slideWidth);
     }
 
-    function nextSlider(event) {
-      moveSlider(event.target, false, undefined, undefined);
+    function nextSlider(event, slideWidth) {
+      moveSlider(event.target, false, undefined, undefined, slideWidth);
     }
 
     function addChatCard(card, index) {
@@ -868,8 +877,22 @@
       }
     }
 
+    const setSlideWidth = (version) => {
+      switch (version) {
+        case 0:
+          return SLIDE_WIDTH_CAROUSEL_V1;
+        case 2:
+          return SLIDE_WIDTH_CAROUSEL_V2;
+        case 3:
+          return SLIDE_WIDTH_CAROUSEL_V3;
+        default:
+          break;
+      }
+    };
+
     function addChatCarousel(version, data, message, index) {
       try {
+        const slideWidth = setSlideWidth(version);
         let parsedData = data.cards;
         if (version) {
           parsedData = data.cards.map(({ title, ...rest }) => ({
@@ -911,7 +934,7 @@
           "M13.7601 6.00008C13.7601 6.39119 13.4401 6.71119 13.049 6.71119H2.6668L5.88458 9.94675C6.16902 10.2312 6.16902 10.6756 5.88458 10.9601C5.74236 11.1023 5.56458 11.1734 5.3868 11.1734C5.20902 11.1734 5.01347 11.1023 4.88902 10.9601L0.462359 6.51564C0.177915 6.23119 0.177915 5.78675 0.462359 5.52008L4.88902 1.07564C5.17347 0.791191 5.61791 0.791191 5.90235 1.07564C6.1868 1.36008 6.1868 1.80453 5.90235 2.08897L2.6668 5.28897H13.049C13.4401 5.28897 13.7601 5.60897 13.7601 6.00008Z"
         );
 
-        buttonPrev.addEventListener("click", prevSlider);
+        buttonPrev.addEventListener("click", (e) => prevSlider(e, slideWidth));
 
         if (message) {
           var title = createEl(
@@ -1012,12 +1035,22 @@
           }
           // Slider events
           carouselList.addEventListener("mousedown", dragStart);
-          carouselList.addEventListener("mousemove", dragMove);
-          carouselList.addEventListener("mouseup", dragEnd);
-          carouselList.addEventListener("mouseleave", dragEnd);
+          carouselList.addEventListener("mousemove", (e) =>
+            dragMove(e, slideWidth)
+          );
+          carouselList.addEventListener("mouseup", (e) =>
+            dragEnd(e, slideWidth)
+          );
+          carouselList.addEventListener("mouseleave", (e) =>
+            dragEnd(e, slideWidth)
+          );
           carouselList.addEventListener("touchstart", dragStart);
-          carouselList.addEventListener("touchmove", dragMove);
-          carouselList.addEventListener("touchend", dragEnd);
+          carouselList.addEventListener("touchmove", (e) =>
+            dragMove(e, slideWidth)
+          );
+          carouselList.addEventListener("touchend", (e) =>
+            dragEnd(e, slideWidth)
+          );
         }
 
         var buttonNext = createEl(
@@ -1037,7 +1070,7 @@
           "M13.5468 6.49778L9.12014 10.9422C8.97792 11.0844 8.80013 11.1556 8.62235 11.1556C8.44457 11.1556 8.2668 11.0844 8.12458 10.9422C7.84013 10.6578 7.84013 10.2133 8.12458 9.92889L11.3424 6.69334H0.960135C0.569023 6.69334 0.249023 6.37334 0.249023 5.98223C0.249023 5.59112 0.569023 5.27112 0.960135 5.27112H11.3424L8.12458 2.03557C7.84013 1.75112 7.84013 1.30668 8.12458 1.02223C8.40902 0.737788 8.85347 0.737788 9.13791 1.02223L13.5646 5.46668C13.8312 5.7689 13.8312 6.23112 13.5468 6.49778Z"
         );
 
-        buttonNext.addEventListener("click", nextSlider);
+        buttonNext.addEventListener("click", (e) => nextSlider(e, slideWidth));
 
         addElementToMessageArea(
           carouselContainer,
