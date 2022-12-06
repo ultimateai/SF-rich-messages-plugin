@@ -291,13 +291,14 @@ p {
 .btn-container-v2 {
   background: none;
   border: none;
+  padding: 0 !important;
+  border-radius: 0;
 }
 
 .info-v2 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-weight: 530;
   box-sizing: border-box;
   background: #f9f9fb;
   padding: 12px 8px 12px 12px;
@@ -305,14 +306,6 @@ p {
   border-radius: 12px;
   box-sizing: border-box;
   margin-bottom: 4px;
-}
-.info-v2 span {
-  margin-top: 8px;
-  font-family: "Inter", sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 11.5px;
-  line-height: 16px;
 }
 
 .buttons-wrapper-v2 {
@@ -327,11 +320,16 @@ p {
   margin-bottom: 4px !important;
 }
 
+.buttons-wrapper-v2 .btn-default.button-disabled:hover,
+.buttons-wrapper-v2 .btn-default.button-disabled:focus {
+  background: none !important;
+}
+
 .buttons-wrapper-v2 .btn-default:not(:last-child) {
   margin-right: 8px;
 }
 
-/* button link */
+/* general for buttons link */
 
 .button-link-wrapper {
   display: flex;
@@ -744,6 +742,12 @@ p {
   cursor: default;
 }
 
+.carousel-disabled .ultimate-card-link-wrapper:hover {
+  background: #211f8a !important;
+  color: #ffffff !important;
+  cursor: pointer;
+}
+
 /* Carousel version 2 */
 
 .ultimate-card-v2 {
@@ -794,6 +798,29 @@ p {
   background: none !important;
   color: #ffffff !important;
   cursor: default;
+}
+
+.carousel-disabled
+  .ultimate-card-info-block-v2
+  .ultimate-card-link-wrapper:hover {
+  background: #ffffff !important;
+  color: #15142d !important;
+  cursor: pointer;
+}
+
+.carousel-disabled
+  .ultimate-card-info-block-v2
+  .ultimate-card-link-wrapper:hover
+  path {
+  fill: #15142d;
+}
+
+.ultimate-card-info-block-v2 .ultimate-card-link-wrapper:hover .button-link {
+  color: #15142d !important;
+}
+
+.ultimate-card-info-block-v2 .ultimate-card-link-wrapper:hover path {
+  fill: #15142d !important;
 }
 
 /* Carousel version 3 */
@@ -879,4 +906,10 @@ p {
 .ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover path,
 .ultimate-card-info-block-v3 .ultimate-card-link-wrapper:active path {
   fill: #4441bd !important;
+}
+
+.carousel-disabled
+  .ultimate-card-info-block-v3
+  .ultimate-card-link-wrapper:hover {
+  background: none !important;
 }

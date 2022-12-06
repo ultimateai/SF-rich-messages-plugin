@@ -116,7 +116,8 @@
       initialData,
       wrapper,
       rating,
-      container
+      container,
+      version
     ) {
       if (rating) {
         addChatButtonRating(initialData, wrapper, rating, container);
@@ -127,7 +128,7 @@
           if (link && initialData.length === 1) {
             buttonElement = createEl(
               "button",
-              { class: "button-link-wrapper" },
+              { class: `button-link-wrapper button-link-wrapper-v${version}` },
               wrapper
             );
 
@@ -205,7 +206,8 @@
         chatButtons,
         buttonsWrapper,
         rating,
-        buttonContainer
+        buttonContainer,
+        version
       );
       addElementToMessageArea(
         buttonContainer,
@@ -454,7 +456,11 @@
       function onButtonClick() {
         const disabledClass = "carousel-disabled";
         if (carouselContainer.classList.contains(disabledClass)) {
-          return;
+          if (buttonElement.classList.contains("ultimate-card-link-wrapper")) {
+            onClickButtonElement(buttonLink, buttonText, index);
+          } else {
+            return;
+          }
         } else {
           onClickButtonElement(buttonLink, buttonText, index);
           if (!buttonLink) {
