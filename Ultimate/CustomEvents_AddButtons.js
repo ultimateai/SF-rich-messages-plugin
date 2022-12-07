@@ -41,10 +41,12 @@
   var IS_VERSION_1 = "isVersion1";
   var IS_VERSION_2 = "isVersion2";
   var IS_VERSION_3 = "isVersion3";
+  var IS_VERSION_4 = "isversion4";
 
   var VERSION_1_KEY = "&&version1&&";
   var VERSION_2_KEY = "&&version2&&";
   var VERSION_3_KEY = "&&version3&&";
+  var VERSION_4_KEY = "&&version4&&";
 
   //PENDINGS
   var PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
@@ -99,6 +101,8 @@
       value = IS_VERSION_2;
     } else if (message.includes(VERSION_3_KEY)) {
       value = IS_VERSION_3;
+    } else if (message.includes(VERSION_4_KEY)) {
+      value = IS_VERSION_4;
     }
     return value;
   }
@@ -366,6 +370,8 @@
                   addChatCarousel(2, eventData, carouselMesasge),
                 [IS_VERSION_3]: () =>
                   addChatCarousel(3, eventData, carouselMesasge),
+                [IS_VERSION_4]: () =>
+                  addChatCarousel(4, eventData, carouselMesasge),
                 default: () => addChatCarousel(0, eventData, carouselMesasge),
               };
               carouselsRenderers[version || "default"]();
@@ -885,7 +891,7 @@
 
     const setSlideWidth = (version) => {
       switch (version) {
-        case 0:
+        case 0 | 4:
           return SLIDE_WIDTH_CAROUSEL_V1;
         case 2:
           return SLIDE_WIDTH_CAROUSEL_V2;
