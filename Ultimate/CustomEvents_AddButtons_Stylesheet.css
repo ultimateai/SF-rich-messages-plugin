@@ -1019,3 +1019,45 @@ p {
   .ultimate-card-link-wrapper:hover {
   background: none !important;
 }
+
+/* Carousel version 4 */
+
+.ultimate-card-v4 .ultimate-card-images-block {
+  height: 206px;
+}
+
+.ultimate-card-v4 .ultimate-card-info-block {
+  width: 100%;
+  padding: 16px;
+}
+
+.ultimate-card-v4 .ultimate-card-info-block {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.ultimate-card-v4 .ultimate-card-title {
+  margin: 0;
+}
+
+.ultimate-card-v4 .ultimate-custom-card-container {
+  margin: 8px 0 16px;
+  color: #15142d;
+}
+
+.ultimate-card-v4 .ultimate-custom-card-buttons {
+  padding: 0;
+}
+
+.ultimate-card-v4 .ultimate-card-button {
+  background: none !important;
+  border: 1px solid #5d5adc;
+  color: #0f0e3f;
+}
+
+.ultimate-card-v4 .ultimate-card-button:hover,
+.ultimate-card-v4 .ultimate-card-button:active {
+  background: #5d5adc !important;
+  color: #fff !important;
+}

@@ -405,6 +405,8 @@
                   addChatCarousel(2, eventData, carouselMesasge),
                 [IS_VERSION_3]: () =>
                   addChatCarousel(3, eventData, carouselMesasge),
+                [IS_VERSION_4]: () =>
+                  addChatCarousel(4, eventData, carouselMesasge),
                 default: () => addChatCarousel(0, eventData, carouselMesasge),
               };
               carouselsRenderers[version || "default"]();
@@ -930,7 +932,7 @@
 
     const setSlideWidth = (version) => {
       switch (version) {
-        case 0:
+        case 0 | 4:
           return SLIDE_WIDTH_CAROUSEL_V1;
         case 2:
           return SLIDE_WIDTH_CAROUSEL_V2;
