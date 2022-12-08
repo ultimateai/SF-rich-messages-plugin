@@ -41,10 +41,14 @@
   var IS_VERSION_1 = "isVersion1";
   var IS_VERSION_2 = "isVersion2";
   var IS_VERSION_3 = "isVersion3";
+  var IS_VERSION_4 = "isversion4";
+  var IS_VERSION_5 = "isversion5";
 
   var VERSION_1_KEY = "&&version1&&";
   var VERSION_2_KEY = "&&version2&&";
   var VERSION_3_KEY = "&&version3&&";
+  var VERSION_4_KEY = "&&version4&&";
+  var VERSION_5_KEY = "&&version5&&";
 
   //PENDINGS
   var PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
@@ -99,6 +103,10 @@
       value = IS_VERSION_2;
     } else if (message.includes(VERSION_3_KEY)) {
       value = IS_VERSION_3;
+    } else if (message.includes(VERSION_4_KEY)) {
+      value = IS_VERSION_4;
+    } else if (message.includes(VERSION_5_KEY)) {
+      value = IS_VERSION_5;
     }
     return value;
   }
@@ -120,7 +128,7 @@
       version
     ) {
       if (rating) {
-        addChatButtonRating(initialData, wrapper, rating, container);
+        addChatButtonRating(initialData, wrapper, rating, container, version);
       } else {
         initialData.forEach(({ text, link }) => {
           var buttonElement;
@@ -191,7 +199,7 @@
       }
 
       let rating;
-      if (version === 3) {
+      if ((version === 3) | (version === 5)) {
         info.classList.add("info-rating");
         rating = createEl("div", { class: "rating-group" }, buttonContainer);
       }
@@ -218,60 +226,84 @@
       );
     }
 
-    function addChatButtonRating(initialData, wrapper, rating, container) {
+    function addChatButtonRating(
+      initialData,
+      wrapper,
+      rating,
+      container,
+      version
+    ) {
       var lastButtonElement = initialData.pop();
-      var starsBlock = createEl("div", { class: "starsBlock" }, rating);
-      createEl(
-        "input",
-        {
-          class: "rating__input rating__input--none",
-          name: "rating3",
-          id: "rating3-none",
-          value: "0",
-          type: "radio",
-          disabled: "disabled",
-          checked: "checked",
-        },
-        starsBlock
+      var starsBlock = createEl(
+        "div",
+        { class: `starsBlock starsBlock-v${version}` },
+        rating
       );
-
-      initialData.forEach(({ text }, index) => {
-        var specialId = Date.now();
-        var starLabel = createEl(
-          "label",
-          {
-            class: "rating__label",
-            ariaLabel: ` ${index + specialId}star`,
-            for: `rating${index + specialId}`,
-          },
-          starsBlock
-        );
-
-        createSvg(
-          starLabel,
-          "0 0 22 22",
-          undefined,
-          "M12.1017 1.69434C11.9064 1.26465 11.4767 0.991211 11.008 0.991211C10.5001 0.991211 10.0705 1.26465 9.87514 1.69434L7.37514 6.88965L1.75014 7.70996C1.28139 7.78809 0.890767 8.10059 0.734517 8.56934C0.617329 8.99902 0.734517 9.50684 1.04702 9.81934L5.10952 13.8428L4.17202 19.5459C4.09389 20.0146 4.2892 20.4834 4.67983 20.7568C5.07045 21.0693 5.57827 21.0693 5.96889 20.874L11.008 18.1787L16.008 20.874C16.4376 21.0693 16.9455 21.0693 17.3361 20.7568C17.7267 20.4834 17.922 20.0146 17.8439 19.5459L16.8673 13.8428L20.9298 9.81934C21.2814 9.50684 21.3986 8.99902 21.2423 8.56934C21.0861 8.10059 20.6955 7.78809 20.2267 7.70996L14.6408 6.88965L12.1017 1.69434Z",
-          "#5D5ADC",
-          "2"
-        );
-
+      if (version === 5) {
+        initialData.forEach(({ text }) => {
+          const ratingButton = createEl(
+            "div",
+            { class: "rating-v2-button" },
+            starsBlock
+          );
+          ratingButton.innerHTML = text;
+          ratingButton.addEventListener("click", () =>
+            customOnButtonClick(container, "", text)
+          );
+        });
+      } else {
         createEl(
           "input",
           {
-            class: "rating__input",
+            class: "rating__input rating__input--none",
             name: "rating3",
-            id: `rating${index + specialId}`,
+            id: "rating3-none",
+            value: "0",
             type: "radio",
-            value: "1",
+            disabled: "disabled",
+            checked: "checked",
           },
           starsBlock
         );
 
-        starLabel.addEventListener("click", () =>
-          customOnButtonClick(container, "", text)
-        );
-      });
+        initialData.forEach(({ text }, index) => {
+          var specialId = Date.now();
+          var starLabel = createEl(
+            "label",
+            {
+              class: "rating__label",
+              ariaLabel: ` ${index + specialId}star`,
+              for: `rating${index + specialId}`,
+            },
+            starsBlock
+          );
+
+          createSvg(
+            starLabel,
+            "0 0 22 22",
+            undefined,
+            "M12.1017 1.69434C11.9064 1.26465 11.4767 0.991211 11.008 0.991211C10.5001 0.991211 10.0705 1.26465 9.87514 1.69434L7.37514 6.88965L1.75014 7.70996C1.28139 7.78809 0.890767 8.10059 0.734517 8.56934C0.617329 8.99902 0.734517 9.50684 1.04702 9.81934L5.10952 13.8428L4.17202 19.5459C4.09389 20.0146 4.2892 20.4834 4.67983 20.7568C5.07045 21.0693 5.57827 21.0693 5.96889 20.874L11.008 18.1787L16.008 20.874C16.4376 21.0693 16.9455 21.0693 17.3361 20.7568C17.7267 20.4834 17.922 20.0146 17.8439 19.5459L16.8673 13.8428L20.9298 9.81934C21.2814 9.50684 21.3986 8.99902 21.2423 8.56934C21.0861 8.10059 20.6955 7.78809 20.2267 7.70996L14.6408 6.88965L12.1017 1.69434Z",
+            "#5D5ADC",
+            "2"
+          );
+
+          createEl(
+            "input",
+            {
+              class: "rating__input",
+              name: "rating3",
+              id: `rating${index + specialId}`,
+              type: "radio",
+              value: "1",
+            },
+            starsBlock
+          );
+
+          starLabel.addEventListener("click", () =>
+            customOnButtonClick(container, "", text)
+          );
+        });
+      }
 
       var buttonElement = createEl("button", { class: "btn-rating" }, wrapper);
       buttonElement.innerHTML = lastButtonElement.text;
@@ -330,6 +362,13 @@
                 eventData.chatButtons,
                 undefined,
                 titleMessage.replace(VERSION_3_KEY, "")
+              ),
+            [IS_VERSION_5]: () =>
+              addChatButtonsDefault(
+                5,
+                eventData.chatButtons,
+                undefined,
+                titleMessage.replace(VERSION_5_KEY, "")
               ),
             default: () =>
               addChatButtonsDefault(
@@ -850,6 +889,7 @@
 
         var starsListNodes = Object.values(container.querySelectorAll("label"));
         const buttonsListNodes = container.querySelectorAll("button");
+        const buttonsRating = container.querySelectorAll(".rating-v2-button");
 
         const size = text;
         const choosenStars = [];
@@ -878,6 +918,11 @@
         if (!link) {
           for (var i = 0; i < buttonsListNodes.length; ++i) {
             buttonsListNodes[i].classList.add("button-disabled");
+          }
+          if (buttonsRating.length) {
+            for (var i = 0; i < buttonsRating.length; ++i) {
+              buttonsRating[i].classList.add("button-disabled");
+            }
           }
         }
       }
