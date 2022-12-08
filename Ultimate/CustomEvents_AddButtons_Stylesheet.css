@@ -162,6 +162,10 @@ p {
   color: #15142d;
 }
 
+.chatContent .agent span .btn-default {
+  margin: 0;
+}
+
 /* Hide default lighting rich text field */
 
 .chatContent-custom-element .rich-content-wrapper {
@@ -217,7 +221,7 @@ p {
 .buttons-wrapper .btn-default {
   background: #f9f9fb;
   width: 100%;
-  padding: 8px 0;
+  padding: 8px 16px;
   text-align: center;
   cursor: pointer;
   font-family: "Inter", sans-serif !important;
@@ -228,6 +232,7 @@ p {
   color: #0f0e3f;
   border: 1px solid #5d5adc;
   border-radius: 6px;
+  text-decoration: none;
 }
 
 .buttons-wrapper .btn-default:not(:last-child) {
@@ -438,7 +443,7 @@ p {
   margin-right: 8px;
 }
 
-/* button rating */
+/* button rating v1*/
 
 .info-rating {
   justify-content: center;
@@ -555,6 +560,57 @@ p {
 
 .btn-rating.button-disabled {
   cursor: default;
+}
+
+/* button rating v2*/
+
+.starsBlock-v5 {
+  display: flex;
+}
+
+.rating-v2-button {
+  cursor: pointer;
+  padding: 6px;
+}
+
+.rating-v2-button:hover {
+  border-radius: 6px;
+  background: #e7e6fa;
+}
+
+.rating-v2-button:not(:last-child) {
+  margin-right: 12px;
+}
+
+.rating-v2-button.button-disabled {
+  cursor: default;
+}
+
+.rating-v2-button.button-disabled:hover {
+  cursor: default;
+  background: none;
+}
+
+.btn-container-v5 .btn-rating {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 0;
+  border: 1px solid #5d5adc;
+  border-radius: 6px;
+}
+
+.btn-container-v5 .btn-rating:hover,
+.btn-container-v5 .btn-rating:active,
+.btn-container-v5 .btn-rating:focus {
+  background: #5d5adc !important;
+  color: #fff !important;
+}
+
+.btn-container-v5 .btn-rating.button-disabled:hover,
+.btn-container-v5 .btn-rating.button-disabled:active,
+.btn-container-v5 .btn-rating.button-disabled:focus {
+  background: none !important;
+  color: #15142d !important;
 }
 
 /* general for all carousels */
