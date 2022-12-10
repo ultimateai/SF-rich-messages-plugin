@@ -42,13 +42,11 @@
   var IS_VERSION_2 = "isVersion2";
   var IS_VERSION_3 = "isVersion3";
   var IS_VERSION_4 = "isversion4";
-  var IS_VERSION_5 = "isversion5";
 
   var VERSION_1_KEY = "&&version1&&";
   var VERSION_2_KEY = "&&version2&&";
   var VERSION_3_KEY = "&&version3&&";
   var VERSION_4_KEY = "&&version4&&";
-  var VERSION_5_KEY = "&&version5&&";
 
   //PENDINGS
   var PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
@@ -105,8 +103,6 @@
       value = IS_VERSION_3;
     } else if (message.includes(VERSION_4_KEY)) {
       value = IS_VERSION_4;
-    } else if (message.includes(VERSION_5_KEY)) {
-      value = IS_VERSION_5;
     }
     return value;
   }
@@ -170,12 +166,15 @@
           } else {
             buttonElement = createEl(
               "button",
-              { class: "btn-default" },
+              {
+                class: `${
+                  initialData.length === 1 ? "oneElement" : "btn-default"
+                }`,
+              },
               wrapper
             );
             buttonElement.innerHTML = text;
           }
-
           buttonElement.addEventListener("click", () =>
             customOnButtonClick(container, link, text)
           );
@@ -199,7 +198,7 @@
       }
 
       let rating;
-      if ((version === 3) | (version === 5)) {
+      if ((version === 3) | (version === 4)) {
         info.classList.add("info-rating");
         rating = createEl("div", { class: "rating-group" }, buttonContainer);
       }
@@ -239,7 +238,7 @@
         { class: `starsBlock starsBlock-v${version}` },
         rating
       );
-      if (version === 5) {
+      if (version === 4) {
         initialData.forEach(({ text }) => {
           const ratingButton = createEl(
             "div",
@@ -363,12 +362,12 @@
                 undefined,
                 titleMessage.replace(VERSION_3_KEY, "")
               ),
-            [IS_VERSION_5]: () =>
+            [IS_VERSION_4]: () =>
               addChatButtonsDefault(
-                5,
+                4,
                 eventData.chatButtons,
                 undefined,
-                titleMessage.replace(VERSION_5_KEY, "")
+                titleMessage.replace(VERSION_4_KEY, "")
               ),
             default: () =>
               addChatButtonsDefault(
@@ -932,7 +931,8 @@
 
     const setSlideWidth = (version) => {
       switch (version) {
-        case 0 | 4:
+        case 0:
+        case 4:
           return SLIDE_WIDTH_CAROUSEL_V1;
         case 2:
           return SLIDE_WIDTH_CAROUSEL_V2;
