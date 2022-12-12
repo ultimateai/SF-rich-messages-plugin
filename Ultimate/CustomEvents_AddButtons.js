@@ -769,7 +769,7 @@
           }
         }
         if (keepCurrentIndex) {
-          updateSlider(carousel);
+          updateSlider(carousel, undefined, slideWidth);
         }
       } else {
         carousel.dataset.x1 = 0;
@@ -779,13 +779,16 @@
       }
     }
 
-    function updateSlider(carousel, noAnimate) {
+    function updateSlider(carousel, noAnimate, slideWidth) {
       var currentIndex = parseInt(carousel.dataset.currentIndex);
       carousel.dataset.currentIndex = currentIndex + 1;
-      prevSlider({
-        target: carousel.querySelector(".ultimate-carousel-list"),
-        noAnimate: noAnimate,
-      });
+      prevSlider(
+        {
+          target: carousel.querySelector(".ultimate-carousel-list"),
+          noAnimate: noAnimate,
+        },
+        slideWidth
+      );
     }
 
     function moveSlider(buttonEl, isPrev, noAnimate, targetIndex, slideWidth) {
