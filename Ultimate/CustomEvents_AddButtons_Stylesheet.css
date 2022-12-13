@@ -673,6 +673,11 @@ p {
   fill: #5d5adc;
 }
 
+.starsBlock-v3 {
+  display: flex;
+  align-items: center;
+}
+
 .rating__input:hover ~ .rating__label path {
   fill: none;
 }

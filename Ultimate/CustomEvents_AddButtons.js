@@ -6,7 +6,7 @@
     return;
   }
 
-  var link = document.createElement("link");
+  const link = document.createElement("link");
   link.setAttribute("rel", "stylesheet");
   link.setAttribute("type", "text/css");
   link.setAttribute(
@@ -15,7 +15,7 @@
   );
   document.head.appendChild(link);
 
-  var viewPortTag = document.createElement("meta");
+  const viewPortTag = document.createElement("meta");
   viewPortTag.name = "viewport";
   viewPortTag.content =
     "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
@@ -38,40 +38,40 @@
   }, 1000);
 
   //VERSIONS
-  var IS_VERSION_1 = "isVersion1";
-  var IS_VERSION_2 = "isVersion2";
-  var IS_VERSION_3 = "isVersion3";
-  var IS_VERSION_4 = "isversion4";
+  const IS_VERSION_1 = "isVersion1";
+  const IS_VERSION_2 = "isVersion2";
+  const IS_VERSION_3 = "isVersion3";
+  const IS_VERSION_4 = "isversion4";
 
-  var VERSION_1_KEY = "&&version1&&";
-  var VERSION_2_KEY = "&&version2&&";
-  var VERSION_3_KEY = "&&version3&&";
-  var VERSION_4_KEY = "&&version4&&";
+  const VERSION_1_KEY = "&&version1&&";
+  const VERSION_2_KEY = "&&version2&&";
+  const VERSION_3_KEY = "&&version3&&";
+  const VERSION_4_KEY = "&&version4&&";
 
   //PENDINGS
-  var PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
-  var PENDING_CAROUSELS_KEY = "ultimate_pending_carousels";
-  var PENDING_CAROUSEL_TITLE = "ultimate_pending_title";
-  var PENDING_MESSAGE = "ultimate_pending_agent_message";
-  var PENDING_MESSAGES_COUNT = "ultimate_pending_messages_count";
-  var MESSAGES_COUNT = 0;
+  const PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
+  const PENDING_CAROUSELS_KEY = "ultimate_pending_carousels";
+  const PENDING_CAROUSEL_TITLE = "ultimate_pending_title";
+  const PENDING_MESSAGE = "ultimate_pending_agent_message";
+  const PENDING_MESSAGES_COUNT = "ultimate_pending_messages_count";
+  let MESSAGES_COUNT = 0;
 
-  var ADD_BUTTONS_EVENT = "add_buttons";
-  var BUTTON_CLICK_EVENT = "button_click";
-  var ADD_CAROUSEL_EVENT = "add_carousel";
-  var TYPE_BUTTONS = "AddButtons";
-  var TYPE_CAROUSEL = "AddCarousel";
-  var TYPE_CARD = "AddCard";
-  var CUSTOM_ELEMENTS_EVENT = "custom_elements_event";
-  var CUSTOM_ELEMENTS_KEY = "ultimate_custom_elements";
-  var CUSTOM_ELEMENTS_DATA = {};
-  var DEBOUNCE_TIME_STAMP = 0;
-  var TAB_ID = String(Date.now());
+  const ADD_BUTTONS_EVENT = "add_buttons";
+  const BUTTON_CLICK_EVENT = "button_click";
+  const ADD_CAROUSEL_EVENT = "add_carousel";
+  const TYPE_BUTTONS = "AddButtons";
+  const TYPE_CAROUSEL = "AddCarousel";
+  const TYPE_CARD = "AddCard";
+  const CUSTOM_ELEMENTS_EVENT = "custom_elements_event";
+  const CUSTOM_ELEMENTS_KEY = "ultimate_custom_elements";
+  let CUSTOM_ELEMENTS_DATA = {};
+  let DEBOUNCE_TIME_STAMP = 0;
+  const TAB_ID = String(Date.now());
 
   // SLIDER
-  var SLIDE_WIDTH_CAROUSEL_V1 = 260 + 8; // slider cards v1 (width + margin)
-  var SLIDE_WIDTH_CAROUSEL_V2 = 320 + 8; // slider cards v2 (width + margin)
-  var SLIDE_WIDTH_CAROUSEL_V3 = 206 + 8; // slider cards v3 (width + margin)
+  const SLIDE_WIDTH_CAROUSEL_V1 = 260 + 8; // slider cards v1 (width + margin)
+  const SLIDE_WIDTH_CAROUSEL_V2 = 320 + 8; // slider cards v2 (width + margin)
+  const SLIDE_WIDTH_CAROUSEL_V3 = 206 + 8; // slider cards v3 (width + margin)
 
   // set timer and check if message list rendered and find loader in last element and hide
 
@@ -83,7 +83,7 @@
   }
   if (!Element.prototype.closest) {
     Element.prototype.closest = function (s) {
-      var el = this;
+      let el = this;
       do {
         if (Element.prototype.matches.call(el, s)) return el;
         el = el.parentElement || el.parentNode;
@@ -92,8 +92,8 @@
     };
   }
 
-  function getVersion(message) {
-    var value = "";
+  const getVersion = (message) => {
+    let value = "";
 
     if (message.includes(VERSION_1_KEY)) {
       value = IS_VERSION_1;
@@ -105,29 +105,29 @@
       value = IS_VERSION_4;
     }
     return value;
-  }
+  };
 
-  function getElementIndex(el) {
-    var index = 0;
+  const getElementIndex = (el) => {
+    const index = 0;
     while ((el = el.previousElementSibling)) {
       index++;
     }
     return index;
-  }
+  };
 
-  (function setupCustomButtonSnapIn(liveAgentAPI) {
-    function createCustomButtonElements(
+  (setupCustomButtonSnapIn = (liveAgentAPI) => {
+    const createCustomButtonElements = (
       initialData,
       wrapper,
       rating,
       container,
       version
-    ) {
+    ) => {
       if (rating) {
         addChatButtonRating(initialData, wrapper, rating, container, version);
       } else {
         initialData.forEach(({ text, link }) => {
-          var buttonElement;
+          let buttonElement;
 
           if (link && initialData.length === 1) {
             buttonElement = createEl(
@@ -180,14 +180,14 @@
           );
         });
       }
-    }
+    };
 
-    function addChatButtonsDefault(version, chatButtons, index, title) {
-      var buttonContainer = createEl("div", {
+    const addChatButtonsDefault = (version, chatButtons, index, title) => {
+      const buttonContainer = createEl("div", {
         class: `ultimate-btn-container ultimate-hidden version-custom-button btn-container-v${version}`,
       });
 
-      var info = createEl(
+      const info = createEl(
         "div",
         { class: `info info-v${version}` },
         buttonContainer
@@ -203,7 +203,7 @@
         rating = createEl("div", { class: "rating-group" }, buttonContainer);
       }
 
-      var buttonsWrapper = createEl(
+      const buttonsWrapper = createEl(
         "div",
         { class: `buttons-wrapper buttons-wrapper-v${version}` },
         buttonContainer
@@ -223,17 +223,17 @@
         index,
         true
       );
-    }
+    };
 
-    function addChatButtonRating(
+    const addChatButtonRating = (
       initialData,
       wrapper,
       rating,
       container,
       version
-    ) {
-      var lastButtonElement = initialData.pop();
-      var starsBlock = createEl(
+    ) => {
+      const lastButtonElement = initialData.pop();
+      const starsBlock = createEl(
         "div",
         { class: `starsBlock starsBlock-v${version}` },
         rating
@@ -266,8 +266,8 @@
         );
 
         initialData.forEach(({ text }, index) => {
-          var specialId = Date.now();
-          var starLabel = createEl(
+          const specialId = Date.now();
+          const starLabel = createEl(
             "label",
             {
               class: "rating__label",
@@ -304,22 +304,26 @@
         });
       }
 
-      var buttonElement = createEl("button", { class: "btn-rating" }, wrapper);
+      const buttonElement = createEl(
+        "button",
+        { class: "btn-rating" },
+        wrapper
+      );
       buttonElement.innerHTML = lastButtonElement.text;
 
       buttonElement.addEventListener("click", () =>
         customOnButtonClick(container, "", lastButtonElement.text)
       );
-    }
+    };
 
-    var isMainTab =
+    const isMainTab =
       liveAgentAPI &&
       liveAgentAPI.browserSessionInfo &&
       liveAgentAPI.browserSessionInfo.isPrimary;
-    var sessionId =
+    const sessionId =
       liveAgentAPI && liveAgentAPI.connection && liveAgentAPI.connection.sid;
 
-    function onCustomData(data, type, title) {
+    const onCustomData = (data, type, title) => {
       if (Date.now() - DEBOUNCE_TIME_STAMP < 100) {
         console.error("Event debounced", data);
         return;
@@ -335,12 +339,12 @@
             .querySelector(".chatContent")
             ?.classList.add("custom-item");
         }
-        var eventData = JSON.parse(data);
+        const eventData = JSON.parse(data);
         if (type === TYPE_BUTTONS) {
-          var version = getVersion(eventData.message || "");
+          const version = getVersion(eventData.message || "");
           const titleMessage = eventData.message;
 
-          var buttonsRenderers = {
+          const buttonsRenderers = {
             [IS_VERSION_1]: () =>
               addChatButtonsDefault(
                 1,
@@ -380,7 +384,7 @@
 
           buttonsRenderers[version || "default"]();
         } else if (type === TYPE_CAROUSEL) {
-          var version = getVersion(eventData.cards[0].title);
+          const version = getVersion(eventData.cards[0].title);
 
           let carouselMesasge = "";
           const messagesList = document.querySelectorAll(
@@ -397,7 +401,7 @@
             }
 
             if (eventData.cards.length >= 1) {
-              var carouselsRenderers = {
+              const carouselsRenderers = {
                 [IS_VERSION_1]: () =>
                   addChatCarousel(1, eventData, carouselMesasge),
                 [IS_VERSION_2]: () =>
@@ -424,25 +428,25 @@
         console.log(err, "err");
         console.error("Failed to parse event data", data);
       }
-    }
+    };
 
-    function onClickButtonElement(buttonLink, buttonText, cardIndex) {
+    const onClickButtonElement = (buttonLink, buttonText, cardIndex) => {
       if (buttonLink) {
-        var newWindow = window.open(buttonLink, "_blank");
+        const newWindow = window.open(buttonLink, "_blank");
         newWindow.focus();
         clearPending();
         return;
       }
-      var serializedData = JSON.stringify({
+      const serializedData = JSON.stringify({
         text: buttonText,
         cardIndex: cardIndex,
       });
 
       onButtonClickInAnyTab(serializedData);
-    }
+    };
 
-    function createSvg(container, viewBox, fill, path, stroke, strokeWidth) {
-      var externalLinkSvg = createEl(
+    const createSvg = (container, viewBox, fill, path, stroke, strokeWidth) => {
+      const externalLinkSvg = createEl(
         "svg",
         {
           viewBox,
@@ -462,12 +466,17 @@
         externalLinkSvg,
         true
       );
-    }
+    };
 
-    function addButtonToContainer(container, button, carouselContainer, index) {
-      var buttonText = button.text;
-      var buttonLink = button.link;
-      var buttonElement = createEl(
+    const addButtonToContainer = (
+      container,
+      button,
+      carouselContainer,
+      index
+    ) => {
+      const buttonText = button.text;
+      const buttonLink = button.link;
+      const buttonElement = createEl(
         "button",
         { class: "ultimate-card-button" },
         container
@@ -493,7 +502,7 @@
         buttonElement.innerHTML = buttonText;
       }
 
-      function onButtonClick() {
+      const onButtonClick = () => {
         const disabledClass = "carousel-disabled";
         if (carouselContainer.classList.contains(disabledClass)) {
           if (buttonElement.classList.contains("ultimate-card-link-wrapper")) {
@@ -507,13 +516,13 @@
             carouselContainer.classList.add(disabledClass);
           }
         }
-      }
+      };
 
       buttonElement.addEventListener("click", onButtonClick);
-    }
+    };
 
-    function addCardToContainer(container, card, cardIndex) {
-      var cardElement = createEl(
+    const addCardToContainer = (container, card, cardIndex) => {
+      const cardElement = createEl(
         "div",
         {
           class: "ultimate-card",
@@ -530,42 +539,42 @@
         );
       }
       if (card.title) {
-        var cardTitle = createEl("h3", {}, cardElement);
+        const cardTitle = createEl("h3", {}, cardElement);
         cardTitle.innerText = card.title;
       }
       if (card.description) {
-        var cardDescription = createEl("p", {}, cardElement);
+        const cardDescription = createEl("p", {}, cardElement);
         cardDescription.innerText = card.description;
       }
       if (card.buttons && Array.isArray(card.buttons)) {
-        var cardButtons = createEl(
+        const cardButtons = createEl(
           "div",
           {
             class: "ultimate-card-buttons",
           },
           cardElement
         );
-        for (var i = 0; i < card.buttons.length; ++i) {
+        for (let i = 0; i < card.buttons.length; ++i) {
           addButtonToContainer(cardButtons, card.buttons[i], cardIndex);
         }
       }
-    }
+    };
 
-    function addElementToMessageArea(
+    const addElementToMessageArea = (
       element,
       type,
       data,
       index,
       isVersionElement
-    ) {
-      var messageArea = document.querySelector("div.messageArea");
+    ) => {
+      const messageArea = document.querySelector("div.messageArea");
       if (messageArea) {
-        var messageList = messageArea.querySelector("ul");
+        const messageList = messageArea.querySelector("ul");
         if (messageList) {
           // var isIndexLast = type === TYPE_BUTTONS || typeof index === 'undefined'
-          var isIndexLast = typeof index === "undefined";
+          const isIndexLast = typeof index === "undefined";
 
-          var elementIndex = isIndexLast
+          const elementIndex = isIndexLast
             ? messageList.children.length
             : parseInt(index);
           element.setAttribute("data-element-index", elementIndex);
@@ -586,10 +595,10 @@
 
           if (messageList.children.length === elementIndex) {
             if (isVersionElement) {
-              var lastMessageItem =
+              const lastMessageItem =
                 messageList.children[messageList.children.length - 1];
               if (lastMessageItem) {
-                var contentWrapper =
+                const contentWrapper =
                   lastMessageItem.querySelector(".chatContent");
                 contentWrapper.classList.add("chatContent-custom-element");
                 if (contentWrapper.children.length) {
@@ -604,14 +613,11 @@
             } else {
               messageList.appendChild(element);
             }
-            var observer = new MutationObserver(function (
-              mutationsList,
-              observer
-            ) {
-              var elementIndex = parseInt(element.dataset.elementIndex);
+            const observer = new MutationObserver((mutationsList, observer) => {
+              const elementIndex = parseInt(element.dataset.elementIndex);
               if (getElementIndex(element) !== elementIndex) {
                 observer.disconnect();
-                var markerElement =
+                const markerElement =
                   element.parentNode &&
                   element.parentNode.children[elementIndex - 1];
                 if (markerElement) {
@@ -627,16 +633,16 @@
             );
           }
 
-          var elementData = CUSTOM_ELEMENTS_DATA[elementIndex];
-          var buttonContainer = element;
+          const elementData = CUSTOM_ELEMENTS_DATA[elementIndex];
+          let buttonContainer = element;
 
           if (type === TYPE_CAROUSEL) {
             buttonContainer =
               buttonContainer.querySelectorAll(".ultimate-card")[
                 elementData.activeCard
               ];
-            var carousel = element.children[0];
-            setTimeout(function () {
+            const carousel = element.children[0];
+            setTimeout(() => {
               carousel.dataset.currentIndex = elementData.currentCard;
               updateSlider(carousel, true);
             });
@@ -648,20 +654,20 @@
               [elementData.activeButton].classList.add("ultimate-btn-active");
           }
 
-          setTimeout(function () {
+          setTimeout(() => {
             messageArea.scrollTop = messageArea.scrollHeight;
             element.classList.remove("ultimate-hidden");
           });
         }
       }
-    }
+    };
 
-    function createEl(tag, attrs, parent, isSvg) {
-      var xmlns = "http://www.w3.org/2000/svg";
-      var el = isSvg
+    const createEl = (tag, attrs, parent, isSvg) => {
+      const xmlns = "http://www.w3.org/2000/svg";
+      const el = isSvg
         ? document.createElementNS(xmlns, tag)
         : document.createElement(tag);
-      for (var attrName in attrs) {
+      for (let attrName in attrs) {
         if (attrs.hasOwnProperty(attrName)) {
           el.setAttribute(attrName, attrs[attrName]);
         }
@@ -670,33 +676,33 @@
         parent.appendChild(el);
       }
       return el;
-    }
+    };
 
-    function dragStart(event) {
-      var e = event || window.event;
-      var carousel = e.target.closest(".ultimate-carousel");
-      var busy = parseInt(carousel.dataset.busy);
+    const dragStart = (event) => {
+      const e = event || window.event;
+      const carousel = e.target.closest(".ultimate-carousel");
+      const busy = parseInt(carousel.dataset.busy);
       if (!busy && e.target.tagName !== "BUTTON") {
-        var x1 = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
-        var y1 = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
+        const x1 = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+        const y1 = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
         carousel.dataset.x1 = x1;
         carousel.dataset.x2 = x1;
         carousel.dataset.y1 = y1;
         carousel.dataset.y2 = y1;
       }
-    }
+    };
 
-    function dragMove(event, slideWidth) {
-      var e = event || window.event;
-      var carousel = e.target.closest(".ultimate-carousel");
-      var busy = parseInt(carousel.dataset.busy);
-      var x1 = parseInt(carousel.dataset.x1);
-      var x2 = e.type == "touchmove" ? e.touches[0].clientX : e.clientX;
-      var y1 = parseInt(carousel.dataset.y1);
-      var y2 = e.type == "touchmove" ? e.touches[0].clientY : e.clientY;
-      var shouldMoveSlider = busy && x1 && y1;
+    const dragMove = (event, slideWidth) => {
+      const e = event || window.event;
+      const carousel = e.target.closest(".ultimate-carousel");
+      const busy = parseInt(carousel.dataset.busy);
+      const x1 = parseInt(carousel.dataset.x1);
+      const x2 = e.type == "touchmove" ? e.touches[0].clientX : e.clientX;
+      const y1 = parseInt(carousel.dataset.y1);
+      const y2 = e.type == "touchmove" ? e.touches[0].clientY : e.clientY;
+      let shouldMoveSlider = busy && x1 && y1;
       if (!busy && x1 && y1) {
-        var movingVertically =
+        const movingVertically =
           Math.abs(Math.abs(x2) - Math.abs(x1)) <
           Math.abs(Math.abs(y2) - Math.abs(y1));
         if (!movingVertically) {
@@ -704,14 +710,16 @@
         }
       }
       if (shouldMoveSlider) {
-        var busyTimer = parseInt(carousel.dataset.busyTimer);
+        const busyTimer = parseInt(carousel.dataset.busyTimer);
         if (busyTimer) clearTimeout(busyTimer);
         carousel.dataset.busy = 1;
         carousel.dataset.x2 = x2;
-        var carouselTrack = carousel.querySelector(".ultimate-carousel-track");
-        var currentIndex = parseInt(carousel.dataset.currentIndex);
-        var itemsLength = parseInt(carousel.dataset.itemsLength);
-        var xDelta = x1 - x2;
+        const carouselTrack = carousel.querySelector(
+          ".ultimate-carousel-track"
+        );
+        const currentIndex = parseInt(carousel.dataset.currentIndex);
+        const itemsLength = parseInt(carousel.dataset.itemsLength);
+        let xDelta = x1 - x2;
         if (
           (x1 < x2 && currentIndex === 0) ||
           (x1 > x2 && currentIndex === itemsLength - 1)
@@ -728,23 +736,23 @@
         carousel.dataset.y1 = 0;
         carousel.dataset.y2 = 0;
       }
-    }
+    };
 
-    function dragEnd(event, slideWidth) {
-      var e = event || window.event;
-      var carousel = e.target.closest(".ultimate-carousel");
-      var busy = parseInt(carousel.dataset.busy);
-      var x1 = parseInt(carousel.dataset.x1);
-      var x2 = parseInt(carousel.dataset.x2);
+    const dragEnd = (event, slideWidth) => {
+      const e = event || window.event;
+      const carousel = e.target.closest(".ultimate-carousel");
+      const busy = parseInt(carousel.dataset.busy);
+      const x1 = parseInt(carousel.dataset.x1);
+      const x2 = parseInt(carousel.dataset.x2);
       if (busy && x1 && x2) {
-        var currentIndex = parseInt(carousel.dataset.currentIndex);
-        var itemsLength = parseInt(carousel.dataset.itemsLength);
+        const currentIndex = parseInt(carousel.dataset.currentIndex);
+        const itemsLength = parseInt(carousel.dataset.itemsLength);
         carousel.dataset.busy = 0;
         carousel.dataset.x1 = 0;
         carousel.dataset.x2 = 0;
         carousel.dataset.y1 = 0;
         carousel.dataset.y2 = 0;
-        var keepCurrentIndex = true;
+        let keepCurrentIndex = true;
         if (Math.abs(x1 - x2) > slideWidth / 3) {
           if (x1 < x2) {
             if (currentIndex - 1 >= 0) {
@@ -777,10 +785,10 @@
         carousel.dataset.y1 = 0;
         carousel.dataset.y2 = 0;
       }
-    }
+    };
 
-    function updateSlider(carousel, noAnimate, slideWidth) {
-      var currentIndex = parseInt(carousel.dataset.currentIndex);
+    const updateSlider = (carousel, noAnimate, slideWidth) => {
+      const currentIndex = parseInt(carousel.dataset.currentIndex);
       carousel.dataset.currentIndex = currentIndex + 1;
       prevSlider(
         {
@@ -789,22 +797,29 @@
         },
         slideWidth
       );
-    }
+    };
 
-    function moveSlider(buttonEl, isPrev, noAnimate, targetIndex, slideWidth) {
-      var carousel = buttonEl.parentNode;
+    const moveSlider = (
+      buttonEl,
+      isPrev,
+      noAnimate,
+      targetIndex,
+      slideWidth
+    ) => {
+      const carousel = buttonEl.parentNode;
 
-      var slideCicles = carousel.querySelector(".dotsContainer");
+      const slideCicles = carousel.querySelector(".dotsContainer");
 
-      var carouselTrack = carousel.querySelector(".ultimate-carousel-track");
-      var currentIndex = parseInt(carousel.dataset.currentIndex);
-      var itemsLength = parseInt(carousel.dataset.itemsLength);
-      var busy = parseInt(carousel.dataset.busy);
-      var busyTimer = parseInt(carousel.dataset.busyTimer);
+      const carouselTrack = carousel.querySelector(".ultimate-carousel-track");
+      const currentIndex = parseInt(carousel.dataset.currentIndex);
+      const itemsLength = parseInt(carousel.dataset.itemsLength);
+      const busy = parseInt(carousel.dataset.busy);
+      const busyTimer = parseInt(carousel.dataset.busyTimer);
+      let goToIndex;
       if (targetIndex || targetIndex === 0) {
-        var goToIndex = isPrev ? currentIndex - 1 : targetIndex;
+        goToIndex = isPrev ? currentIndex - 1 : targetIndex;
       } else {
-        var goToIndex = isPrev ? currentIndex - 1 : currentIndex + 1;
+        goToIndex = isPrev ? currentIndex - 1 : currentIndex + 1;
       }
 
       if (slideCicles) {
@@ -824,8 +839,8 @@
           slideWidth * -goToIndex +
           "px, 0, 0);" +
           (noAnimate ? " transition: none;" : "");
-        var carouselPrev = carousel.querySelector(".ultimate-carousel-prev");
-        var carouselNext = carousel.querySelector(".ultimate-carousel-next");
+        const carouselPrev = carousel.querySelector(".ultimate-carousel-prev");
+        const carouselNext = carousel.querySelector(".ultimate-carousel-next");
 
         if (carouselNext && carouselPrev) {
           if (goToIndex === 0) {
@@ -844,7 +859,7 @@
         carousel.dataset.busyTimer = busyTimer;
         carousel.dataset.busy = 0;
 
-        var elementIndex = parseInt(carousel.parentNode.dataset.elementIndex);
+        const elementIndex = parseInt(carousel.parentNode.dataset.elementIndex);
         if (
           parseInt(CUSTOM_ELEMENTS_DATA[elementIndex].currentCard) !== goToIndex
         ) {
@@ -859,19 +874,19 @@
           );
         }
       }
-    }
+    };
 
-    function prevSlider(event, slideWidth) {
+    const prevSlider = (event, slideWidth) => {
       moveSlider(event.target, true, undefined, undefined, slideWidth);
-    }
+    };
 
-    function nextSlider(event, slideWidth) {
+    const nextSlider = (event, slideWidth) => {
       moveSlider(event.target, false, undefined, undefined, slideWidth);
-    }
+    };
 
-    function addChatCard(card, index) {
+    const addChatCard = (card, index) => {
       try {
-        var cardContainer = createEl("li", {
+        const cardContainer = createEl("li", {
           class: "ultimate-card-container ultimate-hidden",
         });
         addCardToContainer(cardContainer, card, 0);
@@ -880,9 +895,9 @@
         console.error("Failed to add card element to the DOM");
         console.error(err);
       }
-    }
+    };
 
-    function customOnButtonClick(container, link, text) {
+    const customOnButtonClick = (container, link, text) => {
       const isDisabled =
         container.querySelector(".button-disabled") ||
         container.querySelector(".star-disabled");
@@ -891,7 +906,9 @@
       } else {
         onClickButtonElement(link, text, undefined);
 
-        var starsListNodes = Object.values(container.querySelectorAll("label"));
+        const starsListNodes = Object.values(
+          container.querySelectorAll("label")
+        );
         const buttonsListNodes = container.querySelectorAll("button");
         const buttonsRating = container.querySelectorAll(".rating-v2-button");
 
@@ -903,34 +920,34 @@
         }
 
         if (choosenStars.length > 1) {
-          for (var i = 0; i < choosenStars[0].length; ++i) {
+          for (let i = 0; i < choosenStars[0].length; ++i) {
             choosenStars[0][i].classList.add("star-disabled");
           }
 
-          for (var i = 0; i < choosenStars[1].length; ++i) {
+          for (let i = 0; i < choosenStars[1].length; ++i) {
             choosenStars[1][i].classList.add("star-remaining");
           }
         } else if (choosenStars.length) {
-          for (var i = 0; i < choosenStars[0].length; ++i) {
+          for (let i = 0; i < choosenStars[0].length; ++i) {
             choosenStars[0][i].classList.add("star-disabled");
           }
         } else {
-          for (var i = 0; i < starsListNodes.length; ++i) {
+          for (let i = 0; i < starsListNodes.length; ++i) {
             starsListNodes[i].classList.add("star-remaining");
           }
         }
         if (!link) {
-          for (var i = 0; i < buttonsListNodes.length; ++i) {
+          for (let i = 0; i < buttonsListNodes.length; ++i) {
             buttonsListNodes[i].classList.add("button-disabled");
           }
           if (buttonsRating.length) {
-            for (var i = 0; i < buttonsRating.length; ++i) {
+            for (let i = 0; i < buttonsRating.length; ++i) {
               buttonsRating[i].classList.add("button-disabled");
             }
           }
         }
       }
-    }
+    };
 
     const setSlideWidth = (version) => {
       switch (version) {
@@ -946,7 +963,7 @@
       }
     };
 
-    function addChatCarousel(version, data, message, index) {
+    const addChatCarousel = (version, data, message, index) => {
       try {
         const slideWidth = setSlideWidth(version);
         let parsedData = data.cards;
@@ -956,13 +973,13 @@
             title: title.replace(`&&version${version}&&`, ""),
           }));
         }
-        var hasCarouselCards = parsedData && Array.isArray(parsedData);
-        var carouselContainer = createEl("div", {
+        const hasCarouselCards = parsedData && Array.isArray(parsedData);
+        const carouselContainer = createEl("div", {
           class:
             "ultimate-carousel-container ultimate-custom-carousel-container ultimate-hidden",
         });
 
-        var carouselElement = createEl(
+        const carouselElement = createEl(
           "div",
           {
             class: `ultimate-carousel ultimate-carousel-custom-version${version}`,
@@ -972,7 +989,7 @@
           carouselContainer
         );
 
-        var buttonPrev = createEl(
+        const buttonPrev = createEl(
           "button",
           {
             type: "button",
@@ -993,7 +1010,7 @@
         buttonPrev.addEventListener("click", (e) => prevSlider(e, slideWidth));
 
         if (message) {
-          var title = createEl(
+          const title = createEl(
             "div",
             { class: "ultimate-carousel-title" },
             carouselElement
@@ -1001,7 +1018,7 @@
           title.innerHTML = message;
         }
 
-        var carouselList = createEl(
+        const carouselList = createEl(
           "div",
           {
             class: "ultimate-carousel-list ultimate-carousel-list-version",
@@ -1009,7 +1026,7 @@
           carouselElement
         );
 
-        var contentCard = createEl(
+        const contentCard = createEl(
           "div",
           { class: "ultimate-content-card ultimate-carousel-track" },
           carouselList
@@ -1017,7 +1034,7 @@
 
         if (hasCarouselCards) {
           for (let i = 0; i < parsedData.length; i++) {
-            var cardElement = createEl(
+            const cardElement = createEl(
               "div",
               {
                 class: `ultimate-card ultimate-card-v${version}`,
@@ -1025,17 +1042,17 @@
               contentCard
             );
             if (parsedData[i].imageUrl) {
-              var imagesBlock = createEl(
+              const imagesBlock = createEl(
                 "div",
                 {
                   class: "ultimate-card-images-block",
                 },
                 cardElement
               );
-              var images = parsedData[i].imageUrl.split(",");
+              const images = parsedData[i].imageUrl.split(",");
 
               images.forEach((src) => {
-                var image = createEl(
+                const image = createEl(
                   "div",
                   {
                     class: "ultimate-card-image",
@@ -1045,7 +1062,7 @@
                 image.style.backgroundImage = `url("${src}")`;
               });
             }
-            var infoContainer = createEl(
+            const infoContainer = createEl(
               "div",
               {
                 class: `ultimate-card-info-block ultimate-card-info-block-v${version}`,
@@ -1054,7 +1071,7 @@
             );
 
             if (parsedData[i].title) {
-              var cardTitle = createEl(
+              const cardTitle = createEl(
                 "h4",
                 { class: "ultimate-card-title" },
                 infoContainer
@@ -1062,7 +1079,7 @@
               cardTitle.innerHTML = parsedData[i].title;
             }
             if (parsedData[i].description) {
-              var cardDescription = createEl(
+              const cardDescription = createEl(
                 "div",
                 { class: "ultimate-custom-card-container" },
                 infoContainer
@@ -1070,13 +1087,13 @@
 
               cardDescription.innerHTML = parsedData[i].description;
 
-              var text = cardDescription.querySelector(".brand");
+              const text = cardDescription.querySelector(".brand");
               if (text && text.innerText.length > 53) {
                 text.innerText = text.innerText.substring(0, 53) + "...";
               }
             }
             if (parsedData[i].buttons && Array.isArray(parsedData[i].buttons)) {
-              var cardButtons = createEl(
+              const cardButtons = createEl(
                 "div",
                 {
                   class: "ultimate-custom-card-buttons ultimate-btn-container",
@@ -1109,7 +1126,7 @@
           );
         }
 
-        var buttonNext = createEl(
+        const buttonNext = createEl(
           "button",
           {
             type: "button",
@@ -1139,11 +1156,11 @@
         console.error("Failed to add carousel element to the DOM");
         console.error(err);
       }
-    }
+    };
 
-    function removeCustomElements() {
-      var containers = document.querySelectorAll(".ultimate-btn-container");
-      for (var i = 0; i < containers.length; ++i) {
+    const removeCustomElements = () => {
+      const containers = document.querySelectorAll(".ultimate-btn-container");
+      for (let i = 0; i < containers.length; ++i) {
         if (
           !containers[i].classList.contains("version-custom-button") &&
           !containers[i].classList.contains("ultimate-custom-card-buttons")
@@ -1151,17 +1168,17 @@
           containers[i].parentNode.removeChild(containers[i]);
         }
       }
-    }
+    };
 
-    function updateCustomElements(data) {
+    const updateCustomElements = (data) => {
       CUSTOM_ELEMENTS_DATA =
         JSON.parse(localStorage.getItem(CUSTOM_ELEMENTS_KEY)) || {};
-      var index = JSON.parse(data).index;
-      var elementData = CUSTOM_ELEMENTS_DATA[index];
-      var element = document.querySelectorAll("div.messageArea ul li")[index];
-      var buttonContainer = element;
+      const index = JSON.parse(data).index;
+      const elementData = CUSTOM_ELEMENTS_DATA[index];
+      const element = document.querySelectorAll("div.messageArea ul li")[index];
+      const buttonContainer = element;
       if (elementData.type === TYPE_CAROUSEL) {
-        var carousel = element.children[0];
+        const carousel = element.children[0];
         carousel.dataset.currentIndex = elementData.currentCard;
         updateSlider(carousel, true);
         buttonContainer =
@@ -1176,33 +1193,33 @@
         loaderElement.classList.remove("has-loader");
       }
       if (elementData.activeButton >= 0) {
-        var lastButtonActive = element.querySelector(".ultimate-btn-active");
+        const lastButtonActive = element.querySelector(".ultimate-btn-active");
         if (lastButtonActive) {
           lastButtonActive.classList.remove("ultimate-btn-active");
         }
-        var currentButton =
+        const currentButton =
           buttonContainer.querySelectorAll("button")[elementData.activeButton];
         if (currentButton) {
           currentButton.classList.add("ultimate-btn-active");
         }
       }
-    }
+    };
 
-    function broadcastStorageEvent(eventKey, data) {
-      var storageKey = eventKey + TAB_ID + String(Date.now());
+    const broadcastStorageEvent = (eventKey, data) => {
+      const storageKey = eventKey + TAB_ID + String(Date.now());
       localStorage.setItem(storageKey, data);
-      var timer = setTimeout(function () {
+      const timer = setTimeout(() => {
         localStorage.removeItem(storageKey);
         clearTimeout(timer);
       }, 2000);
-    }
+    };
 
-    window.onstorage = function onCrossTabStorageEvent(storageEvent) {
+    window.onstorage = onCrossTabStorageEvent = (storageEvent) => {
       if (!storageEvent) {
         return;
       }
-      var eventData = storageEvent.newValue;
-      var eventKey = String(storageEvent.key);
+      const eventData = storageEvent.newValue;
+      const eventKey = String(storageEvent.key);
       if (eventData) {
         if (eventKey.indexOf(TAB_ID) > -1) {
           // IE & Safari: ignore events from own tab
@@ -1223,17 +1240,19 @@
       }
     };
 
-    function sendChasitorButtonClickEvent(serializedData) {
+    const sendChasitorButtonClickEvent = (serializedData) => {
       try {
-        var data = JSON.parse(serializedData);
-        var isCarousel = typeof data.cardIndex !== "undefined";
-        // var eventName = isCarousel ? 'CarouselEvent' : 'ButtonClick';
+        const data = JSON.parse(serializedData);
+        const isCarousel = typeof data.cardIndex !== "undefined";
+        // const eventName = isCarousel ? 'CarouselEvent' : 'ButtonClick';
         if (isCarousel) {
           liveAgentAPI.sendCustomEvent("CarouselEvent", serializedData);
         } else {
-          var textareaElement = document.querySelector("textarea.chasitorText");
+          const textareaElement = document.querySelector(
+            "textarea.chasitorText"
+          );
           textareaElement.value = data.text;
-          var keydownEvent = document.createEvent("Event");
+          const keydownEvent = document.createEvent("Event");
           keydownEvent.initEvent("keydown");
           keydownEvent.which = keydownEvent.keyCode = 13;
           textareaElement.dispatchEvent(keydownEvent);
@@ -1241,10 +1260,10 @@
       } catch (err) {
         console.error("Failed to send button click message");
       }
-    }
+    };
 
-    function registerPending(data, type) {
-      var payload = JSON.stringify({
+    const registerPending = (data, type) => {
+      const payload = JSON.stringify({
         data: data,
         sessionId: sessionId,
       });
@@ -1257,7 +1276,7 @@
         const lastMessageItem = messagesList[messagesList.length - 1];
         lastMessageItem.classList.add("custom-item");
 
-        var payloadTitle = lastMessageItem.getElementsByClassName(
+        const payloadTitle = lastMessageItem.getElementsByClassName(
           "ultimate-carousel-title"
         )[0]?.innerHTML;
 
@@ -1267,9 +1286,9 @@
           localStorage.setItem(PENDING_CAROUSEL_TITLE, payloadTitle);
         }
       }
-    }
+    };
 
-    function registerAllMessages() {
+    const registerAllMessages = () => {
       const payloadMessages = Array.from(
         document.getElementsByClassName("chatMessage")
       );
@@ -1282,35 +1301,38 @@
           JSON.stringify(MESSAGES_COUNT)
         );
       });
-    }
+    };
 
-    function clearPending() {
+    const clearPending = () => {
       localStorage.removeItem(PENDING_BUTTONS_KEY);
-    }
+    };
 
-    function checkPendingAgentMessages() {
-      var serializedPendingMessagesCount = localStorage.getItem(
+    const checkPendingAgentMessages = () => {
+      const serializedPendingMessagesCount = localStorage.getItem(
         PENDING_MESSAGES_COUNT
       );
 
-      var serializedPendingMessages = [];
+      const serializedPendingMessages = [];
       for (let i = 0; i < serializedPendingMessagesCount; i++) {
         serializedPendingMessages.push(
           localStorage.getItem(PENDING_MESSAGE + i)
         );
       }
 
-      var messages = Array.from(document.getElementsByClassName("chatMessage"));
+      const messages = Array.from(
+        document.getElementsByClassName("chatMessage")
+      );
       for (let i = 0; i < messages.length; i++) {
         if (serializedPendingMessages[i]) {
           messages[i].innerHTML = serializedPendingMessages[i];
         }
       }
-    }
+    };
 
-    function checkPending() {
-      var serializedPendingButtons = localStorage.getItem(PENDING_BUTTONS_KEY);
-      var serializedPendingCarousels = localStorage.getItem(
+    const checkPending = () => {
+      const serializedPendingButtons =
+        localStorage.getItem(PENDING_BUTTONS_KEY);
+      const serializedPendingCarousels = localStorage.getItem(
         PENDING_CAROUSELS_KEY
       );
 
@@ -1318,13 +1340,13 @@
 
       try {
         if (serializedPendingButtons) {
-          var payload = JSON.parse(serializedPendingButtons);
+          const payload = JSON.parse(serializedPendingButtons);
           if (payload) {
             restoreCustom(payload, TYPE_BUTTONS);
           }
         } else if (serializedPendingCarousels) {
-          var payload = JSON.parse(serializedPendingCarousels);
-          var title = localStorage.getItem(PENDING_CAROUSEL_TITLE);
+          const payload = JSON.parse(serializedPendingCarousels);
+          const title = localStorage.getItem(PENDING_CAROUSEL_TITLE);
           if (payload) {
             restoreCustom(payload, TYPE_CAROUSEL, title);
           }
@@ -1332,29 +1354,29 @@
       } catch (err) {
         console.error("Failed to parse restored custom elements");
       }
-    }
+    };
 
-    function restoreCustom(payload, type, title) {
+    const restoreCustom = (payload, type, title) => {
       if (sessionId === payload.sessionId) {
         onCustomData(payload.data, type, title);
       }
-    }
+    };
 
-    function onButtonClickEvent(serializedData) {
+    const onButtonClickEvent = (serializedData) => {
       if (isMainTab) {
         sendChasitorButtonClickEvent(serializedData);
       }
       removeCustomElements();
       clearPending();
-    }
+    };
 
-    function onButtonClickInAnyTab(serializedData) {
+    const onButtonClickInAnyTab = (serializedData) => {
       broadcastStorageEvent(BUTTON_CLICK_EVENT, serializedData);
       onButtonClickEvent(serializedData);
-    }
+    };
 
-    function onCustomEventInMain(result, elementType) {
-      var type = result && result.type;
+    const onCustomEventInMain = (result, elementType) => {
+      const type = result && result.type;
       if (type !== elementType) {
         return;
       }
@@ -1364,7 +1386,7 @@
       const lastMessageItem = messagesList[messagesList.length - 1];
       lastMessageItem.classList.add("custom-item");
 
-      var data = result && result.data;
+      const data = result && result.data;
       if (!data) {
         console.error("Custom event payload error", result);
         return;
@@ -1374,9 +1396,9 @@
       broadcastStorageEvent(eventKey, data);
       onCustomData(data, elementType);
       registerPending(data, elementType);
-    }
+    };
 
-    function attachChasitorCustomEventListener() {
+    const attachChasitorCustomEventListener = () => {
       try {
         liveAgentAPI.addCustomEventListener(TYPE_BUTTONS, (result) =>
           onCustomEventInMain(result, TYPE_BUTTONS)
@@ -1387,14 +1409,14 @@
       } catch (err) {
         console.error("Failed to attach listeners");
       }
-    }
+    };
 
-    function initCustomElements() {
+    const initCustomElements = () => {
       CUSTOM_ELEMENTS_DATA =
         JSON.parse(localStorage.getItem(CUSTOM_ELEMENTS_KEY)) || {};
-      for (var index in CUSTOM_ELEMENTS_DATA) {
+      for (let index in CUSTOM_ELEMENTS_DATA) {
         if (CUSTOM_ELEMENTS_DATA.hasOwnProperty(index)) {
-          var element = CUSTOM_ELEMENTS_DATA[index];
+          const element = CUSTOM_ELEMENTS_DATA[index];
           if (element.type === TYPE_BUTTONS) {
             // Not needed, restoring buttons like before carousel
             // addChatButtons(element.data, index);
@@ -1405,24 +1427,24 @@
           }
         }
       }
-    }
+    };
 
-    var isMessageArea = true;
-    function checkMessageArea() {
-      var sidebarBody = document.querySelector(
+    let isMessageArea = true;
+    const checkMessageArea = () => {
+      const sidebarBody = document.querySelector(
         ".embeddedServiceSidebar .sidebarBody"
       );
-      var observer = new MutationObserver(function (mutationsList, observer) {
-        var isMessageAreaNew = !!sidebarBody.querySelector(".messageArea");
+      const observer = new MutationObserver((mutationsList, observer) => {
+        const isMessageAreaNew = !!sidebarBody.querySelector(".messageArea");
         if (!isMessageArea && isMessageAreaNew) {
           initCustomElements();
         }
         isMessageArea = isMessageAreaNew;
       });
       observer.observe(sidebarBody, { childList: true, subtree: true });
-    }
+    };
 
-    function onChasitorClientLoad() {
+    const onChasitorClientLoad = () => {
       CUSTOM_ELEMENTS_DATA =
         JSON.parse(localStorage.getItem(CUSTOM_ELEMENTS_KEY)) || {};
       // If this is the main tab where the chat was initiated.
@@ -1443,14 +1465,14 @@
       }
       checkPending();
       checkMessageArea();
-    }
+    };
 
     // Remove custom elements when messages are received [Samppa]
-    function onMessageReceivedUser() {
+    const onMessageReceivedUser = () => {
       removeCustomElements();
-    }
+    };
 
-    function handleStopLoader(lastElement) {
+    const handleStopLoader = (lastElement) => {
       setTimeout(() => {
         const isCustomElement = lastElement.classList.contains("custom-item");
 
@@ -1460,13 +1482,13 @@
           loaderElement?.classList.add("hidden");
           lastElement.classList.add("visible");
         }
-        var messageArea = document.querySelector("div.messageArea");
+        const messageArea = document.querySelector("div.messageArea");
         messageArea.scrollTop = messageArea.scrollHeight;
       }, 2000);
-    }
+    };
 
     // Handle if bot message is not custom element and disable loader
-    function onMessageSendAgent() {
+    const onMessageSendAgent = () => {
       setTimeout(() => {
         const messagesList = document.querySelectorAll(
           ".messageWrapper li.chatMessage.agent"
@@ -1481,13 +1503,13 @@
         localStorage.setItem("agentMessagesCount", agentMessagesCount);
         registerAllMessages();
       }, 100);
-    }
+    };
 
     // Listener is removed when chat ends, reattach listener when chat is connected [Samppa]
-    function onChatRequestSuccess() {
+    const onChatRequestSuccess = () => {
       clearPending();
       attachChasitorCustomEventListener();
-    }
+    };
 
     window.embedded_svc.addEventHandler(
       "onChasitorMessage",
