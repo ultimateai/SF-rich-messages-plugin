@@ -38,7 +38,7 @@
   }, 1000);
 
   //VERSIONS
-  var IS_VERSION_1 = "isVersion1";
+  const IS_VERSION_1 = "isVersion1";
   var IS_VERSION_2 = "isVersion2";
   var IS_VERSION_3 = "isVersion3";
   var IS_VERSION_4 = "isversion4";
