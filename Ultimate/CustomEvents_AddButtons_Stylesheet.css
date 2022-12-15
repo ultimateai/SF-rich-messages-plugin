@@ -371,7 +371,7 @@ p {
 
 .buttons-wrapper-v1 .btn-default:first-child {
   margin: 0;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 
 /* button version 2 */
@@ -724,7 +724,12 @@ p {
 
 .rating-v2-button {
   cursor: pointer;
-  padding: 6px;
+  /* padding: 6px; */
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .rating-v2-button:hover {
@@ -777,6 +782,7 @@ p {
   -ms-user-select: none;
   user-select: none;
   touch-action: pan-y;
+  margin-left: 40px;
 }
 
 .messageArea .ultimate-carousel .ultimate-carousel-list {
@@ -1127,6 +1133,7 @@ p {
   line-height: 15px;
   color: #0b3427;
   margin-bottom: 8px;
+  width: fit-content;
 }
 
 .ultimate-card-info-block-v3 p {
