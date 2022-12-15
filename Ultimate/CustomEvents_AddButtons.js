@@ -495,7 +495,7 @@
         createSvg(
           buttonElement,
           "0 0 16 16",
-          "#FFFFFF",
+          "#0f0e3f",
           "M3.33333 3.33333V12.6667H12.6667V8H14V12.6667C14 13.4 13.4 14 12.6667 14H3.33333C2.59333 14 2 13.4 2 12.6667V3.33333C2 2.6 2.59333 2 3.33333 2H8V3.33333H3.33333ZM9.33333 3.33333V2H14V6.66667H12.6667V4.27333L6.11333 10.8267L5.17333 9.88667L11.7267 3.33333H9.33333Z"
         );
       } else {
@@ -1034,13 +1034,25 @@
 
         if (hasCarouselCards) {
           for (let i = 0; i < parsedData.length; i++) {
-            const cardElement = createEl(
-              "div",
-              {
-                class: `ultimate-card ultimate-card-v${version}`,
-              },
-              contentCard
-            );
+            let cardElement;
+            if (parsedData[i].buttons.length > 1) {
+              cardElement = createEl(
+                "div",
+                {
+                  class: `ultimate-card ultimate-card-v${version}`,
+                },
+                contentCard
+              );
+            } else {
+              cardElement = createEl(
+                "div",
+                {
+                  class: `one-ultimate-card ultimate-card ultimate-card-v${version}`,
+                },
+                contentCard
+              );
+            }
+
             if (parsedData[i].imageUrl) {
               const imagesBlock = createEl(
                 "div",
