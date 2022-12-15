@@ -139,9 +139,12 @@ p {
 .chatContent .chasitor span {
   font-family: "Inter", sans-serif;
   font-weight: 400;
-  font-size: 11.5px;
+  font-size: 13px;
   line-height: 16px;
   color: #f9f9fb;
+}
+.chatContent .chasitor span a {
+  color: #f9f9fb !important;
 }
 
 /* bot answer */
@@ -152,13 +155,13 @@ p {
   border-radius: 12px !important;
   padding: 12px !important;
   text-align: start;
-  max-width: none !important;
+  max-width: 300px !important;
 }
 
 .chatContent .agent span {
   font-family: "Inter", sans-serif;
   font-weight: 400;
-  font-size: 11.5px;
+  font-size: 13px;
   line-height: 16px;
   color: #15142d;
 }
@@ -514,6 +517,11 @@ p {
   fill: #4441bd;
 }
 
+.button-link-wrapper:hover .button-link,
+.button-link-wrapper:active .button-link {
+  color: #4441bd !important;
+}
+
 .button-note-block {
   margin-top: 4px;
   text-align: start;
@@ -814,16 +822,19 @@ p {
 
 .ultimate-card-info-block {
   text-align: start;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .messageArea .ultimate-carousel .ultimate-carousel-button {
+  background: rgba(21, 20, 45, 0.5);
+  backdrop-filter: blur(20px);
   display: block;
   position: absolute;
   top: 50%;
   width: 32px;
   height: 32px;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(20px);
   border: none;
   border-radius: 16px;
   padding: 0;
@@ -844,7 +855,8 @@ p {
 }
 
 .messageArea .ultimate-carousel .ultimate-carousel-button:focus {
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: rgba(21, 20, 45, 0.5) !important;
+  backdrop-filter: blur(20px);
 }
 
 .messageArea .ultimate-carousel .ultimate-carousel-button:hover,
@@ -855,9 +867,9 @@ p {
   .messageArea
   .ultimate-carousel
   .ultimate-carousel-button:active:focus {
-  background: rgba(21, 20, 45, 0.5) !important;
   backdrop-filter: blur(20px);
   opacity: 1 !important;
+  background: rgba(255, 255, 255, 0.5) !important;
 }
 
 .messageArea .ultimate-carousel .ultimate-carousel-button svg {
@@ -869,7 +881,7 @@ p {
 
 .messageArea .ultimate-carousel .ultimate-carousel-button:hover path,
 .messageArea .ultimate-carousel .ultimate-carousel-button:active path {
-  fill: #ffffff;
+  fill: #15142d;
 }
 
 .messageArea .ultimate-carousel .ultimate-carousel-button.disabled {
@@ -944,7 +956,6 @@ p {
 
 .ultimate-card-images-block {
   display: flex;
-  height: 260px;
   width: 100%;
 }
 
@@ -953,6 +964,7 @@ p {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  height: 260px;
 }
 
 .ultimate-custom-card-container {
@@ -1167,6 +1179,14 @@ p {
   fill: #0f0e3f !important;
 }
 
+.ultimate-card-v2 .ultimate-card-image {
+  height: 320px;
+}
+
+.ultimate-card-info-block-v2 {
+  height: auto;
+}
+
 /* Carousel version 3 */
 
 .ultimate-card-v3 {
@@ -1230,25 +1250,46 @@ p {
   padding: 0;
 }
 
-.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover path,
-.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:active path {
-  fill: white !important;
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper {
+  width: fit-content;
+  justify-content: start;
+  padding: 0;
+  border: none;
+  margin-bottom: 16px;
+  background: none !important;
+}
+
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover,
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:active {
+  background: none !important;
 }
 
 .carousel-disabled
   .ultimate-card-info-block-v3
-  .ultimate-card-link-wrapper:hover {
-  background: #5d5adc !important;
-  opacity: 1 !important;
+  .ultimate-card-link-wrapper:hover,
+.carousel-disabled
+  .ultimate-card-info-block-v3
+  .ultimate-card-link-wrapper:active {
+  border: none !important;
 }
 
 .ultimate-card-info-block-v3 .button-link {
-  color: #0f0e3f !important;
+  color: #5d5adc;
 }
 
 .ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover .button-link,
 .ultimate-card-info-block-v3 .ultimate-card-link-wrapper:active .button-link {
-  color: #ffffff !important;
+  color: #15142d !important;
+}
+
+.carousel-disabled
+  .ultimate-card-info-block-v3
+  .ultimate-card-link-wrapper:hover,
+.carousel-disabled
+  .ultimate-card-info-block-v3
+  .ultimate-card-link-wrapper:active {
+  background: none !important;
+  cursor: pointer;
 }
 
 .carousel-disabled
@@ -1259,12 +1300,32 @@ p {
   .ultimate-card-info-block-v3
   .ultimate-card-link-wrapper:active
   .button-link {
-  color: #ffffff !important;
+  color: #15142d !important;
+}
+
+.carousel-disabled
+  .ultimate-card-info-block-v3
+  .ultimate-card-link-wrapper:hover
+  .button-link,
+.carousel-disabled
+  .ultimate-card-info-block-v3
+  .ultimate-card-link-wrapper:active
+  .button-link {
+  color: #15142d !important;
+}
+
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper path {
+  fill: #5d5adc !important;
+}
+
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover path,
+.ultimate-card-info-block-v3 .ultimate-card-link-wrapper:active path {
+  fill: #15142d !important;
 }
 
 /* Carousel version 4 */
 
-.ultimate-card-v4 .ultimate-card-images-block {
+.ultimate-card-v4 .ultimate-card-image {
   height: 206px;
 }
 

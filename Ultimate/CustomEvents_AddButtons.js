@@ -1003,7 +1003,7 @@
         createSvg(
           buttonPrev,
           "0 0 14 12",
-          "#15142D",
+          "#ffffff",
           "M13.7601 6.00008C13.7601 6.39119 13.4401 6.71119 13.049 6.71119H2.6668L5.88458 9.94675C6.16902 10.2312 6.16902 10.6756 5.88458 10.9601C5.74236 11.1023 5.56458 11.1734 5.3868 11.1734C5.20902 11.1734 5.01347 11.1023 4.88902 10.9601L0.462359 6.51564C0.177915 6.23119 0.177915 5.78675 0.462359 5.52008L4.88902 1.07564C5.17347 0.791191 5.61791 0.791191 5.90235 1.07564C6.1868 1.36008 6.1868 1.80453 5.90235 2.08897L2.6668 5.28897H13.049C13.4401 5.28897 13.7601 5.60897 13.7601 6.00008Z"
         );
 
@@ -1034,24 +1034,22 @@
 
         if (hasCarouselCards) {
           for (let i = 0; i < parsedData.length; i++) {
+            let buttonLength = parsedData[i].buttons.length;
+            let moreThenOneButton = buttonLength > 1 && version !== 3;
+            let commonClassForCard = `ultimate-card ultimate-card-v${version}`;
             let cardElement;
-            if (parsedData[i].buttons.length > 1) {
-              cardElement = createEl(
-                "div",
-                {
-                  class: `ultimate-card ultimate-card-v${version}`,
-                },
-                contentCard
-              );
-            } else {
-              cardElement = createEl(
-                "div",
-                {
-                  class: `one-ultimate-card ultimate-card ultimate-card-v${version}`,
-                },
-                contentCard
-              );
-            }
+
+            cardElement = createEl(
+              "div",
+              {
+                class: `${
+                  moreThenOneButton
+                    ? commonClassForCard
+                    : `one-ultimate-card ${commonClassForCard}`
+                } `,
+              },
+              contentCard
+            );
 
             if (parsedData[i].imageUrl) {
               const imagesBlock = createEl(
@@ -1151,7 +1149,7 @@
         createSvg(
           buttonNext,
           "0 0 14 12",
-          "#15142D",
+          "#ffffff",
           "M13.5468 6.49778L9.12014 10.9422C8.97792 11.0844 8.80013 11.1556 8.62235 11.1556C8.44457 11.1556 8.2668 11.0844 8.12458 10.9422C7.84013 10.6578 7.84013 10.2133 8.12458 9.92889L11.3424 6.69334H0.960135C0.569023 6.69334 0.249023 6.37334 0.249023 5.98223C0.249023 5.59112 0.569023 5.27112 0.960135 5.27112H11.3424L8.12458 2.03557C7.84013 1.75112 7.84013 1.30668 8.12458 1.02223C8.40902 0.737788 8.85347 0.737788 9.13791 1.02223L13.5646 5.46668C13.8312 5.7689 13.8312 6.23112 13.5468 6.49778Z"
         );
 
