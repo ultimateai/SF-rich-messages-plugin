@@ -197,6 +197,10 @@
         info.innerHTML = title;
       }
 
+      if (info.querySelectorAll(".titlesBlock").length) {
+        info.classList.add("custom-info");
+      }
+
       let rating;
       if ((version === 3) | (version === 4)) {
         info.classList.add("info-rating");
