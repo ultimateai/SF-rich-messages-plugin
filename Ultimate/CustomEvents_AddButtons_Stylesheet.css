@@ -420,6 +420,10 @@ p {
   margin-right: 8px;
 }
 
+.custom-info {
+  background: #ececf9;
+}
+
 .titlesBlock {
   display: flex;
   flex-direction: column;
@@ -944,6 +948,38 @@ p {
   color: #ffffff !important;
   cursor: default;
   border: none !important;
+}
+
+.one-ultimate-card
+  .ultimate-card-info-block-v0
+  .ultimate-card-link-wrapper
+  .button-link {
+  color: #ffffff !important;
+}
+
+.one-ultimate-card
+  .ultimate-card-info-block-v0
+  .ultimate-card-link-wrapper:hover,
+.one-ultimate-card
+  .ultimate-card-info-block-v0
+  .ultimate-card-link-wrapper:active {
+  background: #211f8a !important;
+}
+
+.carousel-disabled
+  .one-ultimate-card
+  .ultimate-card-info-block-v0
+  .ultimate-card-link-wrapper:hover,
+.carousel-disabled
+  .one-ultimate-card
+  .ultimate-card-info-block-v0
+  .ultimate-card-link-wrapper:active {
+  background: #211f8a !important;
+  cursor: pointer;
+}
+
+.one-ultimate-card path {
+  fill: #ffffff !important;
 }
 
 .ultimate-card:not(:last-child) {
