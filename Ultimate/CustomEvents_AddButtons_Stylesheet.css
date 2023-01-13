@@ -829,6 +829,7 @@ p {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
 }
 
 .messageArea .ultimate-carousel .ultimate-carousel-button {
@@ -1428,4 +1429,9 @@ p {
   .ultimate-card-button:active {
   background: none !important;
   color: #0f0e3f !important;
+}
+
+.carouselTitle {
+  margin-bottom: 4px;
+  width: fit-content;
 }
