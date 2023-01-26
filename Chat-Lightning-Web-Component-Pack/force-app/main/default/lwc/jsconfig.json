@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/lwcchatpack": [
+                "lwcchatpack/lwcchatpack.js"
+            ],
+            "c/lwcchatpack_html": [
+                "lwcchatpack_html/lwcchatpack_html.js"
+            ]
+        }
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts",
+        "../old_lwc/lwcchatpack_navigate",
+        "../old_lwc/lwcchatpack_carousel"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    },
+    "paths": {
+        "c/*": [
+            "*"
+        ]
+    }
+}

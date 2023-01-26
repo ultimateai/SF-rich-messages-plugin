@@ -1,0 +1,16 @@
+<template>
+    <!-- DEFAULT CHAT TEMPLATE -->
+    <div class={messageStyle}>
+        <lightning-formatted-rich-text value={strMessage}></lightning-formatted-rich-text>
+        <template if:true={showLoader} >
+            <span class="loader">
+                <div class="tiblock">
+                  <div class="tidot"></div>
+                  <div class="tidot"></div>
+                  <div class="tidot"></div>
+                </div>
+            </span>
+        </template>
+    </div>
+    
+</template>
