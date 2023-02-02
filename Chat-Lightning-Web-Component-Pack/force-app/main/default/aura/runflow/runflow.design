@@ -1,3 +1,0 @@
-<design:component label="Chat LWC Pack - Run Flow">
-        <design:attribute name="flowName" label="Flowname" default="{!flowName}"/>
-</design:component>
