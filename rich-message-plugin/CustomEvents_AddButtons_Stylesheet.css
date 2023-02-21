@@ -1,5 +1,10 @@
 /* Overwrite default chat styles */
 
+:root {
+  --chat-primary-color: #5d5adc;
+  --chat-primary-color: #5d5adc;
+}
+
 .avatar {
   margin: 0 14px 8px 0;
 }
@@ -108,6 +113,10 @@ p {
   opacity: 1;
 }
 
+.embeddedServiceLiveAgentStateChat .chatSessionStartTime span {
+  font-family: var(--chat-font-family) !important;
+}
+
 .nameAndTimeContent {
   display: none !important ;
 }
@@ -132,12 +141,12 @@ p {
 
 .chatContent .chasitor {
   padding: 12px !important;
-  background: #5d5adc;
+  background: var(--chat-primary-color);
   border-radius: 12px !important;
 }
 
 .chatContent .chasitor span {
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
@@ -159,7 +168,7 @@ p {
 }
 
 .chatContent .agent span {
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 13px;
   line-height: 16px;
@@ -250,7 +259,7 @@ p {
 .info {
   color: #15142d;
   text-align: start;
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 13px;
   line-height: 20px;
@@ -266,20 +275,25 @@ p {
   flex-direction: column;
 }
 
+.buttons-wrapper .oneElement {
+  font-size: 13px;
+  font-family: var(--chat-font-family) !important;
+}
+
 .buttons-wrapper .btn-default {
   background: #f9f9fb;
   width: 100%;
   padding: 8px 16px;
   text-align: center;
   cursor: pointer;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--chat-font-family) !important;
   font-style: normal;
   font-weight: 530 !important;
   font-size: 13px;
   line-height: 16px;
   color: #0f0e3f;
-  border: 1px solid #5d5adc;
-  border-radius: 6px;
+  border: 1px solid var(--chat-primary-color);
+  border-radius: 6px !important;;
   text-decoration: none;
 }
 
@@ -289,13 +303,13 @@ p {
 
 .buttons-wrapper .btn-default:hover,
 .buttons-wrapper .btn-default:active {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: #fff !important;
   opacity: 1 !important;
 }
 
 .buttons-wrapper .btn-default:hover:active:focus {
-  background: #5d5adc;
+  background: var(--chat-primary-color);
 }
 
 .buttons-wrapper .btn-default:focus {
@@ -304,7 +318,7 @@ p {
 
 .buttons-wrapper .btn-default:focus:hover,
 .buttons-wrapper .btn-default:focus:active {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
 }
 
 .btn-default.button-disabled {
@@ -330,11 +344,11 @@ p {
 }
 
 .buttons-wrapper .oneElement {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: #ffffff;
   width: auto;
   padding: 8px 16px;
-  border-radius: 6px;
+  border-radius: 6px !important;
   border: none;
   text-decoration: none;
 }
@@ -347,7 +361,7 @@ p {
 }
 
 .buttons-wrapper .oneElement:focus {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
 }
 
 .buttons-wrapper .oneElement.button-disabled:focus,
@@ -355,7 +369,7 @@ p {
 .buttons-wrapper .oneElement.button-disabled:hover,
 .buttons-wrapper .oneElement .button-disabled:hover:active:focus,
 .buttons-wrapper-v2 .oneElement.button-disabled:focus {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: white !important;
   cursor: default;
 }
@@ -437,7 +451,7 @@ p {
 }
 
 .titlesBlock p {
-  font-family: "Inter";
+  font-family: var(--chat-font-family) !important;
   font-style: normal;
   font-weight: 530;
   font-size: 13px;
@@ -452,7 +466,7 @@ p {
 }
 
 .buttonBlock_text {
-  font-family: "Inter";
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 12px;
   color: #6c6f85;
@@ -461,7 +475,7 @@ p {
 }
 
 .buttonBlock .btn-default {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: white !important;
   margin: 0 !important;
 }
@@ -471,7 +485,7 @@ p {
 }
 
 .buttonBlock .btn-default:focus {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
 }
 
 .buttonBlock .btn-default:focus:hover {
@@ -491,14 +505,15 @@ p {
   padding: 0;
   text-align: start;
   cursor: pointer;
+  padding: 8px 16px;
 }
 
 .button-link {
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 530;
   font-size: 13px;
   line-height: 16px;
-  color: #5d5adc !important;
+  color: var(--chat-primary-color) !important;
   text-decoration: none !important;
 }
 
@@ -532,7 +547,7 @@ p {
 }
 
 .button-note-text {
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -547,7 +562,7 @@ p {
   flex-direction: row-reverse;
   justify-content: center;
   width: 100%;
-  background: #5d5adc;
+  background: var(--chat-primary-color);
   border-radius: 6px;
   padding: 8px 16px;
   cursor: pointer;
@@ -559,7 +574,7 @@ p {
 }
 
 .button-link-wrapper-v1:focus {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
 }
 
 .button-link-wrapper-v1:focus:hover {
@@ -651,13 +666,13 @@ p {
 }
 
 .star-disabled path {
-  fill: #5d5adc !important;
-  stroke: #5d5adc;
+  fill: var(--chat-primary-color) !important;
+  stroke: var(--chat-primary-color);
 }
 
 .star-remaining path {
   fill: none !important;
-  stroke: #5d5adc;
+  stroke: var(--chat-primary-color);
 }
 
 .star-disabled,
@@ -670,7 +685,7 @@ p {
 }
 
 .starsBlock:hover .star-disabled path {
-  fill: #5d5adc !important;
+  fill: var(--chat-primary-color) !important;
 }
 
 .rating__input:checked ~ .rating__label path {
@@ -678,7 +693,7 @@ p {
 }
 
 .starsBlock:hover .rating__label path {
-  fill: #5d5adc;
+  fill: var(--chat-primary-color);
 }
 
 .starsBlock-v3 {
@@ -693,15 +708,16 @@ p {
 .btn-rating {
   border: 0;
   background: none;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--chat-font-family) !important;
   font-weight: 530 !important;
   font-size: 13px;
   line-height: 16px;
   color: #15142d;
   cursor: pointer;
   padding: 0;
-  width: fit-content;
+  width: 100%;
   margin: 0 auto;
+  padding: 8px 16px;
 }
 
 .btn-rating:hover,
@@ -762,14 +778,14 @@ p {
   width: 100%;
   margin-top: 12px;
   padding: 8px 0;
-  border: 1px solid #5d5adc;
+  border: 1px solid var(--chat-primary-color);
   border-radius: 6px;
 }
 
 .btn-container-v4 .btn-rating:hover,
 .btn-container-v4 .btn-rating:active,
 .btn-container-v4 .btn-rating:focus {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: #fff !important;
 }
 
@@ -912,7 +928,7 @@ p {
 }
 
 .ultimate-carousel-title {
-  font-family: "Inter";
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -946,7 +962,7 @@ p {
 }
 
 .one-ultimate-card .ultimate-card-button {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: #ffffff !important;
   border: none;
 }
@@ -958,7 +974,7 @@ p {
 
 .carousel-disabled .one-ultimate-card .ultimate-card-button:hover,
 .carousel-disabled .one-ultimate-card .ultimate-card-button:active {
-  background-color: #5d5adc !important;
+  background-color: var(--chat-primary-color) !important;
   color: #ffffff !important;
   cursor: default;
   border: none !important;
@@ -1001,7 +1017,7 @@ p {
 }
 
 .ultimate-card-title {
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 530;
   font-size: 13px;
   line-height: 16px;
@@ -1026,7 +1042,7 @@ p {
   flex-grow: 1;
   text-align: start;
   margin: 0 16px;
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -1041,12 +1057,12 @@ p {
 
 .ultimate-card-button {
   background: none !important;
-  border: 1px solid #5d5adc;
+  border: 1px solid var(--chat-primary-color);
   color: #0f0e3f;
-  border-radius: 6px;
+  border-radius: 6px !important;
   text-align: center;
   padding: 8px 0;
-  font-family: "Inter", sans-serif !important;
+  font-family: var(--chat-font-family) !important;
   font-weight: 530 !important;
   font-size: 13px;
   line-height: 16px;
@@ -1055,12 +1071,12 @@ p {
 }
 
 .ultimate-card-button:hover {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: #fff !important;
   opacity: 1 !important;
 }
 .ultimate-card-button:active {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: #fff !important;
   opacity: 1 !important;
 }
@@ -1069,7 +1085,7 @@ p {
 .carousel-disabled .ultimate-card-button:active {
   background: none !important;
   color: #0f0e3f !important;
-  border: 1px solid #5d5adc;
+  border: 1px solid var(--chat-primary-color);
   cursor: default;
 }
 
@@ -1126,7 +1142,7 @@ p {
 
 .carousel-disabled .ultimate-card-link-wrapper:hover,
 .carousel-disabled .ultimate-card-link-wrapper:active {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   opacity: 1 !important;
 }
 
@@ -1256,7 +1272,7 @@ p {
 }
 
 .ultimate-card-info-block-v3 .ultimate-card-title {
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -1276,7 +1292,7 @@ p {
 }
 
 .ultimate-card-info-block-v3 h2 {
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 530;
   font-size: 20px;
   line-height: 28px;
@@ -1288,7 +1304,7 @@ p {
   padding: 2px 4px;
   background: #e7f7f0;
   border-radius: 2px;
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -1298,7 +1314,7 @@ p {
 }
 
 .ultimate-card-info-block-v3 p {
-  font-family: "Inter", sans-serif;
+  font-family: var(--chat-font-family) !important;
   font-weight: 400;
   font-size: 11.5px;
   line-height: 16px;
@@ -1336,7 +1352,7 @@ p {
 }
 
 .ultimate-card-info-block-v3 .button-link {
-  color: #5d5adc;
+  color: var(--chat-primary-color);
 }
 
 .ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover .button-link,
@@ -1377,7 +1393,7 @@ p {
 }
 
 .ultimate-card-info-block-v3 .ultimate-card-link-wrapper path {
-  fill: #5d5adc !important;
+  fill: var(--chat-primary-color) !important;
 }
 
 .ultimate-card-info-block-v3 .ultimate-card-link-wrapper:hover path,
@@ -1416,7 +1432,7 @@ p {
 }
 
 .carouselOneButtonStyles {
-  background: #5d5adc !important;
+  background: var(--chat-primary-color) !important;
   color: #ffffff !important;
   border: none;
 }
@@ -1434,4 +1450,9 @@ p {
 .carouselTitle {
   margin-bottom: 4px;
   width: fit-content;
+}
+
+/* Input field */
+.chasitorControls .chasitorText {
+  font-family: var(--chat-font-family) !important;
 }
