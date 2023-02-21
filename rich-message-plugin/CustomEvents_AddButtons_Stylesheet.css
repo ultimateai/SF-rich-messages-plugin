@@ -130,6 +130,12 @@ p {
 
 /* user answer */
 
+.embeddedServiceSidebar.layout-docked
+  .embeddedServiceLiveAgentStateChatItem.agent
+  .chatContent {
+  background-color: inherit !important;
+}
+
 .chatContent .chasitor {
   padding: 12px !important;
   background: #5d5adc;
@@ -145,6 +151,11 @@ p {
 }
 .chatContent .chasitor span a {
   color: #f9f9fb !important;
+}
+
+.slds-rich-text-editor__output,
+.info {
+  white-space: break-spaces;
 }
 
 /* bot answer */
