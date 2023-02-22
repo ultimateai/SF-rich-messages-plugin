@@ -2,7 +2,7 @@
 
 :root {
   --chat-primary-color: #5d5adc;
-  --chat-primary-color: #5d5adc;
+  --chat-font-family: "Inter", sans-serif;
 }
 
 .avatar {
@@ -293,7 +293,7 @@ p {
   line-height: 16px;
   color: #0f0e3f;
   border: 1px solid var(--chat-primary-color);
-  border-radius: 6px !important;;
+  border-radius: 6px !important;
   text-decoration: none;
 }
 
