@@ -141,9 +141,7 @@ p {
 
 .embeddedServiceSidebar.layout-docked
   .embeddedServiceLiveAgentStateChatItem.agent
-  .chatContent
-  ,
-.embeddedServiceSidebar.layout-docked
+  .chatContent, .embeddedServiceSidebar.layout-docked
   .embeddedServiceLiveAgentStateChatItem.agent
   .chatContent.chatContent-custom-element {
   background-color: inherit !important;
