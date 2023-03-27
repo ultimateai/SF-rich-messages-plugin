@@ -278,6 +278,7 @@ p {
   line-height: 20px;
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding-bottom: 12px;
 }
@@ -476,6 +477,7 @@ p {
   padding: 16px;
   border-radius: 0px 0 12px 12px;
   margin: 0 -8px -12px -12px;
+  width: calc(100% - 8px);
 }
 
 .buttonBlock_text {
