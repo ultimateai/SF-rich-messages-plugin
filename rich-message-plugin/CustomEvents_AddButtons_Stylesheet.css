@@ -141,7 +141,8 @@ p {
 
 .embeddedServiceSidebar.layout-docked
   .embeddedServiceLiveAgentStateChatItem.agent
-  .chatContent, .embeddedServiceSidebar.layout-docked
+  .chatContent,
+.embeddedServiceSidebar.layout-docked
   .embeddedServiceLiveAgentStateChatItem.agent
   .chatContent.chatContent-custom-element {
   background-color: inherit !important;
@@ -428,7 +429,7 @@ p {
 }
 
 .buttons-wrapper-v2 {
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
@@ -444,9 +445,9 @@ p {
   background: none !important;
 }
 
-.buttons-wrapper-v2 .btn-default:not(:last-child) {
+/* .buttons-wrapper-v2 .btn-default:not(:last-child) {
   margin-right: 8px;
-}
+} */
 
 .custom-info {
   background: #ececf9;
@@ -476,8 +477,8 @@ p {
   background-color: white;
   padding: 16px;
   border-radius: 0px 0 12px 12px;
-  margin: 0 -8px -12px -12px;
-  width: calc(100% - 8px);
+  margin: 0 -12px -8px -12px;
+  /* width: calc(100% - 8px); */
 }
 
 .buttonBlock_text {

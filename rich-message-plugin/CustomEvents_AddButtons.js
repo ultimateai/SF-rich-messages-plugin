@@ -169,7 +169,7 @@
               {
                 class: `${
                   initialData.length === 1 ? "oneElement" : "btn-default"
-                }`,
+                }`
               },
               wrapper
             );
@@ -184,7 +184,7 @@
 
     const addChatButtonsDefault = (version, chatButtons, index, title) => {
       const buttonContainer = createEl("div", {
-        class: `ultimate-btn-container ultimate-hidden version-custom-button btn-container-v${version}`,
+        class: `ultimate-btn-container ultimate-hidden version-custom-button btn-container-v${version}`
       });
 
       const info = createEl(
@@ -264,7 +264,7 @@
             value: "0",
             type: "radio",
             disabled: "disabled",
-            checked: "checked",
+            checked: "checked"
           },
           starsBlock
         );
@@ -276,7 +276,7 @@
             {
               class: "rating__label",
               ariaLabel: ` ${index + specialId}star`,
-              for: `rating${index + specialId}`,
+              for: `rating${index + specialId}`
             },
             starsBlock
           );
@@ -297,7 +297,7 @@
               name: "rating3",
               id: `rating${index + specialId}`,
               type: "radio",
-              value: "1",
+              value: "1"
             },
             starsBlock
           );
@@ -383,38 +383,39 @@
                 eventData.chatButtons,
                 undefined,
                 titleMessage
-              ),
+              )
           };
 
           buttonsRenderers[version || "default"]();
         } else if (type === TYPE_CAROUSEL) {
           const version = getVersion(eventData.cards[0].title);
 
-          let carouselMesasge = "";
+          let carouselMessage = "";
           const messagesList = document.querySelectorAll(
             ".messageWrapper li.chatMessage.agent"
           );
           const lastMessageItem = messagesList[messagesList.length - 1];
           if (lastMessageItem) {
             // Take massage from last chat bot message and put to carousel title
-            carouselMesasge =
-              lastMessageItem.querySelector(".chatContent span")?.innerHTML || "";;
+            carouselMessage = lastMessageItem.querySelector(
+              "lightning-formatted-rich-text span"
+            ).innerHTML;
 
             if (title) {
-              carouselMesasge = title;
+              carouselMessage = title;
             }
 
             if (eventData.cards.length >= 1) {
               const carouselsRenderers = {
                 [IS_VERSION_1]: () =>
-                  addChatCarousel(1, eventData, carouselMesasge),
+                  addChatCarousel(1, eventData, carouselMessage),
                 [IS_VERSION_2]: () =>
-                  addChatCarousel(2, eventData, carouselMesasge),
+                  addChatCarousel(2, eventData, carouselMessage),
                 [IS_VERSION_3]: () =>
-                  addChatCarousel(3, eventData, carouselMesasge),
+                  addChatCarousel(3, eventData, carouselMessage),
                 [IS_VERSION_4]: () =>
-                  addChatCarousel(4, eventData, carouselMesasge),
-                default: () => addChatCarousel(0, eventData, carouselMesasge),
+                  addChatCarousel(4, eventData, carouselMessage),
+                default: () => addChatCarousel(0, eventData, carouselMessage)
               };
               carouselsRenderers[version || "default"]();
             } else {
@@ -443,7 +444,7 @@
       }
       const serializedData = JSON.stringify({
         text: buttonText,
-        cardIndex: cardIndex,
+        cardIndex: cardIndex
       });
 
       onButtonClickInAnyTab(serializedData);
@@ -453,7 +454,7 @@
       const externalLinkSvg = createEl(
         "svg",
         {
-          viewBox,
+          viewBox
         },
         container,
         true
@@ -465,7 +466,7 @@
           fill,
           d: path,
           stroke,
-          "stroke-width": strokeWidth,
+          "stroke-width": strokeWidth
         },
         externalLinkSvg,
         true
@@ -529,7 +530,7 @@
       const cardElement = createEl(
         "div",
         {
-          class: "ultimate-card",
+          class: "ultimate-card"
         },
         container
       );
@@ -537,7 +538,7 @@
         createEl(
           "img",
           {
-            src: card.imageUrl,
+            src: card.imageUrl
           },
           cardElement
         );
@@ -554,7 +555,7 @@
         const cardButtons = createEl(
           "div",
           {
-            class: "ultimate-card-buttons",
+            class: "ultimate-card-buttons"
           },
           cardElement
         );
@@ -589,7 +590,7 @@
               data: data,
               currentCard: 0,
               activeCard: 0,
-              activeButton: -1,
+              activeButton: -1
             };
             localStorage.setItem(
               CUSTOM_ELEMENTS_KEY,
@@ -762,7 +763,7 @@
             if (currentIndex - 1 >= 0) {
               prevSlider(
                 {
-                  target: carousel.querySelector(".ultimate-carousel-list"),
+                  target: carousel.querySelector(".ultimate-carousel-list")
                 },
                 slideWidth
               );
@@ -772,7 +773,7 @@
             if (currentIndex + 1 < itemsLength) {
               nextSlider(
                 {
-                  target: carousel.querySelector(".ultimate-carousel-list"),
+                  target: carousel.querySelector(".ultimate-carousel-list")
                 },
                 slideWidth
               );
@@ -797,7 +798,7 @@
       prevSlider(
         {
           target: carousel.querySelector(".ultimate-carousel-list"),
-          noAnimate: noAnimate,
+          noAnimate: noAnimate
         },
         slideWidth
       );
@@ -891,7 +892,7 @@
     const addChatCard = (card, index) => {
       try {
         const cardContainer = createEl("li", {
-          class: "ultimate-card-container ultimate-hidden",
+          class: "ultimate-card-container ultimate-hidden"
         });
         addCardToContainer(cardContainer, card, 0);
         addElementToMessageArea(cardContainer, TYPE_CARD, card, index);
@@ -974,13 +975,13 @@
         if (version) {
           parsedData = data.cards.map(({ title, ...rest }) => ({
             ...rest,
-            title: title.replace(`&&version${version}&&`, ""),
+            title: title.replace(`&&version${version}&&`, "")
           }));
         }
         const hasCarouselCards = parsedData && Array.isArray(parsedData);
         const carouselContainer = createEl("div", {
           class:
-            "ultimate-carousel-container ultimate-custom-carousel-container ultimate-hidden",
+            "ultimate-carousel-container ultimate-custom-carousel-container ultimate-hidden"
         });
 
         const carouselElement = createEl(
@@ -988,7 +989,7 @@
           {
             class: `ultimate-carousel ultimate-carousel-custom-version${version}`,
             "data-current-index": 0,
-            "data-items-length": hasCarouselCards ? parsedData.length : 0,
+            "data-items-length": hasCarouselCards ? parsedData.length : 0
           },
           carouselContainer
         );
@@ -997,7 +998,7 @@
           "button",
           {
             type: "button",
-            class: "ultimate-carousel-button ultimate-carousel-prev disabled",
+            class: "ultimate-carousel-button ultimate-carousel-prev disabled"
           },
           carouselElement
         );
@@ -1020,13 +1021,13 @@
             carouselElement
           );
           const title = createEl("span", { class: "" }, titleBlock);
-          title.innerHTML = message;
+          title.textContent = message;
         }
 
         const carouselList = createEl(
           "div",
           {
-            class: "ultimate-carousel-list ultimate-carousel-list-version",
+            class: "ultimate-carousel-list ultimate-carousel-list-version"
           },
           carouselElement
         );
@@ -1051,7 +1052,7 @@
                   moreThenOneButton
                     ? commonClassForCard
                     : `one-ultimate-card ${commonClassForCard}`
-                } `,
+                } `
               },
               contentCard
             );
@@ -1060,7 +1061,7 @@
               const imagesBlock = createEl(
                 "div",
                 {
-                  class: "ultimate-card-images-block",
+                  class: "ultimate-card-images-block"
                 },
                 cardElement
               );
@@ -1070,7 +1071,7 @@
                 const image = createEl(
                   "div",
                   {
-                    class: "ultimate-card-image",
+                    class: "ultimate-card-image"
                   },
                   imagesBlock
                 );
@@ -1080,7 +1081,7 @@
             const infoContainer = createEl(
               "div",
               {
-                class: `ultimate-card-info-block ultimate-card-info-block-v${version}`,
+                class: `ultimate-card-info-block ultimate-card-info-block-v${version}`
               },
               cardElement
             );
@@ -1111,7 +1112,7 @@
               const cardButtons = createEl(
                 "div",
                 {
-                  class: "ultimate-custom-card-buttons ultimate-btn-container",
+                  class: "ultimate-custom-card-buttons ultimate-btn-container"
                 },
                 infoContainer
               );
@@ -1145,7 +1146,7 @@
           "button",
           {
             type: "button",
-            class: "ultimate-carousel-button ultimate-carousel-next",
+            class: "ultimate-carousel-button ultimate-carousel-next"
           },
           carouselElement
         );
@@ -1280,7 +1281,7 @@
     const registerPending = (data, type) => {
       const payload = JSON.stringify({
         data: data,
-        sessionId: sessionId,
+        sessionId: sessionId
       });
       if (type === TYPE_BUTTONS) {
         localStorage.setItem(PENDING_BUTTONS_KEY, payload);
