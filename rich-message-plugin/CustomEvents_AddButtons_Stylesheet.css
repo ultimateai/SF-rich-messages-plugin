@@ -401,6 +401,18 @@ p {
   flex-direction: row;
 }
 
+.buttons-wrapper-v0 {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.buttons-wrapper-v0 .btn-default {
+  width: auto;
+  background: none;
+  padding: 8px 16px;
+  margin-bottom: 4px !important;
+}
+
 .buttons-wrapper-v1 .btn-default:first-child {
   margin: 0;
   margin-right: 8px;
@@ -408,11 +420,31 @@ p {
 
 /* button version 2 */
 
+.btn-container-v0 {
+  background: none;
+  border: none;
+  padding: 0 !important;
+  border-radius: 0;
+}
+
 .btn-container-v2 {
   background: none;
   border: none;
   padding: 0 !important;
   border-radius: 0;
+}
+
+.info-v0 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  background: #f9f9fb;
+  padding: 12px 8px 12px 12px;
+  border: 1px solid #e2e5eb;
+  border-radius: 12px;
+  box-sizing: border-box;
+  margin-bottom: 4px;
 }
 
 .info-v2 {
