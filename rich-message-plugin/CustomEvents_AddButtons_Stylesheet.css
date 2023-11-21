@@ -141,7 +141,8 @@ p {
 
 .embeddedServiceSidebar.layout-docked
   .embeddedServiceLiveAgentStateChatItem.agent
-  .chatContent, .embeddedServiceSidebar.layout-docked
+  .chatContent,
+.embeddedServiceSidebar.layout-docked
   .embeddedServiceLiveAgentStateChatItem.agent
   .chatContent.chatContent-custom-element {
   background-color: inherit !important;
@@ -170,6 +171,14 @@ p {
 }
 
 /* bot answer */
+.hasImage {
+  width: 50% !important;
+}
+
+.chatContent .agent iframe {
+  width: 270px;
+  height: 200px;
+}
 
 .chatContent .agent {
   background: #f9f9fb !important;
@@ -186,6 +195,7 @@ p {
   font-size: 13px;
   line-height: 16px;
   color: #15142d;
+  white-space: normal;
 }
 
 .chatContent .agent span .btn-default {
