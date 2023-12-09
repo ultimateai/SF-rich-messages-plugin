@@ -171,6 +171,14 @@ p {
 }
 
 /* bot answer */
+.hasImage {
+  width: 50% !important;
+}
+
+.chatContent .agent iframe {
+  width: 270px;
+  height: 200px;
+}
 
 .chatContent .agent {
   background: #f9f9fb !important;

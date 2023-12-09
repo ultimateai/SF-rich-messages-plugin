@@ -1309,6 +1309,12 @@
         document.getElementsByClassName("chatMessage")
       );
 
+      payloadMessages.forEach((agentElement) => {
+        if (agentElement.querySelector("img")) {
+          agentElement.classList.add("hasImage");
+        }
+      });
+
       payloadMessages.forEach((message, index) => {
         MESSAGES_COUNT = payloadMessages.length;
         localStorage.setItem(PENDING_MESSAGE + index, message.innerHTML);
