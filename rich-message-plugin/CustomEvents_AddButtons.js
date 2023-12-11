@@ -31,6 +31,7 @@
   var IS_VERSION_1 = "isVersion1";
   var IS_VERSION_2 = "isVersion2";
   var IS_VERSION_3 = "isVersion3";
+  var IS_WEBVIEW_VERSION = "isWebviewVersion";
 
   var VERSION_1_KEY = "&&version1&&";
   var VERSION_2_KEY = "&&version2&&";
@@ -78,6 +79,7 @@
 
   function getVersion(message) {
     var value = "";
+    let webviewPattern = /&&webview:https?:\/\/[^&]*&&/;
 
     if (message.includes(VERSION_1_KEY)) {
       value = IS_VERSION_1;
@@ -85,6 +87,8 @@
       value = IS_VERSION_2;
     } else if (message.includes(VERSION_3_KEY)) {
       value = IS_VERSION_3;
+    } else if (webviewPattern.test(message)) {
+      value = IS_WEBVIEW_VERSION;
     }
     return value;
   }
@@ -1310,52 +1314,74 @@
       }
     }
 
+    function addWebview(parent, url) {
+      let container = createEl("div", {
+        class: "webviewOverlay"
+      });
+
+      let wrapper = createEl("div", { class: "webviewWrapper" }, container);
+
+      let header = createEl("div", { class: "webviewHeader" }, wrapper);
+      let closeBtn = createEl("div", { class: "webviewBtn" }, header);
+      closeBtn.addEventListener("click", () => {
+        container.style.display = "none";
+        var textareaElement = document.querySelector("textarea.chasitorText");
+        textareaElement.value = "Webview closed";
+        var keydownEvent = document.createEvent("Event");
+        keydownEvent.initEvent("keydown");
+        keydownEvent.which = keydownEvent.keyCode = 13;
+        textareaElement.dispatchEvent(keydownEvent);
+      });
+
+      createEl(
+        "iframe",
+        {
+          src: url,
+          class: "webview",
+          title: "Datepicker"
+        },
+        wrapper
+      );
+
+      let returnBtn = createEl("div", { class: "webviewReturnBtn" }, wrapper);
+      returnBtn.innerHTML = "Return to Chat bot";
+      returnBtn.addEventListener("click", () => {
+        container.style.display = "none";
+        var textareaElement = document.querySelector("textarea.chasitorText");
+        textareaElement.value = "Returned to chat bot";
+        var keydownEvent = document.createEvent("Event");
+        keydownEvent.initEvent("keydown");
+        keydownEvent.which = keydownEvent.keyCode = 13;
+        textareaElement.dispatchEvent(keydownEvent);
+      });
+      parent.appendChild(container);
+    }
+
     function registerAllMessages() {
       const payloadMessages = Array.from(
         document.getElementsByClassName("chatMessage")
       );
 
       payloadMessages.forEach((message, index) => {
+        ////check if message contains webview version and create webview element
+        const messageParent = message.getElementsByTagName("span")[0];
+        const parentText = messageParent?.textContent;
+        let version = getVersion(parentText || "");
+        const isWebviewVersion = version === IS_WEBVIEW_VERSION;
+
         MESSAGES_COUNT = payloadMessages.length;
         localStorage.setItem(PENDING_MESSAGE + index, message.innerHTML);
         localStorage.setItem(
           PENDING_MESSAGES_COUNT,
           JSON.stringify(MESSAGES_COUNT)
         );
-        const webviewBtn = message.querySelector(".webviewBtn");
-        if (webviewBtn) {
-          webviewBtn.addEventListener("click", () => {
-            const container = message.querySelector(".webviewOverlay");
-            if (container) {
-              container.style.display = "none";
-              var textareaElement = document.querySelector(
-                "textarea.chasitorText"
-              );
-              textareaElement.value = "Webview closed";
-              var keydownEvent = document.createEvent("Event");
-              keydownEvent.initEvent("keydown");
-              keydownEvent.which = keydownEvent.keyCode = 13;
-              textareaElement.dispatchEvent(keydownEvent);
-            }
-          });
-        }
+        if (isWebviewVersion) messageParent.textContent = "Choose date";
 
-        const webviewBtnR = message.querySelector(".webviewReturnBtn");
-        if (webviewBtnR) {
-          webviewBtnR.addEventListener("click", () => {
-            const container = message.querySelector(".webviewOverlay");
-            if (container) {
-              container.style.display = "none";
-              var textareaElement = document.querySelector(
-                "textarea.chasitorText"
-              );
-              textareaElement.value = "Returned to chat bot";
-              var keydownEvent = document.createEvent("Event");
-              keydownEvent.initEvent("keydown");
-              keydownEvent.which = keydownEvent.keyCode = 13;
-              textareaElement.dispatchEvent(keydownEvent);
-            }
-          });
+        if (isWebviewVersion && index === payloadMessages.length - 1) {
+          const regex = /&&webview:([^&]+)&&/;
+          let match = parentText.match(regex);
+          const url = match[1];
+          addWebview(messageParent, url);
         }
       });
     }
