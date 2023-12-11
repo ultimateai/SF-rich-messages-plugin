@@ -1314,6 +1314,16 @@
       }
     }
 
+    const webviewButtonEventListener = (container, title) => {
+      container.style.display = "none";
+      var textareaElement = document.querySelector("textarea.chasitorText");
+      textareaElement.value = title;
+      var keydownEvent = document.createEvent("Event");
+      keydownEvent.initEvent("keydown");
+      keydownEvent.which = keydownEvent.keyCode = 13;
+      textareaElement.dispatchEvent(keydownEvent);
+    };
+
     function addWebview(parent, url) {
       let container = createEl("div", {
         class: "webviewOverlay"
@@ -1323,15 +1333,9 @@
 
       let header = createEl("div", { class: "webviewHeader" }, wrapper);
       let closeBtn = createEl("div", { class: "webviewBtn" }, header);
-      closeBtn.addEventListener("click", () => {
-        container.style.display = "none";
-        var textareaElement = document.querySelector("textarea.chasitorText");
-        textareaElement.value = "Webview closed";
-        var keydownEvent = document.createEvent("Event");
-        keydownEvent.initEvent("keydown");
-        keydownEvent.which = keydownEvent.keyCode = 13;
-        textareaElement.dispatchEvent(keydownEvent);
-      });
+      closeBtn.addEventListener("click", () =>
+        webviewButtonEventListener(container, "Webview closed")
+      );
 
       createEl(
         "iframe",
@@ -1345,15 +1349,9 @@
 
       let returnBtn = createEl("div", { class: "webviewReturnBtn" }, wrapper);
       returnBtn.innerHTML = "Return to Chat bot";
-      returnBtn.addEventListener("click", () => {
-        container.style.display = "none";
-        var textareaElement = document.querySelector("textarea.chasitorText");
-        textareaElement.value = "Returned to chat bot";
-        var keydownEvent = document.createEvent("Event");
-        keydownEvent.initEvent("keydown");
-        keydownEvent.which = keydownEvent.keyCode = 13;
-        textareaElement.dispatchEvent(keydownEvent);
-      });
+      returnBtn.addEventListener("click", () =>
+        webviewButtonEventListener(container, "Returned to chat bot")
+      );
       parent.appendChild(container);
     }
 
