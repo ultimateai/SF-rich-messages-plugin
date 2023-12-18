@@ -414,6 +414,11 @@ p {
   flex-wrap: wrap;
 }
 
+.buttons-wrapper-v0.btn-full {
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
 .buttons-wrapper-v0 .btn-default {
   width: auto;
   background: none;
