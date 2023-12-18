@@ -176,7 +176,7 @@ p {
 }
 
 .chatContent .agent iframe {
-  width: 270px;
+  max-width: 99%;
   height: 200px;
 }
 
