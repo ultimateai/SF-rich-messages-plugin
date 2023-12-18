@@ -1083,6 +1083,8 @@ p {
   font-size: 11.5px;
   line-height: 16px;
   color: #6c6f85;
+  display: flex;
+  flex-direction: column;
 }
 
 .ultimate-custom-card-buttons {
