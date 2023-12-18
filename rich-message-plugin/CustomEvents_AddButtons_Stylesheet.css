@@ -487,6 +487,7 @@ p {
   min-height: 21px;
   display: flex;
   align-items: center;
+  white-space: break-spaces;
 }
 
 .buttons-wrapper {
