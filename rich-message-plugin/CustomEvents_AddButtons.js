@@ -130,6 +130,14 @@
           let buttonElement;
 
           if (link && initialData.length === 1) {
+            if (version === 0) {
+              container.classList.remove(`btn-container-v${version}`);
+              const infoBlock = container.getElementsByClassName("info");
+              if (infoBlock[0]) {
+                infoBlock[0].classList.remove(`info-v${version}`);
+              }
+            }
+
             buttonElement = createEl(
               "button",
               { class: `button-link-wrapper button-link-wrapper-v${version}` },
