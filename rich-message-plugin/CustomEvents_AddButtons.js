@@ -1347,11 +1347,11 @@
         wrapper
       );
 
-      let returnBtn = createEl("div", { class: "webviewReturnBtn" }, wrapper);
-      returnBtn.innerHTML = "Return to Chat bot";
-      returnBtn.addEventListener("click", () =>
-        webviewButtonEventListener(container, "Returned to chat bot")
-      );
+      // let returnBtn = createEl("div", { class: "webviewReturnBtn" }, wrapper);
+      // returnBtn.innerHTML = "Return to Chat bot";
+      // returnBtn.addEventListener("click", () =>
+      //   webviewButtonEventListener(container, "Returned to chat bot")
+      // );
       parent.appendChild(container);
     }
 
@@ -1380,6 +1380,11 @@
           let match = parentText.match(regex);
           const url = match[1];
           addWebview(messageParent, url);
+        }
+        if (index !== payloadMessages.length - 1 && messageParent) {
+          let container =
+            messageParent.getElementsByClassName("webviewOverlay")[0];
+          if (container) container.style.display = "none";
         }
       });
     }
