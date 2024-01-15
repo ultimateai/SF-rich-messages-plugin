@@ -171,6 +171,14 @@ p {
 }
 
 /* bot answer */
+.hasImage {
+  width: 50% !important;
+}
+
+.chatContent .agent iframe {
+  max-width: 98%;
+  height: 200px;
+}
 
 .chatContent .agent {
   background: #f9f9fb !important;
@@ -406,6 +414,11 @@ p {
   flex-wrap: wrap;
 }
 
+.buttons-wrapper-v0.btn-full {
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
 .buttons-wrapper-v0 .btn-default {
   width: auto;
   background: none;
@@ -533,7 +546,7 @@ p {
   padding: 0;
   text-align: start;
   cursor: pointer;
-  padding: 8px 16px;
+  padding-bottom: 4px;
 }
 
 .button-link {
@@ -1075,6 +1088,8 @@ p {
   font-size: 11.5px;
   line-height: 16px;
   color: #6c6f85;
+  display: flex;
+  flex-direction: column;
 }
 
 .ultimate-custom-card-buttons {

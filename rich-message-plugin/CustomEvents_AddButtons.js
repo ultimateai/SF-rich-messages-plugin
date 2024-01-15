@@ -130,6 +130,14 @@
           let buttonElement;
 
           if (link && initialData.length === 1) {
+            if (version === 0) {
+              container.classList.remove(`btn-container-v${version}`);
+              const infoBlock = container.getElementsByClassName("info");
+              if (infoBlock[0]) {
+                infoBlock[0].classList.remove(`info-v${version}`);
+              }
+            }
+
             buttonElement = createEl(
               "button",
               { class: `button-link-wrapper button-link-wrapper-v${version}` },
@@ -1308,6 +1316,12 @@
       const payloadMessages = Array.from(
         document.getElementsByClassName("chatMessage")
       );
+
+      payloadMessages.forEach((agentElement) => {
+        if (agentElement.querySelector("img")) {
+          agentElement.classList.add("hasImage");
+        }
+      });
 
       payloadMessages.forEach((message, index) => {
         MESSAGES_COUNT = payloadMessages.length;
