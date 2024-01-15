@@ -6,16 +6,7 @@
     return;
   }
 
-  const link = document.createElement("link");
-  link.setAttribute("rel", "stylesheet");
-  link.setAttribute("type", "text/css");
-  link.setAttribute(
-    "href",
-    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-  );
-  document.head.appendChild(link);
-
-  const viewPortTag = document.createElement("meta");
+  var viewPortTag = document.createElement("meta");
   viewPortTag.name = "viewport";
   viewPortTag.content =
     "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0";
@@ -37,45 +28,35 @@
     }
   }, 1000);
 
-  //VERSIONS
-  const IS_VERSION_1 = "isVersion1";
-  const IS_VERSION_2 = "isVersion2";
-  const IS_VERSION_3 = "isVersion3";
-  const IS_VERSION_3_1 = "isVersion3.1";
-  const IS_VERSION_4 = "isversion4";
-  const IS_VERSION_4_1 = "isversion4.1";
+  var IS_VERSION_1 = "isVersion1";
+  var IS_VERSION_2 = "isVersion2";
+  var IS_VERSION_3 = "isVersion3";
+  var IS_WEBVIEW_VERSION = "isWebviewVersion";
 
-  const VERSION_1_KEY = "&&version1&&";
-  const VERSION_2_KEY = "&&version2&&";
-  const VERSION_3_KEY = "&&version3&&";
-  const VERSION_3_1_KEY = "&&version3.1&&";
-  const VERSION_4_KEY = "&&version4&&";
-  const VERSION_4_1_KEY = "&&version4.1&&";
+  var VERSION_1_KEY = "&&version1&&";
+  var VERSION_2_KEY = "&&version2&&";
+  var VERSION_3_KEY = "&&version3&&";
 
-  //PENDINGS
-  const PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
-  const PENDING_CAROUSELS_KEY = "ultimate_pending_carousels";
-  const PENDING_CAROUSEL_TITLE = "ultimate_pending_title";
-  const PENDING_MESSAGE = "ultimate_pending_agent_message";
-  const PENDING_MESSAGES_COUNT = "ultimate_pending_messages_count";
-  let MESSAGES_COUNT = 0;
+  var PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
+  var PENDING_CAROUSELS_KEY = "ultimate_pending_carousels";
+  var PENDING_CAROUSEL_TITLE = "ultimate_pending_title";
+  var PENDING_MESSAGE = "ultimate_pending_agent_message";
+  var PENDING_MESSAGES_COUNT = "ultimate_pending_messages_count";
+  var MESSAGES_COUNT = 0;
 
-  const ADD_BUTTONS_EVENT = "add_buttons";
-  const BUTTON_CLICK_EVENT = "button_click";
-  const ADD_CAROUSEL_EVENT = "add_carousel";
-  const TYPE_BUTTONS = "AddButtons";
-  const TYPE_CAROUSEL = "AddCarousel";
-  const TYPE_CARD = "AddCard";
-  const CUSTOM_ELEMENTS_EVENT = "custom_elements_event";
-  const CUSTOM_ELEMENTS_KEY = "ultimate_custom_elements";
-  let CUSTOM_ELEMENTS_DATA = {};
-  let DEBOUNCE_TIME_STAMP = 0;
-  const TAB_ID = String(Date.now());
+  var ADD_BUTTONS_EVENT = "add_buttons";
+  var BUTTON_CLICK_EVENT = "button_click";
+  var ADD_CAROUSEL_EVENT = "add_carousel";
+  var TYPE_BUTTONS = "AddButtons";
+  var TYPE_CAROUSEL = "AddCarousel";
+  var TYPE_CARD = "AddCard";
+  var CUSTOM_ELEMENTS_EVENT = "custom_elements_event";
+  var CUSTOM_ELEMENTS_KEY = "ultimate_custom_elements";
+  var CUSTOM_ELEMENTS_DATA = {};
+  var DEBOUNCE_TIME_STAMP = 0;
+  var TAB_ID = String(Date.now());
 
-  // SLIDER
-  const SLIDE_WIDTH_CAROUSEL_V1 = 260 + 8; // slider cards v1 (width + margin)
-  const SLIDE_WIDTH_CAROUSEL_V2 = 320 + 8; // slider cards v2 (width + margin)
-  const SLIDE_WIDTH_CAROUSEL_V3 = 206 + 8; // slider cards v3 (width + margin)
+  var slideWidth = 220 + 12; // slider cards (width + margin)
 
   // set timer and check if message list rendered and find loader in last element and hide
 
@@ -87,7 +68,7 @@
   }
   if (!Element.prototype.closest) {
     Element.prototype.closest = function (s) {
-      let el = this;
+      var el = this;
       do {
         if (Element.prototype.matches.call(el, s)) return el;
         el = el.parentElement || el.parentNode;
@@ -96,8 +77,9 @@
     };
   }
 
-  const getVersion = (message) => {
-    let value = "";
+  function getVersion(message) {
+    var value = "";
+    let webviewPattern = /&&webview:https?:\/\/[^&]*&&/;
 
     if (message.includes(VERSION_1_KEY)) {
       value = IS_VERSION_1;
@@ -105,167 +87,30 @@
       value = IS_VERSION_2;
     } else if (message.includes(VERSION_3_KEY)) {
       value = IS_VERSION_3;
-    } else if (message.includes(VERSION_3_1_KEY)) {
-      value = IS_VERSION_3_1;
-    } else if (message.includes(VERSION_4_KEY)) {
-      value = IS_VERSION_4;
-    } else if (message.includes(VERSION_4_1_KEY)) {
-      value = IS_VERSION_4_1;
+    } else if (webviewPattern.test(message)) {
+      value = IS_WEBVIEW_VERSION;
     }
     return value;
-  };
+  }
 
-  const getElementIndex = (el) => {
-    const index = 0;
+  function getElementIndex(el) {
+    var index = 0;
     while ((el = el.previousElementSibling)) {
       index++;
     }
     return index;
-  };
+  }
 
-  (setupCustomButtonSnapIn = (liveAgentAPI) => {
-    const createCustomButtonElements = (
+  (function setupCustomButtonSnapIn(liveAgentAPI) {
+    function createCustomButtonElements(
       initialData,
       wrapper,
       rating,
-      container,
-      version
-    ) => {
+      container
+    ) {
       if (rating) {
-        addChatButtonRating(initialData, wrapper, rating, container, version);
-      } else {
-        initialData.forEach(({ text, link }) => {
-          let buttonElement;
-
-          if (link && initialData.length === 1) {
-            buttonElement = createEl(
-              "button",
-              { class: `button-link-wrapper button-link-wrapper-v${version}` },
-              wrapper
-            );
-
-            const linkElement = createEl(
-              "span",
-              { class: "button-link" },
-              buttonElement
-            );
-            linkElement.innerHTML = text;
-
-            createSvg(
-              buttonElement,
-              "0 0 16 16",
-              "#5D5ADC",
-              "M3.33333 3.33333V12.6667H12.6667V8H14V12.6667C14 13.4 13.4 14 12.6667 14H3.33333C2.59333 14 2 13.4 2 12.6667V3.33333C2 2.6 2.59333 2 3.33333 2H8V3.33333H3.33333ZM9.33333 3.33333V2H14V6.66667H12.6667V4.27333L6.11333 10.8267L5.17333 9.88667L11.7267 3.33333H9.33333Z"
-            );
-
-            const noteBlock = createEl(
-              "div",
-              { class: "button-note-block" },
-              container
-            );
-
-            const noteText = createEl(
-              "span",
-              { class: "button-note-text" },
-              noteBlock
-            );
-            noteText.innerHTML =
-              "Note: This page will open in a new browser tab";
-          } else {
-            buttonElement = createEl(
-              "button",
-              {
-                class: `${
-                  initialData.length === 1 ? "oneElement" : "btn-default"
-                }`
-              },
-              wrapper
-            );
-            buttonElement.innerHTML = text;
-          }
-          buttonElement.addEventListener("click", () =>
-            customOnButtonClick(container, link, text)
-          );
-        });
-      }
-    };
-
-    const addChatButtonsDefault = (version, chatButtons, index, title) => {
-      const buttonContainer = createEl("div", {
-        class: `ultimate-btn-container ultimate-hidden version-custom-button btn-container-v${version}`
-      });
-
-      const info = createEl(
-        "div",
-        { class: `info info-v${version}` },
-        buttonContainer
-      );
-
-      if (title) {
-        info.innerHTML = title;
-      }
-
-      if (info.querySelectorAll(".titlesBlock").length) {
-        info.classList.add("custom-info");
-      }
-
-      let rating;
-      if (
-        (version === 3 || version === 3.1) | (version === 4 || version === 4.1)
-      ) {
-        info.classList.add("info-rating");
-        rating = createEl("div", { class: "rating-group" }, buttonContainer);
-      }
-
-      const buttonsWrapper = createEl(
-        "div",
-        { class: `buttons-wrapper buttons-wrapper-v${version}` },
-        buttonContainer
-      );
-
-      createCustomButtonElements(
-        chatButtons,
-        buttonsWrapper,
-        rating,
-        buttonContainer,
-        version
-      );
-      addElementToMessageArea(
-        buttonContainer,
-        TYPE_BUTTONS,
-        chatButtons,
-        index,
-        true
-      );
-    };
-
-    const addChatButtonRating = (
-      initialData,
-      wrapper,
-      rating,
-      container,
-      version
-    ) => {
-      const lastButtonElement =
-        (version === 4 || version === 3) && initialData.pop();
-      const starsBlock = createEl(
-        "div",
-        { class: `starsBlock starsBlock-v${Math.floor(version)}` },
-        rating
-      );
-      if (version === 4 || version === 4.1) {
-        initialData.forEach(({ text }) => {
-          const ratingButton = createEl(
-            "div",
-            { class: "rating-v2-button" },
-            starsBlock
-          );
-          ratingButton.innerHTML = text;
-          ratingButton.addEventListener("click", () =>
-            customOnButtonClick(container, "", text)
-          );
-        });
-      } else {
+        var lastButtonElement = initialData.pop();
+        var starsBlock = createEl("div", { class: "starsBlock" }, rating);
         createEl(
           "input",
           {
@@ -281,8 +126,8 @@
         );
 
         initialData.forEach(({ text }, index) => {
-          const specialId = Date.now();
-          const starLabel = createEl(
+          var specialId = Date.now();
+          var starLabel = createEl(
             "label",
             {
               class: "rating__label",
@@ -292,14 +137,28 @@
             starsBlock
           );
 
-          createSvg(
-            starLabel,
-            "0 0 22 22",
-            undefined,
-            "M12.1017 1.69434C11.9064 1.26465 11.4767 0.991211 11.008 0.991211C10.5001 0.991211 10.0705 1.26465 9.87514 1.69434L7.37514 6.88965L1.75014 7.70996C1.28139 7.78809 0.890767 8.10059 0.734517 8.56934C0.617329 8.99902 0.734517 9.50684 1.04702 9.81934L5.10952 13.8428L4.17202 19.5459C4.09389 20.0146 4.2892 20.4834 4.67983 20.7568C5.07045 21.0693 5.57827 21.0693 5.96889 20.874L11.008 18.1787L16.008 20.874C16.4376 21.0693 16.9455 21.0693 17.3361 20.7568C17.7267 20.4834 17.922 20.0146 17.8439 19.5459L16.8673 13.8428L20.9298 9.81934C21.2814 9.50684 21.3986 8.99902 21.2423 8.56934C21.0861 8.10059 20.6955 7.78809 20.2267 7.70996L14.6408 6.88965L12.1017 1.69434Z",
-            "#5D5ADC",
-            "2"
+          const starIcon = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg"
           );
+          const starPath = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+
+          starIcon.setAttribute("fill", "none");
+          starIcon.setAttribute("width", "36");
+          starIcon.setAttribute("height", "33");
+          starIcon.setAttribute("viewBox", "0 0 36 33");
+
+          starPath.setAttribute(
+            "d",
+            "M18 0L22.0413 12.4377H35.119L24.5389 20.1246L28.5801 32.5623L18 24.8754L7.41987 32.5623L11.4611 20.1246L0.880983 12.4377H13.9587L18 0Z"
+          );
+          starPath.setAttribute("fill", "#000000");
+          starIcon.appendChild(starPath);
+
+          starLabel.appendChild(starIcon);
 
           createEl(
             "input",
@@ -317,11 +176,10 @@
             customOnButtonClick(container, "", text)
           );
         });
-      }
-      if (version === 4 || version === 3) {
-        const buttonElement = createEl(
+
+        var buttonElement = createEl(
           "button",
-          { class: "btn-rating" },
+          { class: "btn-version3" },
           wrapper
         );
         buttonElement.innerHTML = lastButtonElement.text;
@@ -329,17 +187,144 @@
         buttonElement.addEventListener("click", () =>
           customOnButtonClick(container, "", lastButtonElement.text)
         );
-      }
-    };
+      } else {
+        initialData.forEach(({ text, link }) => {
+          var buttonElement = createEl(
+            "button",
+            { class: "btn-version1" },
+            wrapper
+          );
 
-    const isMainTab =
+          if (link && initialData.length === 1) {
+            buttonElement.classList.add("btn-version2");
+
+            const linkElement = createEl(
+              "span",
+              { class: "button-v2-link" },
+              buttonElement
+            );
+            linkElement.innerHTML = text;
+
+            const noteBlock = createEl(
+              "div",
+              { class: "button-v2-note-block" },
+              container
+            );
+
+            const noteText = createEl(
+              "span",
+              { class: "button-v2-note-text" },
+              noteBlock
+            );
+            noteText.innerHTML =
+              "Note: This page will open in a new browser tab";
+          } else {
+            buttonElement.innerHTML = text;
+          }
+
+          buttonElement.addEventListener("click", () =>
+            customOnButtonClick(container, link, text)
+          );
+        });
+      }
+    }
+
+    function addChatButtonsDefault(chatButtons, index, title) {
+      var buttonContainer = createEl("div", {
+        class: "ultimate-btn-container ultimate-hidden version-custom-button"
+      });
+
+      var info = createEl("div", { class: "info" }, buttonContainer);
+      info.innerHTML = title;
+
+      var buttonsWrapper = createEl(
+        "div",
+        { class: "buttons-wrapper buttons-wrapper-default" },
+        buttonContainer
+      );
+
+      createCustomButtonElements(
+        chatButtons,
+        buttonsWrapper,
+        undefined,
+        buttonContainer
+      );
+      addElementToMessageArea(
+        buttonContainer,
+        TYPE_BUTTONS,
+        chatButtons,
+        index,
+        true
+      );
+    }
+
+    function addChatButtonsVersion1(chatButtons, index, title) {
+      var buttonContainer = createEl("div", {
+        class: "ultimate-btn-container ultimate-hidden version-custom-button"
+      });
+
+      var info = createEl("div", { class: "info" }, buttonContainer);
+      info.innerHTML = title || "";
+
+      var buttonsWrapper = createEl(
+        "div",
+        { class: "buttons-wrapper buttons-wrapper-v1" },
+        buttonContainer
+      );
+
+      createCustomButtonElements(
+        chatButtons,
+        buttonsWrapper,
+        undefined,
+        buttonContainer
+      );
+      addElementToMessageArea(
+        buttonContainer,
+        TYPE_BUTTONS,
+        chatButtons,
+        index,
+        true
+      );
+    }
+
+    function addChatButtonsVersion3(chatButtons, index, title) {
+      var buttonContainer = createEl("div", {
+        class: "ultimate-btn-container ultimate-hidden version-custom-button"
+      });
+
+      var info = createEl("div", { class: "info" }, buttonContainer);
+      var rating = createEl("div", { class: "rating-group" }, buttonContainer);
+      var buttonsWrapper = createEl(
+        "div",
+        { class: "buttons-wrapper buttons-wrapper-v3" },
+        buttonContainer
+      );
+
+      info.innerHTML = title || "";
+
+      createCustomButtonElements(
+        chatButtons,
+        buttonsWrapper,
+        rating,
+        buttonContainer
+      );
+      addElementToMessageArea(
+        buttonContainer,
+        TYPE_BUTTONS,
+        chatButtons,
+        index,
+        true
+      );
+    }
+
+    var isMainTab =
       liveAgentAPI &&
       liveAgentAPI.browserSessionInfo &&
       liveAgentAPI.browserSessionInfo.isPrimary;
-    const sessionId =
+    var sessionId =
       liveAgentAPI && liveAgentAPI.connection && liveAgentAPI.connection.sid;
 
-    const onCustomData = (data, type, title) => {
+    function onCustomData(data, type, title) {
       if (Date.now() - DEBOUNCE_TIME_STAMP < 100) {
         console.error("Event debounced", data);
         return;
@@ -355,57 +340,26 @@
             .querySelector(".chatContent")
             ?.classList.add("custom-item");
         }
-        const eventData = JSON.parse(data);
+        var eventData = JSON.parse(data);
         if (type === TYPE_BUTTONS) {
-          const version = getVersion(eventData.message || "");
+          var version = getVersion(eventData.message || "");
           const titleMessage = eventData.message;
 
-          const buttonsRenderers = {
+          var buttonsRenderers = {
             [IS_VERSION_1]: () =>
-              addChatButtonsDefault(
-                1,
+              addChatButtonsVersion1(
                 eventData.chatButtons,
                 undefined,
                 titleMessage.replace(VERSION_1_KEY, "")
               ),
-            [IS_VERSION_2]: () =>
-              addChatButtonsDefault(
-                2,
-                eventData.chatButtons,
-                undefined,
-                titleMessage.replace(VERSION_2_KEY, "")
-              ),
             [IS_VERSION_3]: () =>
-              addChatButtonsDefault(
-                3,
+              addChatButtonsVersion3(
                 eventData.chatButtons,
                 undefined,
                 titleMessage.replace(VERSION_3_KEY, "")
               ),
-            [IS_VERSION_3_1]: () =>
-              addChatButtonsDefault(
-                3.1,
-                eventData.chatButtons,
-                undefined,
-                titleMessage.replace(VERSION_3_1_KEY, "")
-              ),
-            [IS_VERSION_4]: () =>
-              addChatButtonsDefault(
-                4,
-                eventData.chatButtons,
-                undefined,
-                titleMessage.replace(VERSION_4_KEY, "")
-              ),
-            [IS_VERSION_4_1]: () =>
-              addChatButtonsDefault(
-                4.1,
-                eventData.chatButtons,
-                undefined,
-                titleMessage.replace(VERSION_4_1_KEY, "")
-              ),
             default: () =>
               addChatButtonsDefault(
-                0,
                 eventData.chatButtons,
                 undefined,
                 titleMessage
@@ -414,7 +368,7 @@
 
           buttonsRenderers[version || "default"]();
         } else if (type === TYPE_CAROUSEL) {
-          const version = getVersion(eventData.cards[0].title);
+          var version = getVersion(eventData.cards[0].title);
 
           let carouselMesasge = "";
           const messagesList = document.querySelectorAll(
@@ -424,24 +378,21 @@
           if (lastMessageItem) {
             // Take massage from last chat bot message and put to carousel title
             carouselMesasge =
-              lastMessageItem.querySelector(".chatContent span")?.innerHTML ||
-              "";
+              lastMessageItem.getElementsByTagName("span")[0]?.innerHTML;
 
             if (title) {
               carouselMesasge = title;
             }
 
             if (eventData.cards.length >= 1) {
-              const carouselsRenderers = {
+              var carouselsRenderers = {
                 [IS_VERSION_1]: () =>
-                  addChatCarousel(1, eventData, carouselMesasge),
+                  addChatCustomCarousel(1, eventData, carouselMesasge),
                 [IS_VERSION_2]: () =>
-                  addChatCarousel(2, eventData, carouselMesasge),
+                  addChatCustomCarousel(2, eventData, carouselMesasge),
                 [IS_VERSION_3]: () =>
-                  addChatCarousel(3, eventData, carouselMesasge),
-                [IS_VERSION_4]: () =>
-                  addChatCarousel(4, eventData, carouselMesasge),
-                default: () => addChatCarousel(0, eventData, carouselMesasge)
+                  addChatCustomCarousel(3, eventData, carouselMesasge),
+                default: () => addChatCarouselDefault(eventData)
               };
               carouselsRenderers[version || "default"]();
             } else {
@@ -459,101 +410,92 @@
         console.log(err, "err");
         console.error("Failed to parse event data", data);
       }
-    };
+    }
 
-    const onClickButtonElement = (buttonLink, buttonText, cardIndex) => {
+    function onClickButtonElement(buttonLink, buttonText, cardIndex) {
       if (buttonLink) {
-        const newWindow = window.open(buttonLink, "_blank");
+        var newWindow = window.open(buttonLink, "_blank");
         newWindow.focus();
         clearPending();
         return;
       }
-      const serializedData = JSON.stringify({
+      var serializedData = JSON.stringify({
         text: buttonText,
         cardIndex: cardIndex
       });
 
       onButtonClickInAnyTab(serializedData);
-    };
+    }
 
-    const createSvg = (container, viewBox, fill, path, stroke, strokeWidth) => {
-      const externalLinkSvg = createEl(
-        "svg",
-        {
-          viewBox
-        },
-        container,
-        true
-      );
-
-      createEl(
-        "path",
-        {
-          fill,
-          d: path,
-          stroke,
-          "stroke-width": strokeWidth
-        },
-        externalLinkSvg,
-        true
-      );
-    };
-
-    const addButtonToContainer = (
-      container,
-      button,
-      carouselContainer,
-      index
-    ) => {
-      const buttonText = button.text;
-      const buttonLink = button.link;
-      const buttonElement = createEl(
-        "button",
-        { class: "ultimate-card-button" },
-        container
-      );
-
+    function addButtonToContainer(container, button, cardIndex) {
+      var buttonText = button.text;
+      var buttonLink = button.link;
+      var buttonElement = createEl("button", {}, container);
+      var buttonClass = "ultimate-btn";
       if (buttonLink) {
-        buttonElement.classList.add("ultimate-card-link-wrapper");
-
-        const buttonTextEl = createEl(
-          "span",
-          { class: "button-link" },
-          buttonElement
-        );
-        buttonTextEl.innerHTML = buttonText;
-
-        createSvg(
+        buttonClass += " ultimate-btn-link";
+        var buttonLinkSvg = createEl(
+          "svg",
+          {
+            viewBox: "0 0 19 18"
+          },
           buttonElement,
-          "0 0 16 16",
-          "#0f0e3f",
-          "M3.33333 3.33333V12.6667H12.6667V8H14V12.6667C14 13.4 13.4 14 12.6667 14H3.33333C2.59333 14 2 13.4 2 12.6667V3.33333C2 2.6 2.59333 2 3.33333 2H8V3.33333H3.33333ZM9.33333 3.33333V2H14V6.66667H12.6667V4.27333L6.11333 10.8267L5.17333 9.88667L11.7267 3.33333H9.33333Z"
+          true
         );
-      } else {
-        buttonElement.innerHTML = buttonText;
+        createEl(
+          "path",
+          {
+            fill: "#757575",
+            d: "M2.5 2V16H16.5V9H18.5V16C18.5 17.1 17.6 18 16.5 18H2.5C1.39 18 0.5 17.1 0.5 16V2C0.5 0.9 1.39 0 2.5 0H9.5V2H2.5ZM11.5 2V0H18.5V7H16.5V3.41L6.67 13.24L5.26 11.83L15.09 2H11.5Z"
+          },
+          buttonLinkSvg,
+          true
+        );
       }
+      var buttonTextEl = createEl("span", {}, buttonElement);
+      buttonTextEl.innerHTML = buttonText;
+      buttonElement.setAttribute("class", buttonClass);
+      buttonElement.addEventListener("click", function () {
+        var element = buttonElement.closest("div.messageArea ul li");
+        var lastButtonActive = element.querySelector(".ultimate-btn-active");
+        if (lastButtonActive) {
+          lastButtonActive.classList.remove("ultimate-btn-active");
+        }
+        buttonElement.classList.add("ultimate-btn-active");
 
-      const onButtonClick = () => {
-        const disabledClass = "carousel-disabled";
-        if (carouselContainer.classList.contains(disabledClass)) {
-          if (buttonElement.classList.contains("ultimate-card-link-wrapper")) {
-            onClickButtonElement(buttonLink, buttonText, index);
+        var elementIndex = getElementIndex(element);
+
+        if (CUSTOM_ELEMENTS_DATA[elementIndex]) {
+          CUSTOM_ELEMENTS_DATA[elementIndex].activeCard = cardIndex;
+          CUSTOM_ELEMENTS_DATA[elementIndex].activeButton =
+            getElementIndex(buttonElement);
+          localStorage.setItem(
+            CUSTOM_ELEMENTS_KEY,
+            JSON.stringify(CUSTOM_ELEMENTS_DATA)
+          );
+          broadcastStorageEvent(
+            CUSTOM_ELEMENTS_EVENT,
+            JSON.stringify({ index: elementIndex })
+          );
+          if (
+            CUSTOM_ELEMENTS_DATA[elementIndex].type === TYPE_BUTTONS &&
+            !buttonLink
+          ) {
+            buttonElement
+              .closest(".ultimate-btn-container")
+              .classList.add("ultimate-hidden");
+            setTimeout(function () {
+              onClickButtonElement(buttonLink, buttonText, cardIndex);
+            }, 500);
           } else {
-            return;
-          }
-        } else {
-          onClickButtonElement(buttonLink, buttonText, index);
-          if (!buttonLink) {
-            carouselContainer.classList.add(disabledClass);
+            onClickButtonElement(buttonLink, buttonText, cardIndex);
           }
         }
-      };
+      });
+    }
 
-      buttonElement.addEventListener("click", onButtonClick);
-    };
-
-    const addCardToContainer = (container, card, cardIndex) => {
-      const cardElement = createEl(
+    function addCardToContainer(container, card, cardIndex) {
+      var cardElement = createEl(
         "div",
         {
           class: "ultimate-card"
@@ -570,42 +512,42 @@
         );
       }
       if (card.title) {
-        const cardTitle = createEl("h3", {}, cardElement);
+        var cardTitle = createEl("h3", {}, cardElement);
         cardTitle.innerText = card.title;
       }
       if (card.description) {
-        const cardDescription = createEl("p", {}, cardElement);
+        var cardDescription = createEl("p", {}, cardElement);
         cardDescription.innerText = card.description;
       }
       if (card.buttons && Array.isArray(card.buttons)) {
-        const cardButtons = createEl(
+        var cardButtons = createEl(
           "div",
           {
             class: "ultimate-card-buttons"
           },
           cardElement
         );
-        for (let i = 0; i < card.buttons.length; ++i) {
+        for (var i = 0; i < card.buttons.length; ++i) {
           addButtonToContainer(cardButtons, card.buttons[i], cardIndex);
         }
       }
-    };
+    }
 
-    const addElementToMessageArea = (
+    function addElementToMessageArea(
       element,
       type,
       data,
       index,
       isVersionElement
-    ) => {
-      const messageArea = document.querySelector("div.messageArea");
+    ) {
+      var messageArea = document.querySelector("div.messageArea");
       if (messageArea) {
-        const messageList = messageArea.querySelector("ul");
+        var messageList = messageArea.querySelector("ul");
         if (messageList) {
           // var isIndexLast = type === TYPE_BUTTONS || typeof index === 'undefined'
-          const isIndexLast = typeof index === "undefined";
+          var isIndexLast = typeof index === "undefined";
 
-          const elementIndex = isIndexLast
+          var elementIndex = isIndexLast
             ? messageList.children.length
             : parseInt(index);
           element.setAttribute("data-element-index", elementIndex);
@@ -626,10 +568,10 @@
 
           if (messageList.children.length === elementIndex) {
             if (isVersionElement) {
-              const lastMessageItem =
+              var lastMessageItem =
                 messageList.children[messageList.children.length - 1];
               if (lastMessageItem) {
-                const contentWrapper =
+                var contentWrapper =
                   lastMessageItem.querySelector(".chatContent");
                 contentWrapper.classList.add("chatContent-custom-element");
                 if (contentWrapper.children.length) {
@@ -644,11 +586,14 @@
             } else {
               messageList.appendChild(element);
             }
-            const observer = new MutationObserver((mutationsList, observer) => {
-              const elementIndex = parseInt(element.dataset.elementIndex);
+            var observer = new MutationObserver(function (
+              mutationsList,
+              observer
+            ) {
+              var elementIndex = parseInt(element.dataset.elementIndex);
               if (getElementIndex(element) !== elementIndex) {
                 observer.disconnect();
-                const markerElement =
+                var markerElement =
                   element.parentNode &&
                   element.parentNode.children[elementIndex - 1];
                 if (markerElement) {
@@ -664,16 +609,16 @@
             );
           }
 
-          const elementData = CUSTOM_ELEMENTS_DATA[elementIndex];
-          let buttonContainer = element;
+          var elementData = CUSTOM_ELEMENTS_DATA[elementIndex];
+          var buttonContainer = element;
 
           if (type === TYPE_CAROUSEL) {
             buttonContainer =
               buttonContainer.querySelectorAll(".ultimate-card")[
                 elementData.activeCard
               ];
-            const carousel = element.children[0];
-            setTimeout(() => {
+            var carousel = element.children[0];
+            setTimeout(function () {
               carousel.dataset.currentIndex = elementData.currentCard;
               updateSlider(carousel, true);
             });
@@ -685,20 +630,20 @@
               [elementData.activeButton].classList.add("ultimate-btn-active");
           }
 
-          setTimeout(() => {
+          setTimeout(function () {
             messageArea.scrollTop = messageArea.scrollHeight;
             element.classList.remove("ultimate-hidden");
           });
         }
       }
-    };
+    }
 
-    const createEl = (tag, attrs, parent, isSvg) => {
-      const xmlns = "http://www.w3.org/2000/svg";
-      const el = isSvg
+    function createEl(tag, attrs, parent, isSvg) {
+      var xmlns = "http://www.w3.org/2000/svg";
+      var el = isSvg
         ? document.createElementNS(xmlns, tag)
         : document.createElement(tag);
-      for (let attrName in attrs) {
+      for (var attrName in attrs) {
         if (attrs.hasOwnProperty(attrName)) {
           el.setAttribute(attrName, attrs[attrName]);
         }
@@ -707,33 +652,33 @@
         parent.appendChild(el);
       }
       return el;
-    };
+    }
 
-    const dragStart = (event) => {
-      const e = event || window.event;
-      const carousel = e.target.closest(".ultimate-carousel");
-      const busy = parseInt(carousel.dataset.busy);
+    function dragStart(event) {
+      var e = event || window.event;
+      var carousel = e.target.closest(".ultimate-carousel");
+      var busy = parseInt(carousel.dataset.busy);
       if (!busy && e.target.tagName !== "BUTTON") {
-        const x1 = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
-        const y1 = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
+        var x1 = e.type === "touchstart" ? e.touches[0].clientX : e.clientX;
+        var y1 = e.type === "touchstart" ? e.touches[0].clientY : e.clientY;
         carousel.dataset.x1 = x1;
         carousel.dataset.x2 = x1;
         carousel.dataset.y1 = y1;
         carousel.dataset.y2 = y1;
       }
-    };
+    }
 
-    const dragMove = (event, slideWidth) => {
-      const e = event || window.event;
-      const carousel = e.target.closest(".ultimate-carousel");
-      const busy = parseInt(carousel.dataset.busy);
-      const x1 = parseInt(carousel.dataset.x1);
-      const x2 = e.type == "touchmove" ? e.touches[0].clientX : e.clientX;
-      const y1 = parseInt(carousel.dataset.y1);
-      const y2 = e.type == "touchmove" ? e.touches[0].clientY : e.clientY;
-      let shouldMoveSlider = busy && x1 && y1;
+    function dragMove(event) {
+      var e = event || window.event;
+      var carousel = e.target.closest(".ultimate-carousel");
+      var busy = parseInt(carousel.dataset.busy);
+      var x1 = parseInt(carousel.dataset.x1);
+      var x2 = e.type == "touchmove" ? e.touches[0].clientX : e.clientX;
+      var y1 = parseInt(carousel.dataset.y1);
+      var y2 = e.type == "touchmove" ? e.touches[0].clientY : e.clientY;
+      var shouldMoveSlider = busy && x1 && y1;
       if (!busy && x1 && y1) {
-        const movingVertically =
+        var movingVertically =
           Math.abs(Math.abs(x2) - Math.abs(x1)) <
           Math.abs(Math.abs(y2) - Math.abs(y1));
         if (!movingVertically) {
@@ -741,16 +686,14 @@
         }
       }
       if (shouldMoveSlider) {
-        const busyTimer = parseInt(carousel.dataset.busyTimer);
+        var busyTimer = parseInt(carousel.dataset.busyTimer);
         if (busyTimer) clearTimeout(busyTimer);
         carousel.dataset.busy = 1;
         carousel.dataset.x2 = x2;
-        const carouselTrack = carousel.querySelector(
-          ".ultimate-carousel-track"
-        );
-        const currentIndex = parseInt(carousel.dataset.currentIndex);
-        const itemsLength = parseInt(carousel.dataset.itemsLength);
-        let xDelta = x1 - x2;
+        var carouselTrack = carousel.querySelector(".ultimate-carousel-track");
+        var currentIndex = parseInt(carousel.dataset.currentIndex);
+        var itemsLength = parseInt(carousel.dataset.itemsLength);
+        var xDelta = x1 - x2;
         if (
           (x1 < x2 && currentIndex === 0) ||
           (x1 > x2 && currentIndex === itemsLength - 1)
@@ -767,48 +710,42 @@
         carousel.dataset.y1 = 0;
         carousel.dataset.y2 = 0;
       }
-    };
+    }
 
-    const dragEnd = (event, slideWidth) => {
-      const e = event || window.event;
-      const carousel = e.target.closest(".ultimate-carousel");
-      const busy = parseInt(carousel.dataset.busy);
-      const x1 = parseInt(carousel.dataset.x1);
-      const x2 = parseInt(carousel.dataset.x2);
+    function dragEnd(event) {
+      var e = event || window.event;
+      var carousel = e.target.closest(".ultimate-carousel");
+      var busy = parseInt(carousel.dataset.busy);
+      var x1 = parseInt(carousel.dataset.x1);
+      var x2 = parseInt(carousel.dataset.x2);
       if (busy && x1 && x2) {
-        const currentIndex = parseInt(carousel.dataset.currentIndex);
-        const itemsLength = parseInt(carousel.dataset.itemsLength);
+        var currentIndex = parseInt(carousel.dataset.currentIndex);
+        var itemsLength = parseInt(carousel.dataset.itemsLength);
         carousel.dataset.busy = 0;
         carousel.dataset.x1 = 0;
         carousel.dataset.x2 = 0;
         carousel.dataset.y1 = 0;
         carousel.dataset.y2 = 0;
-        let keepCurrentIndex = true;
+        var keepCurrentIndex = true;
         if (Math.abs(x1 - x2) > slideWidth / 3) {
           if (x1 < x2) {
             if (currentIndex - 1 >= 0) {
-              prevSlider(
-                {
-                  target: carousel.querySelector(".ultimate-carousel-list")
-                },
-                slideWidth
-              );
+              prevSlider({
+                target: carousel.querySelector(".ultimate-carousel-list")
+              });
               keepCurrentIndex = false;
             }
           } else {
             if (currentIndex + 1 < itemsLength) {
-              nextSlider(
-                {
-                  target: carousel.querySelector(".ultimate-carousel-list")
-                },
-                slideWidth
-              );
+              nextSlider({
+                target: carousel.querySelector(".ultimate-carousel-list")
+              });
               keepCurrentIndex = false;
             }
           }
         }
         if (keepCurrentIndex) {
-          updateSlider(carousel, undefined, slideWidth);
+          updateSlider(carousel);
         }
       } else {
         carousel.dataset.x1 = 0;
@@ -816,41 +753,31 @@
         carousel.dataset.y1 = 0;
         carousel.dataset.y2 = 0;
       }
-    };
+    }
 
-    const updateSlider = (carousel, noAnimate, slideWidth) => {
-      const currentIndex = parseInt(carousel.dataset.currentIndex);
+    function updateSlider(carousel, noAnimate) {
+      var currentIndex = parseInt(carousel.dataset.currentIndex);
       carousel.dataset.currentIndex = currentIndex + 1;
-      prevSlider(
-        {
-          target: carousel.querySelector(".ultimate-carousel-list"),
-          noAnimate: noAnimate
-        },
-        slideWidth
-      );
-    };
+      prevSlider({
+        target: carousel.querySelector(".ultimate-carousel-list"),
+        noAnimate: noAnimate
+      });
+    }
 
-    const moveSlider = (
-      buttonEl,
-      isPrev,
-      noAnimate,
-      targetIndex,
-      slideWidth
-    ) => {
-      const carousel = buttonEl.parentNode;
+    function moveSlider(buttonEl, isPrev, noAnimate, targetIndex) {
+      var carousel = buttonEl.parentNode;
 
-      const slideCicles = carousel.querySelector(".dotsContainer");
+      var slideCicles = carousel.querySelector(".dotsContainer");
 
-      const carouselTrack = carousel.querySelector(".ultimate-carousel-track");
-      const currentIndex = parseInt(carousel.dataset.currentIndex);
-      const itemsLength = parseInt(carousel.dataset.itemsLength);
-      const busy = parseInt(carousel.dataset.busy);
-      const busyTimer = parseInt(carousel.dataset.busyTimer);
-      let goToIndex;
+      var carouselTrack = carousel.querySelector(".ultimate-carousel-track");
+      var currentIndex = parseInt(carousel.dataset.currentIndex);
+      var itemsLength = parseInt(carousel.dataset.itemsLength);
+      var busy = parseInt(carousel.dataset.busy);
+      var busyTimer = parseInt(carousel.dataset.busyTimer);
       if (targetIndex || targetIndex === 0) {
-        goToIndex = isPrev ? currentIndex - 1 : targetIndex;
+        var goToIndex = isPrev ? currentIndex - 1 : targetIndex;
       } else {
-        goToIndex = isPrev ? currentIndex - 1 : currentIndex + 1;
+        var goToIndex = isPrev ? currentIndex - 1 : currentIndex + 1;
       }
 
       if (slideCicles) {
@@ -870,8 +797,8 @@
           slideWidth * -goToIndex +
           "px, 0, 0);" +
           (noAnimate ? " transition: none;" : "");
-        const carouselPrev = carousel.querySelector(".ultimate-carousel-prev");
-        const carouselNext = carousel.querySelector(".ultimate-carousel-next");
+        var carouselPrev = carousel.querySelector(".ultimate-carousel-prev");
+        var carouselNext = carousel.querySelector(".ultimate-carousel-next");
 
         if (carouselNext && carouselPrev) {
           if (goToIndex === 0) {
@@ -890,7 +817,7 @@
         carousel.dataset.busyTimer = busyTimer;
         carousel.dataset.busy = 0;
 
-        const elementIndex = parseInt(carousel.parentNode.dataset.elementIndex);
+        var elementIndex = parseInt(carousel.parentNode.dataset.elementIndex);
         if (
           parseInt(CUSTOM_ELEMENTS_DATA[elementIndex].currentCard) !== goToIndex
         ) {
@@ -905,19 +832,19 @@
           );
         }
       }
-    };
+    }
 
-    const prevSlider = (event, slideWidth) => {
-      moveSlider(event.target, true, undefined, undefined, slideWidth);
-    };
+    function prevSlider(event) {
+      moveSlider(event.target, true, undefined, undefined);
+    }
 
-    const nextSlider = (event, slideWidth) => {
-      moveSlider(event.target, false, undefined, undefined, slideWidth);
-    };
+    function nextSlider(event) {
+      moveSlider(event.target, false, undefined, undefined);
+    }
 
-    const addChatCard = (card, index) => {
+    function addChatCard(card, index) {
       try {
-        const cardContainer = createEl("li", {
+        var cardContainer = createEl("li", {
           class: "ultimate-card-container ultimate-hidden"
         });
         addCardToContainer(cardContainer, card, 0);
@@ -926,9 +853,9 @@
         console.error("Failed to add card element to the DOM");
         console.error(err);
       }
-    };
+    }
 
-    const customOnButtonClick = (container, link, text) => {
+    function customOnButtonClick(container, link, text) {
       const isDisabled =
         container.querySelector(".button-disabled") ||
         container.querySelector(".star-disabled");
@@ -937,11 +864,8 @@
       } else {
         onClickButtonElement(link, text, undefined);
 
-        const starsListNodes = Object.values(
-          container.querySelectorAll("label")
-        );
+        var starsListNodes = Object.values(container.querySelectorAll("label"));
         const buttonsListNodes = container.querySelectorAll("button");
-        const buttonsRating = container.querySelectorAll(".rating-v2-button");
 
         const size = text;
         const choosenStars = [];
@@ -951,76 +875,45 @@
         }
 
         if (choosenStars.length > 1) {
-          for (let i = 0; i < choosenStars[0].length; ++i) {
+          for (var i = 0; i < choosenStars[0].length; ++i) {
             choosenStars[0][i].classList.add("star-disabled");
           }
 
-          for (let i = 0; i < choosenStars[1].length; ++i) {
+          for (var i = 0; i < choosenStars[1].length; ++i) {
             choosenStars[1][i].classList.add("star-remaining");
           }
         } else if (choosenStars.length) {
-          for (let i = 0; i < choosenStars[0].length; ++i) {
+          for (var i = 0; i < choosenStars[0].length; ++i) {
             choosenStars[0][i].classList.add("star-disabled");
           }
         } else {
-          for (let i = 0; i < starsListNodes.length; ++i) {
+          for (var i = 0; i < starsListNodes.length; ++i) {
             starsListNodes[i].classList.add("star-remaining");
           }
         }
-        if (!link) {
-          for (let i = 0; i < buttonsListNodes.length; ++i) {
-            buttonsListNodes[i].classList.add("button-disabled");
-          }
-          if (buttonsRating.length) {
-            for (let i = 0; i < buttonsRating.length; ++i) {
-              buttonsRating[i].classList.add("button-disabled");
-            }
-          }
+
+        for (var i = 0; i < buttonsListNodes.length; ++i) {
+          buttonsListNodes[i].classList.add("button-disabled");
         }
       }
-    };
+    }
 
-    const setSlideWidth = (version) => {
-      switch (version) {
-        case 0:
-        case 4:
-          return SLIDE_WIDTH_CAROUSEL_V1;
-        case 2:
-          return SLIDE_WIDTH_CAROUSEL_V2;
-        case 3:
-          return SLIDE_WIDTH_CAROUSEL_V3;
-        default:
-          break;
-      }
-    };
-
-    const addChatCarousel = (version, data, message, index) => {
+    function addChatCarouselDefault(carousel, index) {
       try {
-        const slideWidth = setSlideWidth(version);
-        let parsedData = data.cards;
-        if (version) {
-          parsedData = data.cards.map(({ title, ...rest }) => ({
-            ...rest,
-            title: title.replace(`&&version${version}&&`, "")
-          }));
-        }
-        const hasCarouselCards = parsedData && Array.isArray(parsedData);
-        const carouselContainer = createEl("div", {
-          class:
-            "ultimate-carousel-container ultimate-custom-carousel-container ultimate-hidden"
+        var hasCarouselCards = carousel.cards && Array.isArray(carousel.cards);
+        var carouselContainer = createEl("li", {
+          class: "ultimate-carousel-container ultimate-hidden"
         });
-
-        const carouselElement = createEl(
+        var carouselElement = createEl(
           "div",
           {
-            class: `ultimate-carousel ultimate-carousel-custom-version${version}`,
+            class: "ultimate-carousel",
             "data-current-index": 0,
-            "data-items-length": hasCarouselCards ? parsedData.length : 0
+            "data-items-length": hasCarouselCards ? carousel.cards.length : 0
           },
           carouselContainer
         );
-
-        const buttonPrev = createEl(
+        var buttonPrev = createEl(
           "button",
           {
             type: "button",
@@ -1028,29 +921,124 @@
           },
           carouselElement
         );
-
         buttonPrev.innerText = "Previous";
-
-        createSvg(
+        var buttonPrevSvg = createEl(
+          "svg",
+          {
+            viewBox: "0 0 8 13"
+          },
           buttonPrev,
-          "0 0 14 12",
-          "#ffffff",
-          "M13.7601 6.00008C13.7601 6.39119 13.4401 6.71119 13.049 6.71119H2.6668L5.88458 9.94675C6.16902 10.2312 6.16902 10.6756 5.88458 10.9601C5.74236 11.1023 5.56458 11.1734 5.3868 11.1734C5.20902 11.1734 5.01347 11.1023 4.88902 10.9601L0.462359 6.51564C0.177915 6.23119 0.177915 5.78675 0.462359 5.52008L4.88902 1.07564C5.17347 0.791191 5.61791 0.791191 5.90235 1.07564C6.1868 1.36008 6.1868 1.80453 5.90235 2.08897L2.6668 5.28897H13.049C13.4401 5.28897 13.7601 5.60897 13.7601 6.00008Z"
+          true
+        );
+        createEl(
+          "path",
+          {
+            fill: "#172d3d",
+            d: "m7.7 1.7-4.6 4.6 4.6 4.6-1.4 1.4-6-6 6-6z"
+          },
+          buttonPrevSvg,
+          true
+        );
+        buttonPrev.addEventListener("click", prevSlider);
+        var carouselList = createEl(
+          "div",
+          {
+            class: "ultimate-carousel-list"
+          },
+          carouselElement
+        );
+        var carouselTrack = createEl(
+          "div",
+          { class: "ultimate-carousel-track" },
+          carouselList
+        );
+        if (hasCarouselCards) {
+          for (var i = 0; i < carousel.cards.length; ++i) {
+            addCardToContainer(carouselTrack, carousel.cards[i], i);
+          }
+        }
+        var buttonNext = createEl(
+          "button",
+          {
+            type: "button",
+            class: "ultimate-carousel-button ultimate-carousel-next"
+          },
+          carouselElement
+        );
+        buttonNext.innerText = "Next";
+        var buttonNextSvg = createEl(
+          "svg",
+          {
+            viewBox: "0 0 8 13"
+          },
+          buttonNext,
+          true
+        );
+        createEl(
+          "path",
+          {
+            fill: "#172d3d",
+            d: "m0.30005 1.7 4.6 4.6-4.6 4.6 1.4 1.4 6-6-6-6-1.4 1.4z"
+          },
+          buttonNextSvg,
+          true
+        );
+        buttonNext.addEventListener("click", nextSlider);
+        addElementToMessageArea(
+          carouselContainer,
+          TYPE_CAROUSEL,
+          carousel,
+          index
+        );
+        // Slider events
+        carouselList.addEventListener("mousedown", dragStart);
+        carouselList.addEventListener("mousemove", dragMove);
+        carouselList.addEventListener("mouseup", dragEnd);
+        carouselList.addEventListener("mouseleave", dragEnd);
+        carouselList.addEventListener("touchstart", dragStart);
+        carouselList.addEventListener("touchmove", dragMove);
+        carouselList.addEventListener("touchend", dragEnd);
+      } catch (err) {
+        console.error("Failed to add carousel element to the DOM");
+        console.error(err);
+      }
+    }
+
+    function addChatCustomCarousel(version, data, message, index) {
+      try {
+        const parsedData = data.cards.map(({ title, ...rest }) => ({
+          ...rest,
+          title: title.replace(`&&version${version}&&`, "")
+        }));
+
+        var hasCarouselCards = parsedData && Array.isArray(parsedData);
+        var carouselContainer = createEl("div", {
+          class:
+            "ultimate-carousel-container ultimate-custom-carousel-container ultimate-hidden"
+        });
+        var carouselElement = createEl(
+          "div",
+          {
+            class: `ultimate-carousel ultimate-custom-carousel ultimate-carousel-custom-version${version}`,
+            "data-current-index": 0,
+            "data-items-length": hasCarouselCards ? parsedData.length : 0
+          },
+          carouselContainer
         );
 
-        buttonPrev.addEventListener("click", (e) => prevSlider(e, slideWidth));
+        var info = createEl(
+          "div",
+          { class: "ultimate-carousel-title" },
+          carouselElement
+        );
 
         if (message) {
-          const titleBlock = createEl(
-            "div",
-            { class: "agent carouselTitle" },
-            carouselElement
-          );
-          const title = createEl("span", { class: "" }, titleBlock);
-          title.innerHTML = message;
+          info.innerHTML = message;
+        } else {
+          info.innerHTML = "";
         }
 
-        const carouselList = createEl(
+        var carouselList = createEl(
           "div",
           {
             class: "ultimate-carousel-list ultimate-carousel-list-version"
@@ -1058,43 +1046,36 @@
           carouselElement
         );
 
-        const contentCard = createEl(
+        var contentCard = createEl(
           "div",
           { class: "ultimate-content-card ultimate-carousel-track" },
           carouselList
         );
 
+        var dotsContainer = document.createElement("ul");
+        dotsContainer.classList.add("dotsContainer");
+
         if (hasCarouselCards) {
           for (let i = 0; i < parsedData.length; i++) {
-            let buttonLength = parsedData[i].buttons.length;
-            let moreThenOneButton = buttonLength > 1 && version !== 3;
-            let commonClassForCard = `ultimate-card ultimate-card-v${version}`;
-            let cardElement;
-
-            cardElement = createEl(
+            var cardElement = createEl(
               "div",
               {
-                class: `${
-                  moreThenOneButton
-                    ? commonClassForCard
-                    : `one-ultimate-card ${commonClassForCard}`
-                } `
+                class: "ultimate-card-version"
               },
               contentCard
             );
-
             if (parsedData[i].imageUrl) {
-              const imagesBlock = createEl(
+              var imagesBlock = createEl(
                 "div",
                 {
                   class: "ultimate-card-images-block"
                 },
                 cardElement
               );
-              const images = parsedData[i].imageUrl.split(",");
+              var images = parsedData[i].imageUrl.split(",");
 
               images.forEach((src) => {
-                const image = createEl(
+                var image = createEl(
                   "div",
                   {
                     class: "ultimate-card-image"
@@ -1104,89 +1085,85 @@
                 image.style.backgroundImage = `url("${src}")`;
               });
             }
-            const infoContainer = createEl(
-              "div",
-              {
-                class: `ultimate-card-info-block ultimate-card-info-block-v${version}`
-              },
-              cardElement
-            );
-
             if (parsedData[i].title) {
-              const cardTitle = createEl(
+              var cardTitle = createEl(
                 "h4",
                 { class: "ultimate-card-title" },
-                infoContainer
+                cardElement
               );
               cardTitle.innerHTML = parsedData[i].title;
             }
             if (parsedData[i].description) {
-              const cardDescription = createEl(
+              var cardDescription = createEl(
                 "div",
                 { class: "ultimate-custom-card-container" },
-                infoContainer
+                cardElement
               );
 
               cardDescription.innerHTML = parsedData[i].description;
 
-              const text = cardDescription.querySelector(".brand");
+              var text = cardDescription.querySelector(".brand");
               if (text && text.innerText.length > 53) {
                 text.innerText = text.innerText.substring(0, 53) + "...";
               }
             }
             if (parsedData[i].buttons && Array.isArray(parsedData[i].buttons)) {
-              const cardButtons = createEl(
+              var cardButtons = createEl(
                 "div",
                 {
-                  class: "ultimate-custom-card-buttons ultimate-btn-container"
+                  class:
+                    "version-custom-button ultimate-custom-card-buttons ultimate-btn-container"
                 },
-                infoContainer
+                cardElement
               );
 
-              parsedData[i].buttons.forEach((button) => {
-                addButtonToContainer(cardButtons, button, carouselContainer, i);
-              });
+              var buttonElement = createEl(
+                "button",
+                { class: "btn-version1" },
+                cardButtons
+              );
+              buttonElement.innerHTML = parsedData[i].buttons[0].text;
+
+              let text = parsedData[i].buttons[0].text;
+              let link = parsedData[i].buttons[0].link;
+
+              function onButtonClick() {
+                const disabledClass = "carousel-disabled";
+                if (carouselContainer.classList.contains(disabledClass)) {
+                  return;
+                } else {
+                  onClickButtonElement(link, text, i);
+                  carouselContainer.classList.add(disabledClass);
+                }
+              }
+
+              buttonElement.addEventListener("click", onButtonClick);
+            }
+            if (i === 0) {
+              createEl("li", { class: "active" }, dotsContainer);
+            } else {
+              createEl("li", {}, dotsContainer);
             }
           }
+
+          carouselList.appendChild(dotsContainer);
+
           // Slider events
           carouselList.addEventListener("mousedown", dragStart);
-          carouselList.addEventListener("mousemove", (e) =>
-            dragMove(e, slideWidth)
+          carouselList.addEventListener("mousemove", dragMove);
+          carouselList.addEventListener("mouseup", (event) =>
+            dragEnd(event, dotsContainer)
           );
-          carouselList.addEventListener("mouseup", (e) =>
-            dragEnd(e, slideWidth)
-          );
-          carouselList.addEventListener("mouseleave", (e) =>
-            dragEnd(e, slideWidth)
+          carouselList.addEventListener("mouseleave", (event) =>
+            dragEnd(event, dotsContainer)
           );
           carouselList.addEventListener("touchstart", dragStart);
-          carouselList.addEventListener("touchmove", (e) =>
-            dragMove(e, slideWidth)
-          );
-          carouselList.addEventListener("touchend", (e) =>
-            dragEnd(e, slideWidth)
+          carouselList.addEventListener("touchmove", dragMove);
+          carouselList.addEventListener("touchend", (event) =>
+            dragEnd(event, dotsContainer)
           );
         }
-
-        const buttonNext = createEl(
-          "button",
-          {
-            type: "button",
-            class: "ultimate-carousel-button ultimate-carousel-next"
-          },
-          carouselElement
-        );
-        buttonNext.innerText = "Next";
-
-        createSvg(
-          buttonNext,
-          "0 0 14 12",
-          "#ffffff",
-          "M13.5468 6.49778L9.12014 10.9422C8.97792 11.0844 8.80013 11.1556 8.62235 11.1556C8.44457 11.1556 8.2668 11.0844 8.12458 10.9422C7.84013 10.6578 7.84013 10.2133 8.12458 9.92889L11.3424 6.69334H0.960135C0.569023 6.69334 0.249023 6.37334 0.249023 5.98223C0.249023 5.59112 0.569023 5.27112 0.960135 5.27112H11.3424L8.12458 2.03557C7.84013 1.75112 7.84013 1.30668 8.12458 1.02223C8.40902 0.737788 8.85347 0.737788 9.13791 1.02223L13.5646 5.46668C13.8312 5.7689 13.8312 6.23112 13.5468 6.49778Z"
-        );
-
-        buttonNext.addEventListener("click", (e) => nextSlider(e, slideWidth));
-
+        sliderDots(dotsContainer.children);
         addElementToMessageArea(
           carouselContainer,
           TYPE_CAROUSEL,
@@ -1198,29 +1175,38 @@
         console.error("Failed to add carousel element to the DOM");
         console.error(err);
       }
+    }
+
+    const sliderDots = (slideCicles) => {
+      slideCicles = Array.prototype.slice.call(slideCicles);
+
+      slideCicles.forEach((item, index, slideCicles) => {
+        item.addEventListener("click", function (event) {
+          const parentItem = event.target.parentNode.parentNode;
+
+          moveSlider(parentItem, false, undefined, index, slideCicles);
+        });
+      });
     };
 
-    const removeCustomElements = () => {
-      const containers = document.querySelectorAll(".ultimate-btn-container");
-      for (let i = 0; i < containers.length; ++i) {
-        if (
-          !containers[i].classList.contains("version-custom-button") &&
-          !containers[i].classList.contains("ultimate-custom-card-buttons")
-        ) {
+    function removeCustomElements() {
+      var containers = document.querySelectorAll(".ultimate-btn-container");
+      for (var i = 0; i < containers.length; ++i) {
+        if (!containers[i].classList.contains("version-custom-button")) {
           containers[i].parentNode.removeChild(containers[i]);
         }
       }
-    };
+    }
 
-    const updateCustomElements = (data) => {
+    function updateCustomElements(data) {
       CUSTOM_ELEMENTS_DATA =
         JSON.parse(localStorage.getItem(CUSTOM_ELEMENTS_KEY)) || {};
-      const index = JSON.parse(data).index;
-      const elementData = CUSTOM_ELEMENTS_DATA[index];
-      const element = document.querySelectorAll("div.messageArea ul li")[index];
-      const buttonContainer = element;
+      var index = JSON.parse(data).index;
+      var elementData = CUSTOM_ELEMENTS_DATA[index];
+      var element = document.querySelectorAll("div.messageArea ul li")[index];
+      var buttonContainer = element;
       if (elementData.type === TYPE_CAROUSEL) {
-        const carousel = element.children[0];
+        var carousel = element.children[0];
         carousel.dataset.currentIndex = elementData.currentCard;
         updateSlider(carousel, true);
         buttonContainer =
@@ -1235,33 +1221,33 @@
         loaderElement.classList.remove("has-loader");
       }
       if (elementData.activeButton >= 0) {
-        const lastButtonActive = element.querySelector(".ultimate-btn-active");
+        var lastButtonActive = element.querySelector(".ultimate-btn-active");
         if (lastButtonActive) {
           lastButtonActive.classList.remove("ultimate-btn-active");
         }
-        const currentButton =
+        var currentButton =
           buttonContainer.querySelectorAll("button")[elementData.activeButton];
         if (currentButton) {
           currentButton.classList.add("ultimate-btn-active");
         }
       }
-    };
+    }
 
-    const broadcastStorageEvent = (eventKey, data) => {
-      const storageKey = eventKey + TAB_ID + String(Date.now());
+    function broadcastStorageEvent(eventKey, data) {
+      var storageKey = eventKey + TAB_ID + String(Date.now());
       localStorage.setItem(storageKey, data);
-      const timer = setTimeout(() => {
+      var timer = setTimeout(function () {
         localStorage.removeItem(storageKey);
         clearTimeout(timer);
       }, 2000);
-    };
+    }
 
-    window.onstorage = onCrossTabStorageEvent = (storageEvent) => {
+    window.onstorage = function onCrossTabStorageEvent(storageEvent) {
       if (!storageEvent) {
         return;
       }
-      const eventData = storageEvent.newValue;
-      const eventKey = String(storageEvent.key);
+      var eventData = storageEvent.newValue;
+      var eventKey = String(storageEvent.key);
       if (eventData) {
         if (eventKey.indexOf(TAB_ID) > -1) {
           // IE & Safari: ignore events from own tab
@@ -1282,19 +1268,17 @@
       }
     };
 
-    const sendChasitorButtonClickEvent = (serializedData) => {
+    function sendChasitorButtonClickEvent(serializedData) {
       try {
-        const data = JSON.parse(serializedData);
-        const isCarousel = typeof data.cardIndex !== "undefined";
-        // const eventName = isCarousel ? 'CarouselEvent' : 'ButtonClick';
+        var data = JSON.parse(serializedData);
+        var isCarousel = typeof data.cardIndex !== "undefined";
+        // var eventName = isCarousel ? 'CarouselEvent' : 'ButtonClick';
         if (isCarousel) {
           liveAgentAPI.sendCustomEvent("CarouselEvent", serializedData);
         } else {
-          const textareaElement = document.querySelector(
-            "textarea.chasitorText"
-          );
+          var textareaElement = document.querySelector("textarea.chasitorText");
           textareaElement.value = data.text;
-          const keydownEvent = document.createEvent("Event");
+          var keydownEvent = document.createEvent("Event");
           keydownEvent.initEvent("keydown");
           keydownEvent.which = keydownEvent.keyCode = 13;
           textareaElement.dispatchEvent(keydownEvent);
@@ -1302,10 +1286,10 @@
       } catch (err) {
         console.error("Failed to send button click message");
       }
-    };
+    }
 
-    const registerPending = (data, type) => {
-      const payload = JSON.stringify({
+    function registerPending(data, type) {
+      var payload = JSON.stringify({
         data: data,
         sessionId: sessionId
       });
@@ -1318,7 +1302,7 @@
         const lastMessageItem = messagesList[messagesList.length - 1];
         lastMessageItem.classList.add("custom-item");
 
-        const payloadTitle = lastMessageItem.getElementsByClassName(
+        var payloadTitle = lastMessageItem.getElementsByClassName(
           "ultimate-carousel-title"
         )[0]?.innerHTML;
 
@@ -1328,59 +1312,112 @@
           localStorage.setItem(PENDING_CAROUSEL_TITLE, payloadTitle);
         }
       }
+    }
+
+    const webviewButtonEventListener = (container, title) => {
+      container.style.display = "none";
+      var textareaElement = document.querySelector("textarea.chasitorText");
+      textareaElement.value = title;
+      var keydownEvent = document.createEvent("Event");
+      keydownEvent.initEvent("keydown");
+      keydownEvent.which = keydownEvent.keyCode = 13;
+      textareaElement.dispatchEvent(keydownEvent);
     };
 
-    const registerAllMessages = () => {
+    function addWebview(parent, url) {
+      let container = createEl("div", {
+        class: "webviewOverlay"
+      });
+
+      let wrapper = createEl("div", { class: "webviewWrapper" }, container);
+
+      let header = createEl("div", { class: "webviewHeader" }, wrapper);
+      let closeBtn = createEl("div", { class: "webviewBtn" }, header);
+      closeBtn.addEventListener("click", () =>
+        webviewButtonEventListener(container, "Webview closed")
+      );
+
+      createEl(
+        "iframe",
+        {
+          src: url,
+          class: "webview",
+          title: "Datepicker"
+        },
+        wrapper
+      );
+
+      // let returnBtn = createEl("div", { class: "webviewReturnBtn" }, wrapper);
+      // returnBtn.innerHTML = "Return to Chat bot";
+      // returnBtn.addEventListener("click", () =>
+      //   webviewButtonEventListener(container, "Returned to chat bot")
+      // );
+      parent.appendChild(container);
+    }
+
+    function registerAllMessages() {
       const payloadMessages = Array.from(
         document.getElementsByClassName("chatMessage")
       );
 
-      payloadMessages.forEach((agentElement) => {
-        if (agentElement.querySelector("img")) {
-          agentElement.classList.add("hasImage");
-        }
-      });
-
       payloadMessages.forEach((message, index) => {
+        ////check if message contains webview version and create webview element
+        const messageParent = message.getElementsByTagName("span")[0];
+        const parentText = messageParent?.textContent;
+        let version = getVersion(parentText || "");
+        const isWebviewVersion = version === IS_WEBVIEW_VERSION;
+
         MESSAGES_COUNT = payloadMessages.length;
         localStorage.setItem(PENDING_MESSAGE + index, message.innerHTML);
         localStorage.setItem(
           PENDING_MESSAGES_COUNT,
           JSON.stringify(MESSAGES_COUNT)
         );
+        if (isWebviewVersion) messageParent.textContent = "Choose date";
+
+        if (isWebviewVersion && index === payloadMessages.length - 1) {
+          const regex = /&&webview:([^&]+)&&/;
+          let match = parentText.match(regex);
+          const url = match[1];
+          addWebview(messageParent, url);
+        }
+        if (index !== payloadMessages.length - 1 && messageParent) {
+          let container =
+            messageParent.getElementsByClassName("webviewOverlay")[0];
+          if (container) container.style.display = "none";
+        }
       });
-    };
+    }
 
-    const clearPending = () => {
+    function clearPending() {
       localStorage.removeItem(PENDING_BUTTONS_KEY);
-    };
+      localStorage.removeItem(PENDING_CAROUSELS_KEY);
+      localStorage.removeItem(PENDING_CAROUSEL_TITLE);
+    }
 
-    const checkPendingAgentMessages = () => {
-      const serializedPendingMessagesCount = localStorage.getItem(
+    function checkPendingAgentMessages() {
+      var serializedPendingMessagesCount = localStorage.getItem(
         PENDING_MESSAGES_COUNT
       );
 
-      const serializedPendingMessages = [];
+      var serializedPendingMessages = [];
       for (let i = 0; i < serializedPendingMessagesCount; i++) {
         serializedPendingMessages.push(
           localStorage.getItem(PENDING_MESSAGE + i)
         );
       }
 
-      const messages = Array.from(
-        document.getElementsByClassName("chatMessage")
-      );
+      var messages = Array.from(document.getElementsByClassName("chatMessage"));
       for (let i = 0; i < messages.length; i++) {
         if (serializedPendingMessages[i]) {
           messages[i].innerHTML = serializedPendingMessages[i];
         }
       }
-    };
+    }
 
-    const checkPending = () => {
-      const serializedPendingButtons =
-        localStorage.getItem(PENDING_BUTTONS_KEY);
-      const serializedPendingCarousels = localStorage.getItem(
+    function checkPending() {
+      var serializedPendingButtons = localStorage.getItem(PENDING_BUTTONS_KEY);
+      var serializedPendingCarousels = localStorage.getItem(
         PENDING_CAROUSELS_KEY
       );
 
@@ -1388,13 +1425,13 @@
 
       try {
         if (serializedPendingButtons) {
-          const payload = JSON.parse(serializedPendingButtons);
+          var payload = JSON.parse(serializedPendingButtons);
           if (payload) {
             restoreCustom(payload, TYPE_BUTTONS);
           }
         } else if (serializedPendingCarousels) {
-          const payload = JSON.parse(serializedPendingCarousels);
-          const title = localStorage.getItem(PENDING_CAROUSEL_TITLE);
+          var payload = JSON.parse(serializedPendingCarousels);
+          var title = localStorage.getItem(PENDING_CAROUSEL_TITLE);
           if (payload) {
             restoreCustom(payload, TYPE_CAROUSEL, title);
           }
@@ -1402,29 +1439,29 @@
       } catch (err) {
         console.error("Failed to parse restored custom elements");
       }
-    };
+    }
 
-    const restoreCustom = (payload, type, title) => {
+    function restoreCustom(payload, type, title) {
       if (sessionId === payload.sessionId) {
         onCustomData(payload.data, type, title);
       }
-    };
+    }
 
-    const onButtonClickEvent = (serializedData) => {
+    function onButtonClickEvent(serializedData) {
       if (isMainTab) {
         sendChasitorButtonClickEvent(serializedData);
       }
       removeCustomElements();
       clearPending();
-    };
+    }
 
-    const onButtonClickInAnyTab = (serializedData) => {
+    function onButtonClickInAnyTab(serializedData) {
       broadcastStorageEvent(BUTTON_CLICK_EVENT, serializedData);
       onButtonClickEvent(serializedData);
-    };
+    }
 
-    const onCustomEventInMain = (result, elementType) => {
-      const type = result && result.type;
+    function onCustomEventInMain(result, elementType) {
+      var type = result && result.type;
       if (type !== elementType) {
         return;
       }
@@ -1434,7 +1471,7 @@
       const lastMessageItem = messagesList[messagesList.length - 1];
       lastMessageItem.classList.add("custom-item");
 
-      const data = result && result.data;
+      var data = result && result.data;
       if (!data) {
         console.error("Custom event payload error", result);
         return;
@@ -1444,9 +1481,9 @@
       broadcastStorageEvent(eventKey, data);
       onCustomData(data, elementType);
       registerPending(data, elementType);
-    };
+    }
 
-    const attachChasitorCustomEventListener = () => {
+    function attachChasitorCustomEventListener() {
       try {
         liveAgentAPI.addCustomEventListener(TYPE_BUTTONS, (result) =>
           onCustomEventInMain(result, TYPE_BUTTONS)
@@ -1457,42 +1494,42 @@
       } catch (err) {
         console.error("Failed to attach listeners");
       }
-    };
+    }
 
-    const initCustomElements = () => {
+    function initCustomElements() {
       CUSTOM_ELEMENTS_DATA =
         JSON.parse(localStorage.getItem(CUSTOM_ELEMENTS_KEY)) || {};
-      for (let index in CUSTOM_ELEMENTS_DATA) {
+      for (var index in CUSTOM_ELEMENTS_DATA) {
         if (CUSTOM_ELEMENTS_DATA.hasOwnProperty(index)) {
-          const element = CUSTOM_ELEMENTS_DATA[index];
+          var element = CUSTOM_ELEMENTS_DATA[index];
           if (element.type === TYPE_BUTTONS) {
             // Not needed, restoring buttons like before carousel
             // addChatButtons(element.data, index);
           } else if (element.type === TYPE_CARD) {
             addChatCard(element.data, index);
           } else if (element.type === TYPE_CAROUSEL) {
-            addChatCarousel(0, element.data, index);
+            addChatCarouselDefault(element.data, index);
           }
         }
       }
-    };
+    }
 
-    let isMessageArea = true;
-    const checkMessageArea = () => {
-      const sidebarBody = document.querySelector(
+    var isMessageArea = true;
+    function checkMessageArea() {
+      var sidebarBody = document.querySelector(
         ".embeddedServiceSidebar .sidebarBody"
       );
-      const observer = new MutationObserver((mutationsList, observer) => {
-        const isMessageAreaNew = !!sidebarBody.querySelector(".messageArea");
+      var observer = new MutationObserver(function (mutationsList, observer) {
+        var isMessageAreaNew = !!sidebarBody.querySelector(".messageArea");
         if (!isMessageArea && isMessageAreaNew) {
           initCustomElements();
         }
         isMessageArea = isMessageAreaNew;
       });
       observer.observe(sidebarBody, { childList: true, subtree: true });
-    };
+    }
 
-    const onChasitorClientLoad = () => {
+    function onChasitorClientLoad() {
       CUSTOM_ELEMENTS_DATA =
         JSON.parse(localStorage.getItem(CUSTOM_ELEMENTS_KEY)) || {};
       // If this is the main tab where the chat was initiated.
@@ -1513,14 +1550,14 @@
       }
       checkPending();
       checkMessageArea();
-    };
+    }
 
     // Remove custom elements when messages are received [Samppa]
-    const onMessageReceivedUser = () => {
+    function onMessageReceivedUser() {
       removeCustomElements();
-    };
+    }
 
-    const handleStopLoader = (lastElement) => {
+    function handleStopLoader(lastElement) {
       setTimeout(() => {
         const isCustomElement = lastElement.classList.contains("custom-item");
 
@@ -1530,13 +1567,13 @@
           loaderElement?.classList.add("hidden");
           lastElement.classList.add("visible");
         }
-        const messageArea = document.querySelector("div.messageArea");
+        var messageArea = document.querySelector("div.messageArea");
         messageArea.scrollTop = messageArea.scrollHeight;
       }, 2000);
-    };
+    }
 
     // Handle if bot message is not custom element and disable loader
-    const onMessageSendAgent = () => {
+    function onMessageSendAgent() {
       setTimeout(() => {
         const messagesList = document.querySelectorAll(
           ".messageWrapper li.chatMessage.agent"
@@ -1551,13 +1588,13 @@
         localStorage.setItem("agentMessagesCount", agentMessagesCount);
         registerAllMessages();
       }, 100);
-    };
+    }
 
     // Listener is removed when chat ends, reattach listener when chat is connected [Samppa]
-    const onChatRequestSuccess = () => {
+    function onChatRequestSuccess() {
       clearPending();
       attachChasitorCustomEventListener();
-    };
+    }
 
     window.embedded_svc.addEventHandler(
       "onChasitorMessage",
