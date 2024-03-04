@@ -424,8 +424,7 @@
           if (lastMessageItem) {
             // Take massage from last chat bot message and put to carousel title
             carouselMesasge =
-              lastMessageItem.querySelector(".chatContent span")?.innerHTML ||
-              "";
+                carouselMesasge = lastMessageItem.querySelector(".chatContent .plaintextContent")?.innerHTML || "";
 
             if (title) {
               carouselMesasge = title;
