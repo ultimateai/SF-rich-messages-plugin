@@ -41,12 +41,16 @@
   const IS_VERSION_1 = "isVersion1";
   const IS_VERSION_2 = "isVersion2";
   const IS_VERSION_3 = "isVersion3";
+  const IS_VERSION_3_1 = "isVersion3.1";
   const IS_VERSION_4 = "isversion4";
+  const IS_VERSION_4_1 = "isversion4.1";
 
   const VERSION_1_KEY = "&&version1&&";
   const VERSION_2_KEY = "&&version2&&";
   const VERSION_3_KEY = "&&version3&&";
+  const VERSION_3_1_KEY = "&&version3.1&&";
   const VERSION_4_KEY = "&&version4&&";
+  const VERSION_4_1_KEY = "&&version4.1&&";
 
   //PENDINGS
   const PENDING_BUTTONS_KEY = "ultimate_pending_buttons";
@@ -101,8 +105,12 @@
       value = IS_VERSION_2;
     } else if (message.includes(VERSION_3_KEY)) {
       value = IS_VERSION_3;
+    } else if (message.includes(VERSION_3_1_KEY)) {
+      value = IS_VERSION_3_1;
     } else if (message.includes(VERSION_4_KEY)) {
       value = IS_VERSION_4;
+    } else if (message.includes(VERSION_4_1_KEY)) {
+      value = IS_VERSION_4_1;
     }
     return value;
   };
@@ -169,7 +177,7 @@
               {
                 class: `${
                   initialData.length === 1 ? "oneElement" : "btn-default"
-                }`,
+                }`
               },
               wrapper
             );
@@ -184,7 +192,7 @@
 
     const addChatButtonsDefault = (version, chatButtons, index, title) => {
       const buttonContainer = createEl("div", {
-        class: `ultimate-btn-container ultimate-hidden version-custom-button btn-container-v${version}`,
+        class: `ultimate-btn-container ultimate-hidden version-custom-button btn-container-v${version}`
       });
 
       const info = createEl(
@@ -202,7 +210,9 @@
       }
 
       let rating;
-      if ((version === 3) | (version === 4)) {
+      if (
+        (version === 3 || version === 3.1) | (version === 4 || version === 4.1)
+      ) {
         info.classList.add("info-rating");
         rating = createEl("div", { class: "rating-group" }, buttonContainer);
       }
@@ -236,13 +246,14 @@
       container,
       version
     ) => {
-      const lastButtonElement = initialData.pop();
+      const lastButtonElement =
+        (version === 4 || version === 3) && initialData.pop();
       const starsBlock = createEl(
         "div",
-        { class: `starsBlock starsBlock-v${version}` },
+        { class: `starsBlock starsBlock-v${Math.floor(version)}` },
         rating
       );
-      if (version === 4) {
+      if (version === 4 || version === 4.1) {
         initialData.forEach(({ text }) => {
           const ratingButton = createEl(
             "div",
@@ -264,7 +275,7 @@
             value: "0",
             type: "radio",
             disabled: "disabled",
-            checked: "checked",
+            checked: "checked"
           },
           starsBlock
         );
@@ -276,7 +287,7 @@
             {
               class: "rating__label",
               ariaLabel: ` ${index + specialId}star`,
-              for: `rating${index + specialId}`,
+              for: `rating${index + specialId}`
             },
             starsBlock
           );
@@ -297,7 +308,7 @@
               name: "rating3",
               id: `rating${index + specialId}`,
               type: "radio",
-              value: "1",
+              value: "1"
             },
             starsBlock
           );
@@ -307,17 +318,18 @@
           );
         });
       }
+      if (version === 4 || version === 3) {
+        const buttonElement = createEl(
+          "button",
+          { class: "btn-rating" },
+          wrapper
+        );
+        buttonElement.innerHTML = lastButtonElement.text;
 
-      const buttonElement = createEl(
-        "button",
-        { class: "btn-rating" },
-        wrapper
-      );
-      buttonElement.innerHTML = lastButtonElement.text;
-
-      buttonElement.addEventListener("click", () =>
-        customOnButtonClick(container, "", lastButtonElement.text)
-      );
+        buttonElement.addEventListener("click", () =>
+          customOnButtonClick(container, "", lastButtonElement.text)
+        );
+      }
     };
 
     const isMainTab =
@@ -370,6 +382,13 @@
                 undefined,
                 titleMessage.replace(VERSION_3_KEY, "")
               ),
+            [IS_VERSION_3_1]: () =>
+              addChatButtonsDefault(
+                3.1,
+                eventData.chatButtons,
+                undefined,
+                titleMessage.replace(VERSION_3_1_KEY, "")
+              ),
             [IS_VERSION_4]: () =>
               addChatButtonsDefault(
                 4,
@@ -377,13 +396,20 @@
                 undefined,
                 titleMessage.replace(VERSION_4_KEY, "")
               ),
+            [IS_VERSION_4_1]: () =>
+              addChatButtonsDefault(
+                4.1,
+                eventData.chatButtons,
+                undefined,
+                titleMessage.replace(VERSION_4_1_KEY, "")
+              ),
             default: () =>
               addChatButtonsDefault(
                 0,
                 eventData.chatButtons,
                 undefined,
                 titleMessage
-              ),
+              )
           };
 
           buttonsRenderers[version || "default"]();
@@ -397,16 +423,13 @@
           const lastMessageItem = messagesList[messagesList.length - 1];
           if (lastMessageItem) {
             // Take massage from last chat bot message and put to carousel title
-            carouselMesasge = lastMessageItem.querySelector(".chatContent .plaintextContent")?.innerHTML || "";
-            console.log(`carouselMesasge: ${carouselMesasge}`);
+            carouselMesasge =
+                carouselMesasge = lastMessageItem.querySelector(".chatContent .plaintextContent")?.innerHTML || "";
 
             if (title) {
               carouselMesasge = title;
-            } else {
-              console.log("No title")
             }
 
-            // TESTING HERE ORIGINALLY
             if (eventData.cards.length >= 1) {
               const carouselsRenderers = {
                 [IS_VERSION_1]: () =>
@@ -417,7 +440,7 @@
                   addChatCarousel(3, eventData, carouselMesasge),
                 [IS_VERSION_4]: () =>
                   addChatCarousel(4, eventData, carouselMesasge),
-                default: () => addChatCarousel(0, eventData, carouselMesasge),
+                default: () => addChatCarousel(0, eventData, carouselMesasge)
               };
               carouselsRenderers[version || "default"]();
             } else {
@@ -446,7 +469,7 @@
       }
       const serializedData = JSON.stringify({
         text: buttonText,
-        cardIndex: cardIndex,
+        cardIndex: cardIndex
       });
 
       onButtonClickInAnyTab(serializedData);
@@ -456,7 +479,7 @@
       const externalLinkSvg = createEl(
         "svg",
         {
-          viewBox,
+          viewBox
         },
         container,
         true
@@ -468,7 +491,7 @@
           fill,
           d: path,
           stroke,
-          "stroke-width": strokeWidth,
+          "stroke-width": strokeWidth
         },
         externalLinkSvg,
         true
@@ -532,7 +555,7 @@
       const cardElement = createEl(
         "div",
         {
-          class: "ultimate-card",
+          class: "ultimate-card"
         },
         container
       );
@@ -540,7 +563,7 @@
         createEl(
           "img",
           {
-            src: card.imageUrl,
+            src: card.imageUrl
           },
           cardElement
         );
@@ -557,7 +580,7 @@
         const cardButtons = createEl(
           "div",
           {
-            class: "ultimate-card-buttons",
+            class: "ultimate-card-buttons"
           },
           cardElement
         );
@@ -592,7 +615,7 @@
               data: data,
               currentCard: 0,
               activeCard: 0,
-              activeButton: -1,
+              activeButton: -1
             };
             localStorage.setItem(
               CUSTOM_ELEMENTS_KEY,
@@ -765,7 +788,7 @@
             if (currentIndex - 1 >= 0) {
               prevSlider(
                 {
-                  target: carousel.querySelector(".ultimate-carousel-list"),
+                  target: carousel.querySelector(".ultimate-carousel-list")
                 },
                 slideWidth
               );
@@ -775,7 +798,7 @@
             if (currentIndex + 1 < itemsLength) {
               nextSlider(
                 {
-                  target: carousel.querySelector(".ultimate-carousel-list"),
+                  target: carousel.querySelector(".ultimate-carousel-list")
                 },
                 slideWidth
               );
@@ -800,7 +823,7 @@
       prevSlider(
         {
           target: carousel.querySelector(".ultimate-carousel-list"),
-          noAnimate: noAnimate,
+          noAnimate: noAnimate
         },
         slideWidth
       );
@@ -894,7 +917,7 @@
     const addChatCard = (card, index) => {
       try {
         const cardContainer = createEl("li", {
-          class: "ultimate-card-container ultimate-hidden",
+          class: "ultimate-card-container ultimate-hidden"
         });
         addCardToContainer(cardContainer, card, 0);
         addElementToMessageArea(cardContainer, TYPE_CARD, card, index);
@@ -971,20 +994,19 @@
     };
 
     const addChatCarousel = (version, data, message, index) => {
-      console.log("TESTING");
       try {
         const slideWidth = setSlideWidth(version);
         let parsedData = data.cards;
         if (version) {
           parsedData = data.cards.map(({ title, ...rest }) => ({
             ...rest,
-            title: title.replace(`&&version${version}&&`, ""),
+            title: title.replace(`&&version${version}&&`, "")
           }));
         }
         const hasCarouselCards = parsedData && Array.isArray(parsedData);
         const carouselContainer = createEl("div", {
           class:
-            "ultimate-carousel-container ultimate-custom-carousel-container ultimate-hidden",
+            "ultimate-carousel-container ultimate-custom-carousel-container ultimate-hidden"
         });
 
         const carouselElement = createEl(
@@ -992,7 +1014,7 @@
           {
             class: `ultimate-carousel ultimate-carousel-custom-version${version}`,
             "data-current-index": 0,
-            "data-items-length": hasCarouselCards ? parsedData.length : 0,
+            "data-items-length": hasCarouselCards ? parsedData.length : 0
           },
           carouselContainer
         );
@@ -1001,7 +1023,7 @@
           "button",
           {
             type: "button",
-            class: "ultimate-carousel-button ultimate-carousel-prev disabled",
+            class: "ultimate-carousel-button ultimate-carousel-prev disabled"
           },
           carouselElement
         );
@@ -1018,7 +1040,6 @@
         buttonPrev.addEventListener("click", (e) => prevSlider(e, slideWidth));
 
         if (message) {
-          console.log(message);
           const titleBlock = createEl(
             "div",
             { class: "agent carouselTitle" },
@@ -1031,7 +1052,7 @@
         const carouselList = createEl(
           "div",
           {
-            class: "ultimate-carousel-list ultimate-carousel-list-version",
+            class: "ultimate-carousel-list ultimate-carousel-list-version"
           },
           carouselElement
         );
@@ -1056,7 +1077,7 @@
                   moreThenOneButton
                     ? commonClassForCard
                     : `one-ultimate-card ${commonClassForCard}`
-                } `,
+                } `
               },
               contentCard
             );
@@ -1065,7 +1086,7 @@
               const imagesBlock = createEl(
                 "div",
                 {
-                  class: "ultimate-card-images-block",
+                  class: "ultimate-card-images-block"
                 },
                 cardElement
               );
@@ -1075,7 +1096,7 @@
                 const image = createEl(
                   "div",
                   {
-                    class: "ultimate-card-image",
+                    class: "ultimate-card-image"
                   },
                   imagesBlock
                 );
@@ -1085,7 +1106,7 @@
             const infoContainer = createEl(
               "div",
               {
-                class: `ultimate-card-info-block ultimate-card-info-block-v${version}`,
+                class: `ultimate-card-info-block ultimate-card-info-block-v${version}`
               },
               cardElement
             );
@@ -1116,7 +1137,7 @@
               const cardButtons = createEl(
                 "div",
                 {
-                  class: "ultimate-custom-card-buttons ultimate-btn-container",
+                  class: "ultimate-custom-card-buttons ultimate-btn-container"
                 },
                 infoContainer
               );
@@ -1150,7 +1171,7 @@
           "button",
           {
             type: "button",
-            class: "ultimate-carousel-button ultimate-carousel-next",
+            class: "ultimate-carousel-button ultimate-carousel-next"
           },
           carouselElement
         );
@@ -1285,7 +1306,7 @@
     const registerPending = (data, type) => {
       const payload = JSON.stringify({
         data: data,
-        sessionId: sessionId,
+        sessionId: sessionId
       });
       if (type === TYPE_BUTTONS) {
         localStorage.setItem(PENDING_BUTTONS_KEY, payload);
@@ -1312,6 +1333,12 @@
       const payloadMessages = Array.from(
         document.getElementsByClassName("chatMessage")
       );
+
+      payloadMessages.forEach((agentElement) => {
+        if (agentElement.querySelector("img")) {
+          agentElement.classList.add("hasImage");
+        }
+      });
 
       payloadMessages.forEach((message, index) => {
         MESSAGES_COUNT = payloadMessages.length;
